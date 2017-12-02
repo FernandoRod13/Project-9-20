@@ -11,6 +11,8 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+// Please selet the type of resource to add by de-Commeting that porcion of code
+
 // // ADD Resources Avalible
 // rl.question('# of Resources, name1, description1, name2, description2 ... namen,descriptionn : ', (answer) => {
 //   var list = _.split(answer, ',',30);

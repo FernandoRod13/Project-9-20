@@ -31,9 +31,27 @@ class ResourceDAO:
    
     def getAllResources(self):
         a = self.loadAvaliable()
-        b = self.loadRequested()
-       # all = self.merge_two_dicts( a, b)  
+        b = self.loadRequested()      
         return a+b
            
 
-    
+    def getResourcesRequested(self,keywords):
+        result = []
+        temp = self.loadRequested()
+        for resource in temp:           
+            if(keywords in resource['resource']):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that Keywords, Please Try Again Later"
+        return sorted(result, key=lambda k: k['name'])
+        
+
+    def getResourcesAvaliable(self,keywords):
+        result = []
+        temp = self.loadAvaliable()
+        for resource in temp:           
+            if(keywords in resource['resource']):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that Keywords, Please Try Again Later"
+        return sorted(result, key=lambda k: k['name'])
