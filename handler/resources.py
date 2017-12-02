@@ -19,7 +19,7 @@ class ResourcesHandler:
 
     def getAllresources_avaliable(self):
         dao = ResourceDAO()
-        res = dao.getAllResourcesRequested()
+        res = dao.getAllResourcesAvaliable()
         return jsonify(Resource = res)
    
         

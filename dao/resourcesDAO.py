@@ -7,7 +7,11 @@ class ResourceDAO:
     resources_requested = []
 
     def loadRequested(self):
-        with open('JsonMakers/note_data.json') as data_file:    
+        with open('JsonMakers/resources_requested_data.json') as data_file:    
+            return json.load(data_file)
+
+    def loadAvaliable(self):
+        with open('JsonMakers/resources_avaliable_data.json') as data_file:    
             return json.load(data_file)
        
     def getAllResourcesRequested(self):
@@ -17,13 +21,11 @@ class ResourceDAO:
         # result = []
         # for row in cursor:
         #     result.append(row)
-        # return result
-      
-        return self.loadRequested();
+        # return result      
+        return self.loadRequested()
         
 
     def getAllResourcesAvaliable(self):
-        return 'Avaliable'
-    #   return  jsonify(resource) for resource in resources_requested
+        return self.loadAvaliable()
 
     
