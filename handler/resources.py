@@ -13,10 +13,13 @@ class ResourcesHandler:
 
     def getAllresources_requested(self):
         dao = ResourceDAO()
-        return dao.getAllResourcesRequested()
+        res = dao.getAllResourcesRequested()
+        return jsonify(Resource = res)
+        
 
     def getAllresources_avaliable(self):
         dao = ResourceDAO()
-        return dao.getAllResourcesAvaliable()
+        res = dao.getAllResourcesRequested()
+        return jsonify(Resource = res)
    
         
