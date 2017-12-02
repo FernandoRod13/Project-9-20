@@ -11,9 +11,16 @@ class ResourceDAO:
             return json.load(data_file)
        
     def getAllResourcesRequested(self):
-       #sreturn 'Resquested'
+        # cursor = self.conn.cursor()
+        # query = "select * from parts;"
+        # cursor.execute(query)
+        # result = []
+        # for row in cursor:
+        #     result.append(row)
+        # return result
+      
         return self.loadRequested();
-         #resources_requested
+        
 
     def getAllResourcesAvaliable(self):
         return 'Avaliable'
