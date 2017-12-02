@@ -7,16 +7,51 @@ class ResourceDAO:
     resources_requested = []
 
     def loadRequested(self):
-        with open('JsonMakers/note_data.json') as data_file:    
+        with open('JsonMakers/resources_requested_data.json') as data_file:    
+            return json.load(data_file)
+
+    def loadAvaliable(self):
+        with open('JsonMakers/resources_avaliable_data.json') as data_file:    
             return json.load(data_file)
        
     def getAllResourcesRequested(self):
-       #sreturn 'Resquested'
-        return self.loadRequested();
-         #resources_requested
+        # cursor = self.conn.cursor()
+        # query = "select * from parts;"
+        # cursor.execute(query)
+        # result = []
+        # for row in cursor:
+        #     result.append(row)
+        # return result      
+        return self.loadRequested()
+        
 
     def getAllResourcesAvaliable(self):
-        return 'Avaliable'
-    #   return  jsonify(resource) for resource in resources_requested
-
+        return self.loadAvaliable()
     
+   
+    def getAllResources(self):
+        a = self.loadAvaliable()
+        b = self.loadRequested()      
+        return a+b
+           
+
+    def getResourcesRequested(self,keywords):
+        result = []
+        temp = self.loadRequested()
+        for resource in temp:           
+            if(keywords in resource['resource']):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that Keywords, Please Try Again Later"
+        return sorted(result, key=lambda k: k['name'])
+        
+
+    def getResourcesAvaliable(self,keywords):
+        result = []
+        temp = self.loadAvaliable()
+        for resource in temp:           
+            if(keywords in resource['resource']):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that Keywords, Please Try Again Later"
+        return sorted(result, key=lambda k: k['name'])

@@ -1,43 +1,41 @@
 
 const fs = require('fs');
 
-var logNote = (note) => {
-  debugger;
-  console.log('---------- ');
-  console.log(`Title: ${note.title}`);
-  console.log(`Body: ${note.body}`);
-};
 
-var fetchNotes = () =>{
+
+var fetchData= (file) =>{
 
   try{
-  var noteString =  fs.readFileSync('note_data.json');
+  var noteString =  fs.readFileSync(file);
+  //console.log(file);
   return JSON.parse(noteString);
   }catch(e){
     return []; //Empty Array
   }
 };
 
-var saveNotes = (notes) =>{
-  fs.writeFileSync('note_data.json', JSON.stringify(notes));
+
+var saveNotes = (notes,file) =>{
+  fs.writeFileSync(file, JSON.stringify(notes));
 };
 
-var addResource= (name, resource) => {
+var addResource= (name, resource, file,type) => {
 
-  var notes = fetchNotes();
+  var notes = fetchData();
 
   var note = {
     name: name,
-    resource: resource
+    resource: resource,
+    type : type
   };
-list = fetchNotes();
+list = fetchData(file);
 list.push(note);
-saveNotes(list);
+saveNotes(list,file);
 };
 
 
 var removeNote = (title) => {
-  var notes = fetchNotes ();
+  var notes = fetchData ();
 
   var toRemove = notes.filter((note) =>  note.title !== title); //Todas las notas que no son tittle
   saveNotes(toRemove);
@@ -45,14 +43,14 @@ var removeNote = (title) => {
 };
 
 var readNote = (title) => {
-  var notes = fetchNotes ();
+  var notes = fetchData ();
   var toread = notes.filter((note) => note.title === title);
   return toread[0];
 };
 
 
 var getAll = () => {
- return fetchNotes ();
+ return fetchData ();
 
 };
 
@@ -65,13 +63,3 @@ module.exports = {
 
 
 
-
-//
-// module.exports.addNote = () => {
-//   console.log('addNote');
-//   return 'New note';
-// };
-//
-// module.exports.add = (a, b) => {
-//   return a+b;
-// };
