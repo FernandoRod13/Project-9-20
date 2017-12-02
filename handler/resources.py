@@ -11,6 +11,11 @@ class ResourcesHandler:
         }
         return new_resource
 
+    def getAllresources(self):
+        dao = ResourceDAO()
+        res = dao.getAllResources()
+        return jsonify(Resource = res)
+
     def getAllresources_requested(self):
         dao = ResourceDAO()
         res = dao.getAllResourcesRequested()

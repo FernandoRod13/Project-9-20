@@ -7,7 +7,7 @@ var fetchData= (file) =>{
 
   try{
   var noteString =  fs.readFileSync(file);
-  console.log(file);
+  //console.log(file);
   return JSON.parse(noteString);
   }catch(e){
     return []; //Empty Array
@@ -19,13 +19,14 @@ var saveNotes = (notes,file) =>{
   fs.writeFileSync(file, JSON.stringify(notes));
 };
 
-var addResource= (name, resource, file) => {
+var addResource= (name, resource, file,type) => {
 
   var notes = fetchData();
 
   var note = {
     name: name,
-    resource: resource
+    resource: resource,
+    type : type
   };
 list = fetchData(file);
 list.push(note);

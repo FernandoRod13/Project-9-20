@@ -1,1 +1,1 @@
-[{"name":"Agua Embotella","resource":"NO AAA"},{"name":"CocaCola","resource":"NAME THE PRICE"},{"name":"Gasolina","resource":"PREMIUM"},{"name":"Carne","resource":"DE VERDAD"}]
+[{"name":"CocaCola","resource":"Name the Price","type":"requested"},{"name":"Ice","resource":"30 lbs","type":"requested"},{"name":"Water Bottles","resource":"NO AAA","type":"requested"},{"name":"Gasoline","resource":"Premium","type":"requested"}]

@@ -27,5 +27,13 @@ class ResourceDAO:
 
     def getAllResourcesAvaliable(self):
         return self.loadAvaliable()
+    
+   
+    def getAllResources(self):
+        a = self.loadAvaliable()
+        b = self.loadRequested()
+       # all = self.merge_two_dicts( a, b)  
+        return a+b
+           
 
     
