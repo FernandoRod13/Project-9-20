@@ -1,12 +1,8 @@
 from flask import jsonify
-from dao.resourcesDAO import rDAO
-
-resources_requested = []
-
+from dao.resourcesDAO import ResourceDAO
 
 class ResourcesHandler:
-    def __init__(self):
-        pass
+    resources_requested = []
     
     def build_resource(self,name,description):
         new_resource = {
@@ -15,10 +11,12 @@ class ResourcesHandler:
         }
         return new_resource
 
-    def getAllresources_requested():
-        return rDAO.getAllResourcesRequested()
+    def getAllresources_requested(self):
+        dao = ResourceDAO()
+        return dao.getAllResourcesRequested()
 
-    def getAllresources_requested():
-        return rDAO.getAllResourcesAvaliable()
+    def getAllresources_avaliable(self):
+        dao = ResourceDAO()
+        return dao.getAllResourcesAvaliable()
    
         

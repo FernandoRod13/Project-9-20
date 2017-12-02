@@ -10,11 +10,13 @@ def local():
 
 @app.route('/resources/requested')
 def getAllResourcesRequested():
-    return ResourcesHandler.getAllresources_requested()
+    handler = ResourcesHandler()
+    return handler.getAllresources_requested()
 
-@app.route('/resources/avalible')
-def getAllResourcesRequested():
-    return ResourcesHandler.getAllresources_avaible()
+@app.route('/resources/avaliable')
+def getAllResourcesAvailable():
+    handler = ResourcesHandler()
+    return handler.getAllresources_avaliable()
 
 if __name__ == '__main__':
     app.run()

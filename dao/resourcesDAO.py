@@ -1,11 +1,8 @@
 from flask import jsonify
 
 
-resources_requested = []
-
-class ResourcesDAO:
-    def __init__(self):
-        pass
+class ResourceDAO:
+    resources_requested = []
        
     def getAllResourcesRequested(self):
        return 'Resquested'
