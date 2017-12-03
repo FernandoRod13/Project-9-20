@@ -4,7 +4,6 @@ from handler.category_resources import CategoryHandler
 
 app = Flask(__name__)
 
-# handler = ResourcesHandler()
 @app.route('/')
 def local():
     return 'Welcome to Project 9-20!'
@@ -34,10 +33,15 @@ def getResourcesRequested_keywords(keywords):
     handler = ResourcesHandler()  
     return handler.getresources_requested(keywords)
 
-@app.route('category/resources/requested/<string:keywords>')
-def getResourceRequested_category():
+@app.route('/category/resources/requested/<string:keywords>')
+def getResourceRequested_category(keywords):
     handler = CategoryHandler()
-    return handler.CategoryRequested(keywords)
+    return handler.categoryRequested(keywords)
+
+@app.route('/category/resources/requested/<string:keywords>/sub/<string:subkeywords>')
+def getResourceRequested_subcategory(keywords, subkeywords):
+    handler = CategoryHandler()
+    return handler.categoryRequested_subcategory(keywords,subkeywords)
 
 
 

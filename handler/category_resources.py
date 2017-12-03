@@ -6,7 +6,10 @@ class CategoryHandler:
     def __init__(self):
         pass    
     
-    def CategoryRequested(self,keywords):
+    def categoryRequested(self,keywords):
         dao = category_ResourceDAO()
-        return dao.getCategoryRequested(self, keywords)
-   
+        return dao.getCategoryRequested(keywords)       
+    
+    def categoryRequested_subcategory(self,keywords,subkeywords):
+        dao = category_ResourceDAO()
+        return dao.getCategoryRequested_subcategory(keywords,subkeywords)
