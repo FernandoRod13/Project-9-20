@@ -40,7 +40,7 @@ class ResourceDAO:
         result = []
         temp = self.loadRequested()
         for resource in temp:           
-            if(keywords in resource['resource']):
+            if(keywords in resource['description']):
                 result.append(resource)        
         if(len(result)==0):
             return "No Resource with that Keywords, Please Try Again Later"
@@ -51,7 +51,7 @@ class ResourceDAO:
         result = []
         temp = self.loadAvaliable()
         for resource in temp:           
-            if(keywords in resource['resource']):
+            if(keywords in resource['descrption']):
                 result.append(resource)        
         if(len(result)==0):
             return "No Resource with that Keywords, Please Try Again Later"
