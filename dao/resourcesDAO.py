@@ -4,8 +4,9 @@ import json
 
 
 class ResourceDAO:
-    resources_requested = []
-
+    def __init__(self):
+        pass
+        
     def loadRequested(self):
         with open('JsonMakers/resources_requested_data.json') as data_file:    
             return json.load(data_file)
@@ -55,3 +56,6 @@ class ResourceDAO:
         if(len(result)==0):
             return "No Resource with that Keywords, Please Try Again Later"
         return sorted(result, key=lambda k: k['name'])
+
+    def getCategoryRequestedWater(self):
+        return ' Water Category'

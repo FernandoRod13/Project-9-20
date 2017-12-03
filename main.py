@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
 from handler.resources import ResourcesHandler
+from handler.category_resources import CategoryHandler
 
 app = Flask(__name__)
 
+# handler = ResourcesHandler()
 @app.route('/')
 def local():
     return 'Welcome to Project 9-20!'
@@ -28,19 +30,19 @@ def getResourcesAvailable(keywords):
     return handler.getresources_avaliable(keywords)
 
 @app.route('/resources/requested/find/<string:keywords>')
-def getResourcesRequested(keywords):
-    handler = ResourcesHandler()
+def getResourcesRequested_keywords(keywords):  
+    handler = ResourcesHandler()  
     return handler.getresources_requested(keywords)
 
-# @app.route('/resources/requested/water')
-# def getWaterCategoryRequested(keywords):
-#     handler = ResourcesHandler()
-#     return handler.getWaterCategory_requested()
+@app.route('category/resources/requested/<string:keywords>')
+def getResourceRequested_category():
+    handler = CategoryHandler()
+    return handler.CategoryRequested(keywords)
 
-# @app.route('/resources/avaliable/water')
-# def getWaterCategoryRequested(keywords):
-#     handler = ResourcesHandler()
-#     return handler.getWaterCategory_requested()
+
+
+
+
 
 
 if __name__ == '__main__':
