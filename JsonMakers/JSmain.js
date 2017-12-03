@@ -14,31 +14,31 @@ const rl = readline.createInterface({
 // Please selet the type of resource to add by de-Commeting that porcion of code
 
 // // ADD Resources Avalible
-// rl.question('# of Resources, name1, description1, name2, description2 ... namen,descriptionn : ', (answer) => {
+// rl.question('# of Resources, Name, Category, Subcategory:  : ', (answer) => {
 //   var list = _.split(answer, ',',30);
 //  // console.log(list);
 //   var i = _.trim(list[0]);
 //   console.log(`You Added ${i} Resources`);
    
-//   for ( var j=1; j <= i*2; j+=2){  
-//   //console.log(`test ${list[j]}  ${j}`);
-//   //console.log(`tes: ${list[j+1]} ${j+1}`);
-//   jsMaker.addResource(_.trim(list[j]),_.trim(list[j+1]),'resources_avaliable_data.json','avaliable');  
-//   }  
+//   for ( var j=1; j < i*4; j+=4){  
+//     //console.log(`test ${list[j]}  ${j}`);
+//     //console.log(`tes: ${list[j+1]} ${j+1}`);
+//     jsMaker.addResource(_.trim(list[j]),_.trim(list[j+1]),'resources_avaliable_data.json','avalible',_.trim(list[j+2]),_.trim(list[j+3]));  
+//     } 
 //  rl.close();
 // });
 
 // ADD Resources Requested
-rl.question('# of Resources, name1, description1, name2, description2 ... namen,descriptionn : ', (answer) => {
+rl.question('# of Resources, Name, Category, Subcategory: ', (answer) => {
   var list = _.split(answer, ',',30);
   //console.log(list);
   var i = _.trim(list[0]);
   console.log(`You Added ${i} Resources`);
 
-  for ( var j=1; j <= i*2; j+=2){  
-  console.log(`test ${list[j]}  ${j}`);
-  console.log(`tes: ${list[j+1]} ${j+1}`);
-  jsMaker.addResource(_.trim(list[j]),_.trim(list[j+1]),'resources_requested_data.json','requested');  
+  for ( var j=1; j <= i*4; j+=4){  
+  //console.log(`test ${list[j]}  ${j}`);
+  //console.log(`tes: ${list[j+1]} ${j+1}`);
+  jsMaker.addResource(_.trim(list[j]),_.trim(list[j+1]),'resources_requested_data.json','requested',_.trim(list[j+2]),_.trim(list[j+3]));  
   }  
  rl.close();
 });
