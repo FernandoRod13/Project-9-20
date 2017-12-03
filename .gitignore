@@ -1,5 +1,7 @@
+ Created by https://www.gitignore.io/api/git,node,visualstudiocode
 
-# Created by https://www.gitignore.io/api/node
+### Git ###
+*.orig
 
 ### Node ###
 # Logs
@@ -62,5 +64,13 @@ typings/
 .env
 
 
-# End of https://www.gitignore.io/api/node
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history
+
+# End of https://www.gitignore.io/api/git,node,visualstudiocode
 
