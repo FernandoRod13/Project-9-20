@@ -1,5 +1,6 @@
-from flask import jsonify
 from dao.resourcesDAO import ResourceDAO
+from flask import jsonify
+
 
 class ResourcesHandler:
     def __init__(self):
@@ -46,5 +47,60 @@ class ResourcesHandler:
 
     
 
+    
+    #
+    # ****************** DASHBOARD METHODS *********************
+    #
+
+    # DAILY STATISTICS
+    def getAllDailyRes_InNeed(self):
+        dao = ResourceDAO()
+        res = dao.getAllResourcesAvaliable()
+        return jsonify(Resource = res)
+    
+    def getAllDailyRes_Available(self):
+        dao = ResourceDAO()
+        res = dao.getAllResourcesAvaliable()
+        return jsonify(Resource = res)
+    
+    def getAllDailyRes_Between(self):
+        dao = ResourceDAO()
+        res = dao.getAllResourcesAvaliable()
+        return jsonify(Resource = res)
+    
+    # TRENDING STATISTICS (7 DAY PERIOD)
+    def getAllTrendingRes_InNeed(self):
+        dao = ResourceDAO()
+        res = dao.getAllResourcesAvaliable()
+        return jsonify(Resource = res)
+    
+    def getAllTrendingRes_Available(self):
+        dao = ResourceDAO()
+        res = dao.getAllResourcesAvaliable()
+        return jsonify(Resource = res)
+    
+    def getAllTrendingRes_Between(self):
+        dao = ResourceDAO()
+        res = dao.getAllResourcesAvaliable()
+        return jsonify(Resource = res)
+    
+    # TRENDING STATICTICS (8 SENATES)
+    def getAllDailyRes_InNeedBySenate(self, keywords):
+        dao = ResourceDAO()
+        res = dao.getResourcesRequested(keywords)
+        return jsonify(Resource = res)
+    
+    def getAllDailyRes_AvailableBySenate(self, keywords):
+        dao = ResourceDAO()
+        res = dao.getResourcesRequested(keywords)
+        return jsonify(Resource = res)
+    
+    def getAllDailyRes_BetweenBySenate(self, keywords):
+        dao = ResourceDAO()
+        res = dao.getResourcesRequested(keywords)
+        return jsonify(Resource = res)
+    
+    
+    
    
         
