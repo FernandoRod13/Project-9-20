@@ -3,8 +3,9 @@ from flask import jsonify
 
 
 class ResourcesHandler:
-    resources_requested = []
-    
+    def __init__(self):
+        pass
+               
     def build_resource(self,name,description):
         new_resource = {
             'name': name,
@@ -37,6 +38,15 @@ class ResourcesHandler:
         dao = ResourceDAO()
         res = dao.getResourcesRequested(keywords)
         return jsonify(Resource = res)
+
+    def WaterCategoryRequested(self):
+        dao = ResourceDAO()
+        res = dao.getCategoryRequestedWater()
+        return jsonify(Resource = res)
+
+
+    
+
     
     #
     # ****************** DASHBOARD METHODS *********************

@@ -19,14 +19,16 @@ var saveNotes = (notes,file) =>{
   fs.writeFileSync(file, JSON.stringify(notes));
 };
 
-var addResource= (name, resource, file,type) => {
+var addResource= (name, description, file,type,category,subcategory) => {
 
   var notes = fetchData();
 
   var note = {
     name: name,
-    resource: resource,
-    type : type
+    description: description,
+    type : type,
+    category : category,
+    subcategory : subcategory
   };
 list = fetchData(file);
 list.push(note);
