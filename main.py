@@ -1,6 +1,7 @@
 from flask import Flask, jsonify,render_template,request
 from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
+from handler.statisc_resources import StatiscHandler
 
 
 app = Flask(__name__)
@@ -82,64 +83,61 @@ def getResourceAvaliable_subcategory(keywords, subkeywords):
     handler = CategoryHandler()
     return handler.categoryAvaliable_subcategory(keywords,subkeywords)
 
-
-#
-# ****************** DASHBOARD METHODS *********************
-#
-
 # DAILY STATISTICS
 @app.route('/dashboard/daily_statistics/resources_inneed')
 def getAllDailyResInNeed():
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllDailyRes_InNeed()
 
 @app.route('/dashboard/daily_statistics/resources_available')
 def getAllDailyResAvailable():
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllDailyRes_Available()
 
 @app.route('/dashboard/daily_statistics/resources_between%need%available')
 def getAllDailyResBetween():
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllDailyRes_Between()
 
 # TRENDING STATISTICS (7 DAY PERIOD)
 @app.route('/dashboard/trending_statistics/resources_inneed')
 def getAllTrendingResInNeed():
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllTrendingRes_InNeed()
 
 @app.route('/dashboard/trending_statistics/resources_available')
 def getAllTrendingResAvailable():
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllTrendingRes_Available()
 
 @app.route('/dashboard/trending_statistics/resources_between%need%available')
 def getAllTrendingResBetween():
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllTrendingRes_Between()
 
 # TRENDING STATICTICS (8 SENATES)
 @app.route('/dashboard/trending_statistics/resources_inneed/findBy?<string:senate>')
 def getAllTrendingResInNeedBySenate(senate):
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllDailyRes_InNeedBySenate(senate)
 
 @app.route('/dashboard/trending_statistics/resources_available/findBy?<string:senate>')
 def getAllTrendingResAvailableBySenate(senate):
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllDailyRes_AvailableBySenate(senate)
 
 @app.route('/dashboard/trending_statistics/resources_between%need%available/findBy?<string:senate>')
 def getAllTrendingResBetweenBySenate(senate):
-    handler = ResourcesHandler()
+    handler = StatiscHandler()
     return handler.getAllDailyRes_BetweenBySenate(senate)
 
 #account method
 @app.route('/account/verify?<string:accountid>&<string:accountpass>')
 def verifyAccount(accountid, accountpass):
     handler = ResourcesHandler()
-    return handler.verifyAccount(accountid, accountpass)
+    return handler.verifyAccount(accountid,accountpass)
 
 if __name__ == '__main__':
     app.run()
+
+
