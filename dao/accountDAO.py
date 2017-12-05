@@ -15,4 +15,14 @@ class accountDAO:
     def getSuppliers(self):
         with open('JsonMakers/suppliers.json') as data_file:    
             return json.load(data_file)
-    
+
+    def getSuppliersbyCity(self,city):
+        with open('JsonMakers/suppliers.json') as data_file: 
+            data = json.load(data_file)
+            res = []
+            for supplier in data:
+                if( city.lower() in supplier['city'].lower()):
+                    res.append(supplier)
+            if(len(res)==0):
+                return "There are no supplier in that City"
+            return res

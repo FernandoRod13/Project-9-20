@@ -38,7 +38,7 @@ class AccountHandler:
         city = args.get("city")
         dao = accountDAO()
         if len(args)==1 and city:
-            res = dao.getSuppliers()
+            res = dao.getSuppliersbyCity(city)
             return jsonify(Suppliers = res)
         else:
             res = "Malformed query string", 400
