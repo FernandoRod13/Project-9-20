@@ -43,17 +43,17 @@ const rl = readline.createInterface({
 //  rl.close();
 // });
 
-// ADD User, in the mark area change the type and file has need
-rl.question('# of Users, type,file, Name, Municipality: ', (answer) => {
-  var list = _.split(answer, ',');
-  var i = _.trim(list[0]);
-  console.log(`You Added ${i} Resources`);
+// // ADD User, in the mark area change the type and file has need
+// rl.question('# of Users, type,file, Name, Municipality: ', (answer) => {
+//   var list = _.split(answer, ',');
+//   var i = _.trim(list[0]);
+//   console.log(`You Added ${i} Resources`);
 
-  for ( var j=3; j <= i*4; j+=2){  
+//   for ( var j=3; j <= i*4; j+=2){  
  
-  jsMaker.addUser(_.trim(list[j]),_.trim(list[j+1]),'user.json');  
-  }  
- rl.close();
-});
+//   jsMaker.addUser(_.trim(list[j]),_.trim(list[j+1]),'user.json');  
+//   }  
+//  rl.close();
+// });
 
 
