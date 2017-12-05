@@ -59,9 +59,9 @@ class ResourcesHandler:
         elif (len(args)==2) and name and description:
             res = dao.getResourcesAvaliablebyName_Description(name,description)
         elif qty or price or avaliability:
-            res = "Result of search with that keyword"
+            res = "Show search result with that keyword"
         else:
-            res = ("Malformed query string"), 400
+            res =  "Malformed query string", 400
         return jsonify(Resource = res)    
 
     

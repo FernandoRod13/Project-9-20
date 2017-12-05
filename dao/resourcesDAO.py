@@ -82,7 +82,7 @@ class ResourceDAO:
         else:
             temp=[]
             for resource in result:           
-                if(name.lower() in resource['description'].lower()):
+                if(description.lower() in resource['description'].lower()):
                     temp.append(resource)
         return sorted(temp, key=lambda k: k['name'])
 
