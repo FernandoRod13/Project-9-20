@@ -1,6 +1,8 @@
 from flask import jsonify
 import json
 
+#List of the categories and their subcategories
+
 category_list = ["medications","babyfood","cannedfood","dryfood","ice",
                 "medicaldevices","tools","clothing","powergenerators","batteries"]
 category_with_subcat_list = ["fuel","water"]
@@ -14,7 +16,7 @@ class category_ResourceDAO:
         pass
 
     def getCategories(self):
-        return "The Categoires are: \n {0} \n For the Category Water the subcategory are:\n {1} \n  For the Category Water the subcategory are:\n {2} \n".format(category_list,category_water_list,category_fuel_list)
+        return "The Categoires are: \n {0} \n For the Category Water the subcategory are:\n {1} \n  For the Category fuel the subcategory are:\n {2} \n".format(category_list,category_water_list,category_fuel_list)
 
     def getCategoryRequested(self, keywords):
         if (keywords not in category_list):
