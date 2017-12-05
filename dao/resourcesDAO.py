@@ -111,7 +111,11 @@ class ResourceDAO:
         result.append("Trending resources by" + keywords + " in between")
         return result
     
-    
+    # Account verification
+    def verifyAccount(self, accountid, accountpass):
+        result = []
+        result.append("This is to verify if account " + accountid + "is correct")
+        return result
     
     
     
