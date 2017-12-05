@@ -127,7 +127,7 @@ class ResourcesHandler:
     
     # Account verification
     def verifyAccount(self, accountid, accountpass):
-        dao = new ResourceDAO()
+        dao = ResourceDAO()
         res = dao.verifyAccount(accountid, accountpass)
         return jsonify(Resource = res)
     
