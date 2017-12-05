@@ -60,11 +60,11 @@ def getCategories():
     handler = CategoryHandler()
     return handler.categories()
 
-@app.route('/resources/requested/category/<string:keywords>')
-def getResourceRequested_category(keywords):
+@app.route('/resources/requested/category/<string:category_id>')
+def getResourceRequested_category(category_id):
     """ Get the items in a given category"""
     handler = CategoryHandler()
-    return handler.categoryRequested(keywords)
+    return handler.categoryRequested(category_id)
 
 @app.route('/resources/requested/category/<string:keywords>/sub/<string:subkeywords>')
 def getResourceRequested_subcategory(keywords, subkeywords):
@@ -123,26 +123,26 @@ def getAllTrendingResBetween():
     return handler.getAllTrendingRes_Between()
 
 # TRENDING STATICTICS (8 SENATES)
-@app.route('/statistics/trending/resources/requested/senate/<string:senate>')
+@app.route('/statistics/trending/resources/requested/region/<string:region_id>')
 def getAllTrendingResInNeedBySenate(senate):
     """ Show Trending Statistics for Resources Requested by Senate"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_InNeedBySenate(senate)
 
-@app.route('/statistics/trending/resources/available/senate/<string:senate>')
+@app.route('/statistics/trending/resources/available/region/<string:region_id>')
 def getAllTrendingResAvailableBySenate(senate):
     """ Show Trending Statistics for Resources Avaliable by Senate"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_AvailableBySenate(senate)
 
-@app.route('/statistics/trending/resources/between%need%available/senate/<string:senate>')
+@app.route('/statistics/trending/resources/between%need%available/region/<string:region_id>')
 def getAllTrendingResBetweenBySenate(senate):
     """ Show Trending Statistics for Resources Requested vs Avaliable by Senate"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_BetweenBySenate(senate)
 
 #account routes
-@app.route('/account/login')
+@app.route('/accounts/login')
 def verifyAccount():    
     if not request.args:
         return jsonify("Invalid Input plese enter accountid and accountpass")
@@ -152,6 +152,7 @@ def verifyAccount():
 
 @app.route('/accounts/suppliers')
 def getSuppliers():
+    """Get all suppliers"""
     handler = AccountHandler()
     if not request.args:
         return handler.getAllSuppliers()
@@ -161,6 +162,7 @@ def getSuppliers():
 
 @app.route('/accounts')
 def getAccountData():
+    """Get account data for a specific account"""
     if not request.args:
         return jsonify("Invalid Input plese enter accountid and accountpass")
     else:
