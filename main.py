@@ -143,7 +143,8 @@ def getAllTrendingResBetweenBySenate(senate):
 
 #account routes
 @app.route('/accounts/login')
-def verifyAccount():    
+def verifyAccount():
+    """Account login"""    
     if not request.args:
         return jsonify("Invalid Input plese enter accountid and accountpass")
     else:       

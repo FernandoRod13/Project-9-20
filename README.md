@@ -37,9 +37,9 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 ##### Get weekly statistics of requested resources
 `https://<baseURL>/statistics/trendings/resources/requested`
 ##### Get regional statistics of available resources
-`https://<baseURL>/statistics/trending/resources/available/senate/<senateID>`
+`https://<baseURL>/statistics/trending/resources/available/region/<regionID>`
 ##### Get regional statistics of requested resources
-`https://<baseURL>/statistics/trending/resources/requested/senate/<senateID>`
+`https://<baseURL>/statistics/trending/resources/requested/region/<regionID>`
 
 #### Users
 ##### Account Login
