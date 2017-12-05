@@ -84,49 +84,49 @@ def getResourceAvaliable_subcategory(keywords, subkeywords):
     return handler.categoryAvaliable_subcategory(keywords,subkeywords)
 
 # DAILY STATISTICS
-@app.route('/dashboard/daily_statistics/resources_inneed')
+@app.route('/statistics/daily/resources/requested')
 def getAllDailyResInNeed():
     handler = StatiscHandler()
     return handler.getAllDailyRes_InNeed()
 
-@app.route('/dashboard/daily_statistics/resources_available')
+@app.route('/statistics/daily/resources/available')
 def getAllDailyResAvailable():
     handler = StatiscHandler()
     return handler.getAllDailyRes_Available()
 
-@app.route('/dashboard/daily_statistics/resources_between%need%available')
+@app.route('/statistics/daily/resources/between%need%available')
 def getAllDailyResBetween():
     handler = StatiscHandler()
     return handler.getAllDailyRes_Between()
 
 # TRENDING STATISTICS (7 DAY PERIOD)
-@app.route('/dashboard/trending_statistics/resources_inneed')
+@app.route('/statistics/trending/resources/requested')
 def getAllTrendingResInNeed():
     handler = StatiscHandler()
     return handler.getAllTrendingRes_InNeed()
 
-@app.route('/dashboard/trending_statistics/resources_available')
+@app.route('/statistics/trendin/resources/available')
 def getAllTrendingResAvailable():
     handler = StatiscHandler()
     return handler.getAllTrendingRes_Available()
 
-@app.route('/dashboard/trending_statistics/resources_between%need%available')
+@app.route('/statistics/trending/resources/between%need%available')
 def getAllTrendingResBetween():
     handler = StatiscHandler()
     return handler.getAllTrendingRes_Between()
 
 # TRENDING STATICTICS (8 SENATES)
-@app.route('/dashboard/trending_statistics/resources_inneed/findBy?<string:senate>')
+@app.route('/statistics/trending/resources/requested/findBy?<string:senate>')
 def getAllTrendingResInNeedBySenate(senate):
     handler = StatiscHandler()
     return handler.getAllDailyRes_InNeedBySenate(senate)
 
-@app.route('/dashboard/trending_statistics/resources_available/findBy?<string:senate>')
+@app.route('/statistics/trending/resources/available/findBy?<string:senate>')
 def getAllTrendingResAvailableBySenate(senate):
     handler = StatiscHandler()
     return handler.getAllDailyRes_AvailableBySenate(senate)
 
-@app.route('/dashboard/trending_statistics/resources_between%need%available/findBy?<string:senate>')
+@app.route('/statistics/trending/resources/between%need%available/findBy?<string:senate>')
 def getAllTrendingResBetweenBySenate(senate):
     handler = StatiscHandler()
     return handler.getAllDailyRes_BetweenBySenate(senate)
