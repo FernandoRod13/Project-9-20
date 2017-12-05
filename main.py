@@ -136,7 +136,7 @@ def getAllTrendingResBetweenBySenate(senate):
     return handler.getAllDailyRes_BetweenBySenate(senate)
 
 #account method
-@app.route('/account/verify?<string:accountid>&<string:accountpass>)
+@app.route('/account/verify?<string:accountid>&<string:accountpass>')
 def verifyAccount(accountid, accountpass):
     handler = ResourcesHandler()
     return handler.verifyAccount(accountid, accountpass)
