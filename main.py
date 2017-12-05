@@ -120,20 +120,26 @@ def getAllTrendingResBetween():
     return handler.getAllTrendingRes_Between()
 
 # TRENDING STATICTICS (8 SENATES)
-@app.route('/dashboard/trending_statistics/resources_inneed/findBySenate/<string:keywords>')
-def getAllTrendingResInNeedBySenate(keywords):
+@app.route('/dashboard/trending_statistics/resources_inneed/findBy?<string:senate>')
+def getAllTrendingResInNeedBySenate(senate):
     handler = ResourcesHandler()
-    return handler.getAllDailyRes_InNeedBySenate(keywords)
+    return handler.getAllDailyRes_InNeedBySenate(senate)
 
-@app.route('/dashboard/trending_statistics/resources_available/findBySenate/<string:keywords>')
-def getAllTrendingResAvailableBySenate(keywords):
+@app.route('/dashboard/trending_statistics/resources_available/findBy?<string:senate>')
+def getAllTrendingResAvailableBySenate(senate):
     handler = ResourcesHandler()
-    return handler.getAllDailyRes_AvailableBySenate(keywords)
+    return handler.getAllDailyRes_AvailableBySenate(senate)
 
-@app.route('/dashboard/trending_statistics/resources_between%need%available/findBySenate/<string:keywords>')
-def getAllTrendingResBetweenBySenate(keywords):
+@app.route('/dashboard/trending_statistics/resources_between%need%available/findBy?<string:senate>')
+def getAllTrendingResBetweenBySenate(senate):
     handler = ResourcesHandler()
-    return handler.getAllDailyRes_BetweenBySenate(keywords)
+    return handler.getAllDailyRes_BetweenBySenate(senate)
+
+#account method
+@app.route('/account/verify?<string:accountid>&<string:accountpass>)
+def verifyAccount(accountid, accountpass):
+    handler = ResourcesHandler()
+    return handler.verifyAccount(accountid, accountpass)
 
 if __name__ == '__main__':
     app.run()
