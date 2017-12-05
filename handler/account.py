@@ -1,4 +1,4 @@
-from dao.accountDAO import AccountDAO
+from dao.accountDAO import accountDAO
 from flask import jsonify
 
 
@@ -10,9 +10,9 @@ class AccountHandler:
         
     # Account verification
     def verifyAccount(self,args):
-        dao = AccountDAO()
+        dao = accountDAO()
         accountid = args.get("accountid")
-        accountpass= args.get("accountapp")
+        accountpass= args.get("accountpass")
         if (len(args)==2) and accountid and accountpass:
             res = dao.verifyAccount(accountid,accountpass)
         else:
