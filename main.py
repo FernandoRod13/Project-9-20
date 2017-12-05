@@ -10,8 +10,7 @@ app = Flask(__name__)
 @app.route('/')
 def local():    
     """Home"""
-    return 'Welcome to Project 9-20! \n To See all the Route go to /help'
-
+    return render_template('home.html'), 500
 @app.route('/help', methods = ['GET'])
 def help():
     """See all the Routes"""
