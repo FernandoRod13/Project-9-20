@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify,render_template,request
 from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
 
@@ -18,6 +18,15 @@ def help():
             func_list[rule.rule] = app.view_functions[rule.endpoint].__doc__
     return jsonify(func_list)
 
+#Error Handling 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('500.html'), 500
+
 #Show Resources Routes
 @app.route('/resources')
 def getAllresources():
@@ -28,29 +37,21 @@ def getAllresources():
 @app.route('/resources/requested')
 def getAllResourcesRequested():
     """ See all the Resources Requested."""
-    handler = ResourcesHandler()
-    return handler.getAllresources_requested()
+    if not request.args:
+        return ResourcesHandler().getAllresources_requested()
+    else:
+        return ResourcesHandler().getresources_requested(request.args)
 
-@app.route('/resources/avaliable')
-def getAllResourcesAvailable():
-    """ See all the Resources Avaliable."""
-    handler = ResourcesHandler()
-    return handler.getAllresources_avaliable()
-
-@app.route('/resources/avaliable/find/<string:keywords>')
-def getResourcesAvailable(keywords):
+@app.route('/resources/avaliable/')
+def getResourcesAvailable():
     """ Search in  the Resources Avaliable."""
-    handler = ResourcesHandler()
-    return handler.getresources_avaliable(keywords)
-
-@app.route('/resources/requested/find/<string:keywords>')
-def getResourcesRequested_keywords(keywords):  
-    """ Search in  the Resources Requested."""   
-    handler = ResourcesHandler()  
-    return handler.getresources_requested(keywords)
+    if not request.args:
+        return ResourcesHandler().getAllresources_avaliable()
+    else:
+        return ResourcesHandler().getresources_avaliable(request.args)
 
 #Show Resources by Category Routes
-@app.route('/resources/requested/category')
+@app.route('/resources/category')
 def getCategories():
     """ See all the Categories and SubCategories."""    
     handler = CategoryHandler()
@@ -74,16 +75,11 @@ def getResourceAvaliable_category(keywords):
     handler = CategoryHandler()
     return handler.categoryAvaliable(keywords)
 
-@app.route('/resources/avaliable/category/<string:keywords>/sub/<string:subkeywords>')
+@app.route('/resources/avaliable/category/descriptiont<string:keywords>/sub/<string:subkeywords>')
 def getResourceAvaliable_subcategory(keywords, subkeywords):
     """ Get the items avaliable in a given category subcategory"""      
     handler = CategoryHandler()
     return handler.categoryAvaliable_subcategory(keywords,subkeywords)
-
-
-
-
-
 
 
 if __name__ == '__main__':

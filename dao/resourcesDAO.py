@@ -16,13 +16,6 @@ class ResourceDAO:
             return json.load(data_file)
        
     def getAllResourcesRequested(self):
-        # cursor = self.conn.cursor()
-        # query = "select * from parts;"
-        # cursor.execute(query)
-        # result = []
-        # for row in cursor:
-        #     result.append(row)
-        # return result      
         return self.loadRequested()
         
 
@@ -36,26 +29,61 @@ class ResourceDAO:
         return a+b
            
 
-    def getResourcesRequested(self,keywords):
+    def getResourcesRequestedbyDescription(self,keywords):
         result = []
         temp = self.loadRequested()
         for resource in temp:           
             if(keywords.lower() in resource['description'].lower()):
                 result.append(resource)        
         if(len(result)==0):
-            return "No Resource with that Keywords, Please Try Again Later"
+            return "No Resource with that description, Please Try Again Later"
+        return sorted(result, key=lambda k: k['name'])
+
+    def getResourcesRequestedbyName(self,keywords):
+        result = []
+        temp = self.loadRequested()
+        for resource in temp:           
+            if(keywords.lower() in resource['name'].lower()):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that name, Please Try Again Later"
         return sorted(result, key=lambda k: k['name'])
         
 
-    def getResourcesAvaliable(self,keywords):
+    def getResourcesAvaliablebyDescription(self,keywords):
         result = []
         temp = self.loadAvaliable()
         for resource in temp:           
             if(keywords.lower() in resource['description'].lower()):
                 result.append(resource)        
         if(len(result)==0):
-            return "No Resource with that Keywords, Please Try Again Later"
+            return "No Resource with that description, Please Try Again Later"
         return sorted(result, key=lambda k: k['name'])
 
-    def getCategoryRequestedWater(self):
-        return ' Water Category'
+    def getResourcesAvaliablebyName(self,keywords):
+        result = []
+        temp = self.loadAvaliable()
+        for resource in temp:           
+            if(keywords.lower() in resource['name'].lower()):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that description, Please Try Again Later"
+        return sorted(result, key=lambda k: k['name'])
+
+
+    def getResourcesAvaliablebyName_Description(self,name,description):
+        result = []
+        temp = self.loadAvaliable()
+        for resource in temp:           
+            if(name.lower() in resource['name'].lower()):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that name, Please Try Again Later"
+        else:
+            temp=[]
+            for resource in result:           
+                if(name.lower() in resource['description'].lower()):
+                    temp.append(resource)
+        return sorted(temp, key=lambda k: k['name'])
+
+    

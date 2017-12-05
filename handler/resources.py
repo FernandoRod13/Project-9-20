@@ -21,27 +21,52 @@ class ResourcesHandler:
         dao = ResourceDAO()
         res = dao.getAllResourcesRequested()
         return jsonify(Resource = res)
-        
 
     def getAllresources_avaliable(self):
         dao = ResourceDAO()
         res = dao.getAllResourcesAvaliable()
         return jsonify(Resource = res)
+        
 
-    def getresources_avaliable(self,keywords):
+    def getresources_requested(self,args):
         dao = ResourceDAO()
-        res = dao.getResourcesAvaliable(keywords)
+        description = args.get("description")
+        qty = args.get("qty")
+        name = args.get("name")
+        price = args.get("price")
+        avaliability = args.get("avaliability")
+        if (len(args) == 1) and description:
+            res = dao.getResourcesRequestedbyDescription(description)
+        elif (len(args) == 1) and name:
+            res = dao.getResourcesRequestedbyName(name)
+        elif qty or price or avaliability:
+            res = "Result of search with that keyword"
+        else:
+            res = ("Malformed query string"), 400
         return jsonify(Resource = res)
 
-    def getresources_requested(self,keywords):
+    def getresources_avaliable(self,args):
         dao = ResourceDAO()
-        res = dao.getResourcesRequested(keywords)
-        return jsonify(Resource = res)
+        description = args.get("description")
+        qty = args.get("qty")
+        name = args.get("name")
+        price = args.get("price")
+        avaliability = args.get("avaliability")
+        if (len(args) == 1) and description:
+            res = dao.getResourcesAvaliablebyDescription(description)
+        elif (len(args) == 1) and name:
+            res = dao.getResourcesAvaliablebyName(name)
+        elif (len(args)==2) and name and description:
+            res = dao.getResourcesAvaliablebyName_Description(name,description)
+        elif qty or price or avaliability:
+            res = "Result of search with that keyword"
+        else:
+            res = ("Malformed query string"), 400
+        return jsonify(Resource = res)    
 
-    def WaterCategoryRequested(self):
-        dao = ResourceDAO()
-        res = dao.getCategoryRequestedWater()
-        return jsonify(Resource = res)
+    
+
+    
 
 
     
