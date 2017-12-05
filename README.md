@@ -10,7 +10,7 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 
 ### Entity Relation Diagram
 ![ERD](/ERD.png)
-[ERD Documentation](ERD Description.pdf)
+[ERD Documentation](./ERD_Description.pdf)
 
 ### Documentation
 #### Resources
