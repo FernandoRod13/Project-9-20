@@ -1,7 +1,7 @@
 
 import json
-
 from flask import jsonify
+
 class statistic_ResourceDAO:
     def __init__(self):
         pass

@@ -22,20 +22,31 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 `https://<baseURL>/resources/requested/find/<keyword>`
 ##### Get all requested resource categories
 `https://<baseURL>/resources/requested/category`
-##### Get all resources requested by category with a keyword
-`https://<baseURL>/resources/requested/category/<keyword>`
-##### Get all resources available by category with a keyword
-`https://<baseURL>/resources/available/category/<keyword>`
+##### Get all resources requested by category ID
+`https://<baseURL>/resources/requested/category/<category_id>`
+##### Get all resources available by category ID
+`https://<baseURL>/resources/available/category/<category_id>`
+
 #### Statistics
 ##### Get daily statistics of available resources
-`https://<baseURL>/dashboard/daily_statistics/resources_available`
+`https://<baseURL>/statistics/daily/resources/available`
 ##### Get daily statistics of requested resources
-`https://<baseURL>/dashboard/daily_statistics/resources_inneed`
+`https://<baseURL>/statistics/daily/resources/requested`
 ##### Get weekly statistics of available resources
-`https://<baseURL>/dashboard/trending_statistics/resources_available`
+`https://<baseURL>/statistics/trendings/resources/available`
 ##### Get weekly statistics of requested resources
-`https://<baseURL>/dashboard/trending_statistics/resources_inneed`
+`https://<baseURL>/statistics/trendings/resources/requested`
 ##### Get regional statistics of available resources
-`https://<baseURL>/dashboard/trending_statistics/resources_available/findBySenate/<region>`
+`https://<baseURL>/statistics/trending/resources/available/region/<regionID>`
 ##### Get regional statistics of requested resources
-`https://<baseURL>/dashboard/trending_statistics/resources_inneed/findBySenate/<region`
+`https://<baseURL>/statistics/trending/resources/requested/region/<regionID>`
+
+#### Users
+##### Account Login
+`https://<baseURL>/accounts/login`
+##### Get account data
+`https://<baseURL>/accounts/<userID>`
+##### Get all suppliers
+`https://<baseURL>/accounts/suppliers`
+##### Get all suppliers at a specified city
+`https://<baseURL>/account/suppliers?city=<cityName>`
