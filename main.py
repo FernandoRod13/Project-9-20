@@ -2,6 +2,7 @@ from flask import Flask, jsonify,render_template,request
 from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
 from handler.statisc_resources import StatiscHandler
+from handler.account import  
 
 
 app = Flask(__name__)
@@ -141,10 +142,13 @@ def getAllTrendingResBetweenBySenate(senate):
     return handler.getAllDailyRes_BetweenBySenate(senate)
 
 #account method
-@app.route('/account/verify?<string:accountid>&<string:accountpass>')
-def verifyAccount(accountid, accountpass):
-    handler = ResourcesHandler()
-    return handler.verifyAccount(accountid,accountpass)
+@app.route('/account/loginverify?<string:accountid>&<string:accountpass>')
+def verifyAccount(accountid, accountpass):    
+    if not request.args:
+        return "Invalid Input plese enter accountid and accountpass"
+    else:       
+        handler = AccountHandler()
+        return handler.verifyAccount(request.args)
 
 if __name__ == '__main__':
     app.run()

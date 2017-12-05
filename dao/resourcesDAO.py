@@ -87,10 +87,3 @@ class ResourceDAO:
         return sorted(temp, key=lambda k: k['name'])
 
       
-  # Account verification
-    def verifyAccount(self, accountid, accountpass):
-        result = []
-        result.append("This is to verify if account " + accountid + "is correct")
-        return result
-
-    

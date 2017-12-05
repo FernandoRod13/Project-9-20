@@ -66,12 +66,6 @@ class ResourcesHandler:
         return jsonify(Resource = res)    
 
     
-    # Account verification
-    def verifyAccount(self, accountid, accountpass):
-        dao = ResourceDAO()
-        res = dao.verifyAccount(accountid,accountpass)
-        return jsonify(Resource = res)
-    
 
 
     
