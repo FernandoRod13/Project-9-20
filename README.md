@@ -8,6 +8,10 @@ Currently the project consist on implementing and testing the backend of an appl
 We have opted to host our project using [Google Cloud App Engine](https://cloud.google.com/appengine/ "App Engine Homepage") and [Google Cloud SQL](https://cloud.google.com/sql/ "Cloud SQL Homepage"). Currently you may access the REST API using the base URL: 
 >[https://project-9-20-187720.appspot.com/](https://project-9-20-187720.appspot.com/ "REST API Base URL")
 
+### Entity Relation Diagram
+![ERD](/ERD.png)
+[ERD Documentation](/ERD Description.pdf)
+
 ### Documentation
 #### Resources
 ##### Get all resources
