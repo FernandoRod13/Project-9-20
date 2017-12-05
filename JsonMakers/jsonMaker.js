@@ -21,8 +21,6 @@ var saveNotes = (notes,file) =>{
 
 var addResource= (name, description, file,type,category,subcategory) => {
 
-  var notes = fetchData();
-
   var note = {
     name: name,
     description: description,
@@ -34,6 +32,19 @@ list = fetchData(file);
 list.push(note);
 saveNotes(list,file);
 };
+
+
+var addUser= (name, municipality, type,file) => {
+  
+    var note = {
+      name: name,
+      municipality: municipality,
+      type : type,
+    };
+  list = fetchData(file);
+  list.push(note);
+  saveNotes(list,file);
+  };
 
 
 var removeNote = (title) => {
@@ -59,7 +70,8 @@ var getAll = () => {
 
 module.exports = {
   addResource,
-  getAll  
+  getAll,
+  addUser
 
 };
 
