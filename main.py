@@ -122,19 +122,19 @@ def getAllTrendingResBetween():
     return handler.getAllTrendingRes_Between()
 
 # TRENDING STATICTICS (8 SENATES)
-@app.route('/statistics/trending/resources/requested/findBy?<string:senate>')
+@app.route('/statistics/trending/resources/requested/senate/<string:senate>')
 def getAllTrendingResInNeedBySenate(senate):
     """ Show Trending Statistics for Resources Requested by Senate"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_InNeedBySenate(senate)
 
-@app.route('/statistics/trending/resources/available/findBy?<string:senate>')
+@app.route('/statistics/trending/resources/available/senate/<string:senate>')
 def getAllTrendingResAvailableBySenate(senate):
     """ Show Trending Statistics for Resources Avaliable by Senate"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_AvailableBySenate(senate)
 
-@app.route('/statistics/trending/resources/between%need%available/findBy?<string:senate>')
+@app.route('/statistics/trending/resources/between%need%available/senate/<string:senate>')
 def getAllTrendingResBetweenBySenate(senate):
     """ Show Trending Statistics for Resources Requested vs Avaliable by Senate"""  
     handler = StatiscHandler()
