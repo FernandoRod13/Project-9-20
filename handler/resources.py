@@ -60,76 +60,14 @@ class ResourcesHandler:
         elif (len(args)==2) and name and description:
             res = dao.getResourcesAvaliablebyName_Description(name,description)
         elif qty or price or avaliability:
-            res = "Result of search with that keyword"
+            res = "Show search result with that keyword"
         else:
-            res = ("Malformed query string"), 400
+            res =  "Malformed query string", 400
         return jsonify(Resource = res)    
 
     
 
-    
-
 
     
 
     
-    #
-    # ****************** DASHBOARD METHODS *********************
-    #
-
-    # DAILY STATISTICS
-    def getAllDailyRes_InNeed(self):
-        dao = ResourceDAO()
-        res = dao.getAllResourcesAvaliable()
-        return jsonify(Resource = res)
-    
-    def getAllDailyRes_Available(self):
-        dao = ResourceDAO()
-        res = dao.getAllResourcesAvaliable()
-        return jsonify(Resource = res)
-    
-    def getAllDailyRes_Between(self):
-        dao = ResourceDAO()
-        res = dao.getAllResourcesAvaliable()
-        return jsonify(Resource = res)
-    
-    # TRENDING STATISTICS (7 DAY PERIOD)
-    def getAllTrendingRes_InNeed(self):
-        dao = ResourceDAO()
-        res = dao.getAllResourcesAvaliable()
-        return jsonify(Resource = res)
-    
-    def getAllTrendingRes_Available(self):
-        dao = ResourceDAO()
-        res = dao.getAllResourcesAvaliable()
-        return jsonify(Resource = res)
-    
-    def getAllTrendingRes_Between(self):
-        dao = ResourceDAO()
-        res = dao.getAllResourcesAvaliable()
-        return jsonify(Resource = res)
-    
-    # TRENDING STATICTICS (8 SENATES)
-    def getAllDailyRes_InNeedBySenate(self, keywords):
-        dao = ResourceDAO()
-        res = dao.getResourcesRequested(keywords)
-        return jsonify(Resource = res)
-    
-    def getAllDailyRes_AvailableBySenate(self, keywords):
-        dao = ResourceDAO()
-        res = dao.getResourcesRequested(keywords)
-        return jsonify(Resource = res)
-    
-    def getAllDailyRes_BetweenBySenate(self, keywords):
-        dao = ResourceDAO()
-        res = dao.getResourcesRequested(keywords)
-        return jsonify(Resource = res)
-    
-    # Account verification
-    def verifyAccount(self, accountid, accountpass):
-        dao = ResourceDAO()
-        res = dao.verifyAccount(accountid, accountpass)
-        return jsonify(Resource = res)
-    
-   
-        
