@@ -2,7 +2,7 @@ from flask import Flask, jsonify,render_template,request
 from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
 from handler.statisc_resources import StatiscHandler
-from handler.account import  
+from handler.account import  AccountHandler
 
 
 app = Flask(__name__)
@@ -93,20 +93,20 @@ def getAllDailyResInNeed():
 
 @app.route('/statistics/daily/resources/available')
 def getAllDailyResAvailable():
-     """ Show Statistics for Resources Avaliable""" 
+    """ Show Statistics for Resources Avaliable""" 
     handler = StatiscHandler()
     return handler.getAllDailyRes_Available()
 
 @app.route('/statistics/daily/resources/between%need%available')
 def getAllDailyResBetween():
-     """ Show Statistics for Resources Avaliable vs Requested"""    
+    """ Show Statistics for Resources Avaliable vs Requested"""    
     handler = StatiscHandler()
     return handler.getAllDailyRes_Between()
 
 # TRENDING STATISTICS (7 DAY PERIOD)
 @app.route('/statistics/trending/resources/requested')
 def getAllTrendingResInNeed():
-       """ Show Trending Statistics for Resources  Requested"""  
+    """ Show Trending Statistics for Resources  Requested"""  
     handler = StatiscHandler()
     return handler.getAllTrendingRes_InNeed()
 
@@ -142,10 +142,10 @@ def getAllTrendingResBetweenBySenate(senate):
     return handler.getAllDailyRes_BetweenBySenate(senate)
 
 #account method
-@app.route('/account/loginverify?<string:accountid>&<string:accountpass>')
-def verifyAccount(accountid, accountpass):    
+@app.route('/account/login')
+def verifyAccount():    
     if not request.args:
-        return "Invalid Input plese enter accountid and accountpass"
+        return jsonify("Invalid Input plese enter accountid and accountpass")
     else:       
         handler = AccountHandler()
         return handler.verifyAccount(request.args)
