@@ -154,20 +154,15 @@ def verifyAccount():
 def getSuppliers():
     """Get all suppliers"""
     handler = AccountHandler()
-    if not request.args:
-        return handler.getAllSuppliers()
-    else:
-        return handler.getAllSuppliersInCity(request.args)
+    return handler.getAllSuppliers(request.args)
+   
+@app.route('/accounts/requester')
+def getRequesters():
+    """Get all requester"""
+    handler = AccountHandler()   
+    return handler.getAllRequester(request.args)
     
-
-@app.route('/accounts')
-def getAccountData():
-    """Get account data for a specific account"""
-    if not request.args:
-        return jsonify("Invalid Input plese enter accountid and accountpass")
-    else:
-        handler = AccountHandler()
-        return handler.getAccountData(request.args)
+    
 
 
 
