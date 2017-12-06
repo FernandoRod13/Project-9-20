@@ -29,18 +29,30 @@ class AccountHandler:
             res = "Malformed query string", 400
             return jsonify(Account = res)
     #suppliers
-    def getAllSuppliers(self):
+    def getAllSuppliers(self,args):
         dao = accountDAO()
-        res = dao.getSuppliers()
-        return jsonify(Suppliers = res)
-
-    def getAllSuppliersInCity(self, args):
         city = args.get("city")
         dao = accountDAO()
-        if len(args)==1 and city:
+        if len(args)== 0:
             res = dao.getSuppliers()
-            return jsonify(Suppliers = res)
+        elif len(args)==1 and city:
+            res = dao.getSuppliersbyCity(city)
         else:
             res = "Malformed query string", 400
-            return jsonify(Account = res)
-    
+        return jsonify(Account = res)
+
+    #Requester
+    def getAllRequester(self,args):
+        dao = accountDAO()
+        city = args.get("city")
+        dao = accountDAO()
+        if len(args) == 0:
+            res = dao.getRequester()
+        elif len(args)==1 and city:
+            res = dao.getRequesterByCity(city)
+        else:
+            res = "Malformed query string", 400
+        return jsonify(Account = res)
+
+       
+     

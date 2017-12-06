@@ -18,6 +18,12 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 `https://<baseURL>/resources`
 ##### Get all requested resources
 `https://<baseURL>/resources/requested`
+##### Find all requested resources by name
+`https://<baseURL>/resources/requested?name=<name>`
+##### Find all requested resources by description
+`https://<baseURL>/resources/requested?description=<description>`
+##### Find all requested resources by name and description
+`https://<baseURL>/resources/requested?name=<name>&description=<description>`
 ##### Get all available resources
 `https://<baseURL>/resources/available`
 ##### Find all available resources by keyword
@@ -26,6 +32,14 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 `https://<baseURL>/resources/requested/search?keyword=<keyword>`
 ##### Get all resource categories
 `https://<baseURL>/resources/category`
+##### Find all available resources by name
+`https://<baseURL>/resources/available?name=<name>`
+##### Find all available resources by description
+`https://<baseURL>/resources/available?description=<description>`
+##### Find all available resources by name and description
+`https://<baseURL>/resources/available?name=<name>&description=<description>`
+##### Get all requested resource categories
+`https://<baseURL>/resources/requested/category`
 ##### Get all resources requested by category ID
 `https://<baseURL>/resources/requested/category/<category_id>`
 ##### Get all resources available by category ID

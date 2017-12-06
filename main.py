@@ -10,8 +10,7 @@ app = Flask(__name__)
 @app.route('/')
 def local():    
     """Home"""
-    return 'Welcome to Project 9-20! \n To See all the Route go to /help'
-
+    return render_template('home.html'), 500
 @app.route('/help', methods = ['GET'])
 def help():
     """See all the Routes"""
@@ -88,7 +87,7 @@ def getRequestedAvailableByKeyword():
         return jsonify("Invalid Input plese add a keyword")
     else:  
         handler = ResourcesHandler()
-        return handler.getAvailbaleResourcesByKeyword(regues.args)
+        return handler.getAvailbaleResourcesByKeyword(request.args)
 
 # DAILY STATISTICS
 @app.route('/statistics/daily/resources/requested')
@@ -161,11 +160,13 @@ def verifyAccount():
 def getSuppliers():
     """ Get all suppliers"""
     handler = AccountHandler()
-    if not request.args:
-        return handler.getAllSuppliers()
-    else:
-        return handler.getAllSuppliersInCity(request.args)
-    
+    return handler.getAllSuppliers(request.args)
+   
+@app.route('/accounts/requester')
+def getRequesters():
+    """Get all requester"""
+    handler = AccountHandler()   
+    return handler.getAllRequester(request.args)
 
 @app.route('/accounts')
 def getAccountData():
