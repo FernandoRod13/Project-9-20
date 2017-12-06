@@ -1,7 +1,7 @@
 
 import json
-
 from flask import jsonify
+
 class statistic_ResourceDAO:
     def __init__(self):
         pass
@@ -54,9 +54,4 @@ class statistic_ResourceDAO:
         result.append("Trending resources by" + keywords + " in between")
         return result
     
-    # Account verification
-    def verifyAccount(self, accountid, accountpass):
-        result = []
-        result.append("This is to verify if account " + accountid + "is correct")
-        return result
     

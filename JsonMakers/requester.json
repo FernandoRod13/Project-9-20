@@ -1,0 +1,18 @@
+[
+    {
+      "account_id":1,
+      "account_type":"requester",
+      "name":"Manuel",
+      "email":"manuel.rodriguez8@upr.com",
+      "phone":"(787) 830 -0000",
+      "city":"Cabo Rojo"
+    },
+    {
+      "account_id":2,
+      "account_type":"requester",
+      "name":"Juan del Pueblo",
+      "email":"tito_commun@gmail.com",
+      "phone":"(787) 123-4567",
+      "city":"Mayaguez"
+    }
+  ]
