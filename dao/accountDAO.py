@@ -1,5 +1,5 @@
 from flask import jsonify
-
+import json
 
 class accountDAO:
     
@@ -11,5 +11,8 @@ class accountDAO:
         result = []
         result.append("This is to verify if account " + accountid + "is correct")
         return result
-
+    
+    def getSuppliers(self):
+        with open('JsonMakers/suppliers.json') as data_file:    
+            return json.load(data_file)
     
