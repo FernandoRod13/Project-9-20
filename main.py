@@ -66,23 +66,11 @@ def getResourceRequested_category(category_id):
     handler = CategoryHandler()
     return handler.categoryRequested(category_id)
 
-@app.route('/resources/requested/category/<string:keywords>/sub/<string:subkeywords>')
-def getResourceRequested_subcategory(keywords, subkeywords):
-    """ Get the items requested in a given category subcategory"""    
-    handler = CategoryHandler()
-    return handler.categoryRequested_subcategory(keywords,subkeywords)
-
-@app.route('/resources/avaliable/category/<string:keywords>')
-def getResourceAvaliable_category(keywords):
+@app.route('/resources/avaliable/category/<string:category_id>')
+def getResourceAvaliable_category(category_id):
     """ Get the items avaliable in a given category"""
     handler = CategoryHandler()
-    return handler.categoryAvaliable(keywords)
-
-@app.route('/resources/avaliable/category/descriptiont<string:keywords>/sub/<string:subkeywords>')
-def getResourceAvaliable_subcategory(keywords, subkeywords):
-    """ Get the items avaliable in a given category subcategory"""      
-    handler = CategoryHandler()
-    return handler.categoryAvaliable_subcategory(keywords,subkeywords)
+    return handler.categoryAvaliable(category_id)
 
 # DAILY STATISTICS
 @app.route('/statistics/daily/resources/requested')
@@ -93,13 +81,13 @@ def getAllDailyResInNeed():
 
 @app.route('/statistics/daily/resources/available')
 def getAllDailyResAvailable():
-    """ Show Statistics for Resources Avaliable""" 
+    """ Show Statistics for Resources Available""" 
     handler = StatiscHandler()
     return handler.getAllDailyRes_Available()
 
-@app.route('/statistics/daily/resources/between%need%available')
+@app.route('/statistics/daily/resources/between_requested_available')
 def getAllDailyResBetween():
-    """ Show Statistics for Resources Avaliable vs Requested"""    
+    """ Show Statistics for Resources Available vs Requested"""    
     handler = StatiscHandler()
     return handler.getAllDailyRes_Between()
 
@@ -116,7 +104,7 @@ def getAllTrendingResAvailable():
     handler = StatiscHandler()
     return handler.getAllTrendingRes_Available()
 
-@app.route('/statistics/trending/resources/between%need%available')
+@app.route('/statistics/trending/resources/between_requested_available)
 def getAllTrendingResBetween():
     """ Show Trending Statistics for Resources Avaliable vs Requested"""  
     handler = StatiscHandler()
@@ -135,7 +123,7 @@ def getAllTrendingResAvailableBySenate(senate):
     handler = StatiscHandler()
     return handler.getAllDailyRes_AvailableBySenate(senate)
 
-@app.route('/statistics/trending/resources/between%need%available/region/<string:region_id>')
+@app.route('/statistics/trending/resources/between_requested_available/region/<string:region_id>')
 def getAllTrendingResBetweenBySenate(senate):
     """ Show Trending Statistics for Resources Requested vs Avaliable by Senate"""  
     handler = StatiscHandler()
