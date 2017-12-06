@@ -44,7 +44,7 @@ def getAllResourcesRequested():
     else:
         return ResourcesHandler().getresources_requested(request.args)
 
-@app.route('/resources/avaliable/')
+@app.route('/resources/avaliable')
 def getResourcesAvailable():
     """ Search in  the Resources Avaliable."""
     if not request.args:
@@ -70,6 +70,24 @@ def getResourceAvaliable_category(category_id):
     """ Get the items avaliable in a given category"""
     handler = CategoryHandler()
     return handler.categoryAvaliable(category_id)
+
+@app.route('/resources/requested/search')
+def getRequestedResourcesByKeyword():
+    """ Get all requested resources with a specified keyword"""
+    if not request.args:
+        return jsonify("Invalid Input plese add a keyword")
+    else:  
+        handler = ResourcesHandler()
+        return handler.getRequestedResourcesByKeyword(request.args)
+
+@app.route('/resources/available/search')
+def getRequestedAvailableByKeyword():
+    """ Get all available resources with a specified keyword"""
+    if not request.args:
+        return jsonify("Invalid Input plese add a keyword")
+    else:  
+        handler = ResourcesHandler()
+        return handler.getAvailbaleResourcesByKeyword(request.args)
 
 # DAILY STATISTICS
 @app.route('/statistics/daily/resources/requested')
@@ -103,7 +121,7 @@ def getAllTrendingResAvailable():
     handler = StatiscHandler()
     return handler.getAllTrendingRes_Available()
 
-@app.route('/statistics/trending/resources/between_requested_available)
+@app.route('/statistics/trending/resources/between_requested_available')
 def getAllTrendingResBetween():
     """ Show Trending Statistics for Resources Avaliable vs Requested"""  
     handler = StatiscHandler()
@@ -112,26 +130,26 @@ def getAllTrendingResBetween():
 # TRENDING STATICTICS (8 SENATES)
 @app.route('/statistics/trending/resources/requested/region/<string:region_id>')
 def getAllTrendingResInNeedBySenate(senate):
-    """ Show Trending Statistics for Resources Requested by Senate"""  
+    """ Show Trending Statistics for Resources Requested by Senatorial Region"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_InNeedBySenate(senate)
 
 @app.route('/statistics/trending/resources/available/region/<string:region_id>')
 def getAllTrendingResAvailableBySenate(senate):
-    """ Show Trending Statistics for Resources Avaliable by Senate"""  
+    """ Show Trending Statistics for Resources Avaliable by Senatorial Region"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_AvailableBySenate(senate)
 
 @app.route('/statistics/trending/resources/between_requested_available/region/<string:region_id>')
 def getAllTrendingResBetweenBySenate(senate):
-    """ Show Trending Statistics for Resources Requested vs Avaliable by Senate"""  
+    """ Show Trending Statistics for Resources Requested vs Avaliable by Senatorial Region"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_BetweenBySenate(senate)
 
 #account routes
 @app.route('/accounts/login')
 def verifyAccount():
-    """Account login"""    
+    """ Account login"""    
     if not request.args:
         return jsonify("Invalid Input plese enter accountid and accountpass")
     else:       
@@ -140,7 +158,7 @@ def verifyAccount():
 
 @app.route('/accounts/suppliers')
 def getSuppliers():
-    """Get all suppliers"""
+    """ Get all suppliers"""
     handler = AccountHandler()
     return handler.getAllSuppliers(request.args)
    
@@ -149,8 +167,15 @@ def getRequesters():
     """Get all requester"""
     handler = AccountHandler()   
     return handler.getAllRequester(request.args)
-    
-    
+
+@app.route('/accounts')
+def getAccountData():
+    """Get account data for a specific account"""
+    if not request.args:
+        return jsonify("Invalid Input plese enter accountid")
+    else:
+        handler = AccountHandler()
+        return handler.getAccountData(request.args)
 
 
 

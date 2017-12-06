@@ -26,6 +26,12 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 `https://<baseURL>/resources/requested?name=<name>&description=<description>`
 ##### Get all available resources
 `https://<baseURL>/resources/available`
+##### Find all available resources by keyword
+`https://<baseURL>/resources/available/search?keyword=<keyword>`
+##### Find all requested resources by keyword
+`https://<baseURL>/resources/requested/search?keyword=<keyword>`
+##### Get all resource categories
+`https://<baseURL>/resources/category`
 ##### Find all available resources by name
 `https://<baseURL>/resources/available?name=<name>`
 ##### Find all available resources by description
@@ -44,14 +50,20 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 `https://<baseURL>/statistics/daily/resources/available`
 ##### Get daily statistics of requested resources
 `https://<baseURL>/statistics/daily/resources/requested`
+##### Get daily matching between requested and available resources
+`https://<baseURL>/statistics/daily/resources/between_requested_available`
 ##### Get weekly statistics of available resources
-`https://<baseURL>/statistics/trendings/resources/available`
+`https://<baseURL>/statistics/trending/resources/available`
 ##### Get weekly statistics of requested resources
-`https://<baseURL>/statistics/trendings/resources/requested`
+`https://<baseURL>/statistics/trending/resources/requested`
+##### Get weekly matching between requested and available resources
+`https://<baseURL>/statistics/trending/resources/between_requested_available`
 ##### Get regional statistics of available resources
 `https://<baseURL>/statistics/trending/resources/available/region/<regionID>`
 ##### Get regional statistics of requested resources
 `https://<baseURL>/statistics/trending/resources/requested/region/<regionID>`
+##### Get regional matching between requested and available resources
+`https://<baseURL>/statistics/trending/resources/between_requested_available/region/<regionID>`
 
 #### Users
 ##### Account Login
