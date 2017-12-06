@@ -138,7 +138,7 @@ def getAllTrendingResInNeedBySenate(region_id):
 def getAllTrendingResAvailableBySenate(region_id):
     """ Show Trending Statistics for Resources Avaliable by Senatorial Region"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_AvailableBySenate(senate)
+    return handler.getAllDailyRes_AvailableBySenate(region_id)
 
 @app.route('/statistics/trending/resources/between_requested_available/region/<string:region_id>')
 def getAllTrendingResBetweenByregion_id(region_id):
@@ -168,14 +168,7 @@ def getRequesters():
     handler = AccountHandler()   
     return handler.getAllRequester(request.args)
 
-@app.route('/accounts')
-def getAccountData():
-    """Get account data for a specific account"""
-    if not request.args:
-        return jsonify("Invalid Input plese enter accountid")
-    else:
-        handler = AccountHandler()
-        return handler.getAccountData(request.args)
+
 
 
 
