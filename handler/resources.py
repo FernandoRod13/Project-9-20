@@ -65,9 +65,11 @@ class ResourcesHandler:
             res =  "Malformed query string", 400
         return jsonify(Resource = res)    
 
-    
+    def getAvailbaleResourcesByKeyword(self, args):
+        return self.getAllresources_avaliable()
 
-
+    def getRequestedResourcesByKeyword(self, args):
+        return self.getAllresources_requested()
     
 
     
