@@ -36,8 +36,19 @@ def getAllresources():
     handler = ResourcesHandler()
     return handler.getAllresources()
 
+@app.route('/resources/search')
+def getSearchresources():
+    """ Get the items requested in a given category subcategory"""    
+    handler = ResourcesHandler()
+    return handler.getSeachAllresources(request.args)
+
 @app.route('/resources/requested')
 def getAllResourcesRequested():
+    """ See all the Resources Requested."""
+    return ResourcesHandler().getAllresources_requested()
+   
+@app.route('/resources/requested/search')
+def getSearchResourcesRequested():
     """ See all the Resources Requested."""
     if not request.args:
         return ResourcesHandler().getAllresources_requested()
@@ -46,11 +57,17 @@ def getAllResourcesRequested():
 
 @app.route('/resources/avaliable')
 def getResourcesAvailable():
+    """ Show  Resources Avaliable."""
+    return ResourcesHandler().getAllresources_avaliable()
+    
+@app.route('/resources/avaliable/search')
+def getSearchResourcesAvailable():
     """ Search in  the Resources Avaliable."""
     if not request.args:
         return ResourcesHandler().getAllresources_avaliable()
     else:
         return ResourcesHandler().getresources_avaliable(request.args)
+    
 
 #Show Resources by Category Routes
 @app.route('/resources/category')
@@ -71,23 +88,6 @@ def getResourceAvaliable_category(category_id):
     handler = CategoryHandler()
     return handler.categoryAvaliable(category_id)
 
-@app.route('/resources/requested/search')
-def getRequestedResourcesByKeyword():
-    """ Get all requested resources with a specified keyword"""
-    if not request.args:
-        return jsonify("Invalid Input plese add a keyword")
-    else:  
-        handler = ResourcesHandler()
-        return handler.getRequestedResourcesByKeyword(request.args)
-
-@app.route('/resources/available/search')
-def getRequestedAvailableByKeyword():
-    """ Get all available resources with a specified keyword"""
-    if not request.args:
-        return jsonify("Invalid Input plese add a keyword")
-    else:  
-        handler = ResourcesHandler()
-        return handler.getAvailbaleResourcesByKeyword(request.args)
 
 # DAILY STATISTICS
 @app.route('/statistics/daily/resources/requested')
@@ -129,22 +129,22 @@ def getAllTrendingResBetween():
 
 # TRENDING STATICTICS (8 SENATES)
 @app.route('/statistics/trending/resources/requested/region/<string:region_id>')
-def getAllTrendingResInNeedBySenate(senate):
+def getAllTrendingResInNeedBySenate(region_id):
     """ Show Trending Statistics for Resources Requested by Senatorial Region"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_InNeedBySenate(senate)
+    return handler.getAllDailyRes_InNeedBySenate(region_id)
 
 @app.route('/statistics/trending/resources/available/region/<string:region_id>')
-def getAllTrendingResAvailableBySenate(senate):
+def getAllTrendingResAvailableBySenate(region_id):
     """ Show Trending Statistics for Resources Avaliable by Senatorial Region"""  
     handler = StatiscHandler()
     return handler.getAllDailyRes_AvailableBySenate(senate)
 
 @app.route('/statistics/trending/resources/between_requested_available/region/<string:region_id>')
-def getAllTrendingResBetweenBySenate(senate):
+def getAllTrendingResBetweenByregion_id(region_id):
     """ Show Trending Statistics for Resources Requested vs Avaliable by Senatorial Region"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_BetweenBySenate(senate)
+    return handler.getAllDailyRes_BetweenBySenate(region_id)
 
 #account routes
 @app.route('/accounts/login')

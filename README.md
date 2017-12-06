@@ -16,14 +16,10 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 #### Resources
 ##### Get all resources
 `https://<baseURL>/resources`
+##### Find all  resources by keyword
+`https://<baseURL>/resources/requested/search?keyword=<keyword>`
 ##### Get all requested resources
 `https://<baseURL>/resources/requested`
-##### Find all requested resources by name
-`https://<baseURL>/resources/requested?name=<name>`
-##### Find all requested resources by description
-`https://<baseURL>/resources/requested?description=<description>`
-##### Find all requested resources by name and description
-`https://<baseURL>/resources/requested?name=<name>&description=<description>`
 ##### Get all available resources
 `https://<baseURL>/resources/available`
 ##### Find all available resources by keyword
@@ -67,7 +63,7 @@ We have opted to host our project using [Google Cloud App Engine](https://cloud.
 
 #### Users
 ##### Account Login
-`https://<baseURL>/accounts/login`
+`https://<baseURL>/accounts/login?accountid=<accountid>&accountpass=<accountpass>`
 ##### Get account data
 `https://<baseURL>/accounts/<userID>`
 ##### Get all suppliers

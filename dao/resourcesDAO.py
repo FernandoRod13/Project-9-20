@@ -27,6 +27,42 @@ class ResourceDAO:
         a = self.loadAvaliable()
         b = self.loadRequested()      
         return a+b
+
+    def getResourcesbyDescription(self,keywords):
+        result = []
+        temp = self.getAllResources()
+        for resource in temp:           
+            if(keywords.lower() in resource['description'].lower()):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that description, Please Try Again Later"
+        return sorted(result, key=lambda k: k['name'])
+
+    def getResourcesbyName(self,keywords):
+        result = []
+        temp = self.getAllResources()
+        for resource in temp:           
+            if(keywords.lower() in resource['name'].lower()):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that name, Please Try Again Later"
+        return sorted(result, key=lambda k: k['name'])
+
+    def getResourcesbyName_Description(self,name,description):
+        result = []
+        temp = self.getAllResources()
+        for resource in temp:           
+            if(name.lower() in resource['name'].lower()):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that name, Please Try Again Later"
+        else:
+            temp=[]
+            for resource in result:           
+                if(description.lower() in resource['description'].lower()):
+                    temp.append(resource)
+        return sorted(temp, key=lambda k: k['name'])
+
            
 
     def getResourcesRequestedbyDescription(self,keywords):
@@ -48,6 +84,22 @@ class ResourceDAO:
         if(len(result)==0):
             return "No Resource with that name, Please Try Again Later"
         return sorted(result, key=lambda k: k['name'])
+
+    def getResourcesRequestedbyName_Description(self,name,description):
+        result = []
+        temp = self.loadRequested()
+        for resource in temp:           
+            if(name.lower() in resource['name'].lower()):
+                result.append(resource)        
+        if(len(result)==0):
+            return "No Resource with that name, Please Try Again Later"
+        else:
+            temp=[]
+            for resource in result:           
+                if(description.lower() in resource['description'].lower()):
+                    temp.append(resource)
+        return sorted(temp, key=lambda k: k['name'])
+
         
 
     def getResourcesAvaliablebyDescription(self,keywords):
