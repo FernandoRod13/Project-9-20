@@ -1,4 +1,4 @@
-from flask import Flask, jsonify,render_template,request
+from flask import Flask, jsonify,render_template, request
 from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
 from handler.statisc_resources import StatiscHandler
@@ -138,7 +138,7 @@ def getAllTrendingResInNeedBySenate(region_id):
 def getAllTrendingResAvailableBySenate(region_id):
     """ Show Trending Statistics for Resources Avaliable by Senatorial Region"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_AvailableBySenate(senate)
+    return handler.getAllDailyRes_AvailableBySenate(region_id)
 
 @app.route('/statistics/trending/resources/between_requested_available/region/<string:region_id>')
 def getAllTrendingResBetweenByregion_id(region_id):

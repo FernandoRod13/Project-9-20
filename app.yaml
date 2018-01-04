@@ -5,6 +5,21 @@ entrypoint: gunicorn -b :$PORT main:app
 runtime_config:
   python_version: 3
 
+  #[START env]
+env_variables:
+    # Replace user, password, database, and instance connection name with the values obtained
+    # when configuring your Cloud SQL instance.
+    SQLALCHEMY_DATABASE_URI: >-
+      postgresql+psycopg2://postgres:ManuelDB@/project-9-20?host=/cloudsql/project-9-20-187720:us-east1:project-9-20
+#[END env]
+
+#[START cloudsql_settings]
+# Replace project and instance with the values obtained  when configuring your
+# Cloud SQL instance.
+beta_settings:
+    cloud_sql_instances: project-9-20-187720:us-east1:project-9-20
+#[END cloudsql_settings]
+
 # This sample incurs costs to run on the App Engine flexible environment. 
 # The settings below are to reduce costs during testing and are not appropriate
 # for production use. For more information, see:

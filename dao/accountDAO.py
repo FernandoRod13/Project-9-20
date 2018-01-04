@@ -1,10 +1,18 @@
-from flask import jsonify
+import os
 import json
+from flask import jsonify
+from flask_sqlalchemy import SQLAlchemy
+import sqlalchemy
+from main import app
 
 class accountDAO:
     
+    
     def __init__(self):
-        pass
+        # Environment variables are defined in app.yaml.
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['SQLALCHEMY_DATABASE_URI']
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        db = SQLAlchemy(app)
     
       # Account verification
     def verifyAccount(self, accountid, accountpass):
