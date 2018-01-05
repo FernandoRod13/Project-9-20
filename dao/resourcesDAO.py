@@ -1,12 +1,19 @@
 import json
-
+import psycopg2
 from flask import jsonify
+from config.dbconfig import pg_config
+
+
 
 
 class ResourceDAO:
     def __init__(self):
-        pass
-        
+      #self.conn =  psycopg2.connect(user='natalia', password='none',
+       #                 host='/cloudsql/project-9-20-187720:us-east1:project-9-20 ')
+                         
+        self.conn = psycopg2.connect(database='project920', user='natalia', password='none', sslmode='disable',hostaddr='35.196.249.53')
+        # sslmode=disable dbname=project920  user=natalia hostaddr=35.196.249.53"
+
     def loadRequested(self):
         with open('JsonMakers/resources_requested_data.json') as data_file:    
             return json.load(data_file)
@@ -16,8 +23,14 @@ class ResourceDAO:
             return json.load(data_file)
        
     def getAllResourcesRequested(self):
-        return self.loadRequested()
-        
+        #return self.loadRequested()
+        cursor = self.conn.cursor()
+        query = "select * from test;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result       
 
     def getAllResourcesAvaliable(self):
         return self.loadAvaliable()
@@ -144,10 +157,10 @@ class ResourceDAO:
     def getResourcesbyCity(self, city):
         pass
 
-    def getResourcesbyRegion_Name(region, name):
+    def getResourcesbyRegion_Name(self, region,name):
         pass
-        
-    def getResourcesbyRegion_Description(region,description):
+
+    def getResourcesbyRegion_Description(self, region,description):
         pass
 
     

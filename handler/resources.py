@@ -39,18 +39,17 @@ class ResourcesHandler:
         elif (len(args)==1) and region:
             res = dao.getResourcesbyRegion(region)
         elif (len(args)==1) and city:
-            res = dao.getResourcesbyCity(city)
+            res = dao.getResourcesbyCity(city)            
         elif (len(args)==2) and region and name:
             res = dao.getResourcesbyRegion_Name(region,name)
+
         elif (len(args)==2) and region and description:
-            res = dao.getResourcesbyRegion_Description(region,description)
-        
-        
+            res = dao.getResourcesbyRegion_Description(region,description)         
             
         elif qty or price or avaliability:
             res = dao.getAllResources()
         else:
-            res = ("Malformed query string"), 400
+             return jsonify(Error = "Malformed query string"), 400
         return jsonify(Resource = res)
 
 
