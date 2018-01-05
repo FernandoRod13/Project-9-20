@@ -35,7 +35,8 @@ class ResourceDAO:
 
     def getAllResourcesAvaliable(self):
         cursor = self.conn.cursor()
-        query = "Select name, resource_type.name as category, accountID, price, description,avaliability, quantity from resources natural inner join resource_type orderby name;"
+        query  = "Select * from test;"
+        #query = "Select name, resource_type.name as category, accountID, price, description,avaliability, quantity from resources natural inner join resource_type orderby name;"
         cursor.execute(query)
         result = []
         for row in cursor:
