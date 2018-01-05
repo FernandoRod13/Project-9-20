@@ -138,4 +138,18 @@ class ResourceDAO:
                     temp.append(resource)
         return sorted(temp, key=lambda k: k['name'])
 
+    def getResourcesbyRegion(self, region):
+        pass
+
+    def getResourcesbyCity(self, city):
+        pass
+
+    def getResourcesbyRegion_Name(region, name):
+        pass
+        
+    def getResourcesbyRegion_Description(region,description):
+        pass
+
+    
+
       

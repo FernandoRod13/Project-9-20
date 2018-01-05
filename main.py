@@ -47,9 +47,9 @@ def getAllResourcesRequested():
     """ See all the Resources Requested."""
     return ResourcesHandler().getAllresources_requested()
    
-@app.route('/resources/requested/search')
+@app.route('/resources/requested/find')
 def getSearchResourcesRequested():
-    """ See all the Resources Requested."""
+    """ See all the Resources Requested. Follow by ?name=description"""
     if not request.args:
         return ResourcesHandler().getAllresources_requested()
     else:
@@ -60,9 +60,9 @@ def getResourcesAvailable():
     """ Show  Resources Avaliable."""
     return ResourcesHandler().getAllresources_avaliable()
     
-@app.route('/resources/avaliable/search')
+@app.route('/resources/avaliable/find')
 def getSearchResourcesAvailable():
-    """ Search in  the Resources Avaliable."""
+    """ Search in  the Resources Avaliable. Follow by ?name=description"""
     if not request.args:
         return ResourcesHandler().getAllresources_avaliable()
     else:
@@ -167,10 +167,6 @@ def getRequesters():
     """Get all requester"""
     handler = AccountHandler()   
     return handler.getAllRequester(request.args)
-
-
-
-
 
 if __name__ == '__main__':
     app.run()
