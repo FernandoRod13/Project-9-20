@@ -3,9 +3,6 @@ import psycopg2
 from flask import jsonify
 from config.dbconfig import pg_config
 
-
-
-
 class ResourceDAO:
     def __init__(self):                              
         self.conn = psycopg2.connect(database='project920', user='natalia', password='none', sslmode='disable',hostaddr='35.196.249.53')
@@ -57,7 +54,7 @@ class ResourceDAO:
         cursor.execute(query,(description,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
     def getResourcesbyDescription(self,description):
         cursor = self.conn.cursor()
@@ -72,7 +69,7 @@ class ResourceDAO:
         cursor.execute(query,(description,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
     def getResourcesbyName(self,name):
         cursor = self.conn.cursor()
@@ -87,7 +84,7 @@ class ResourceDAO:
         cursor.execute(query,(name,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
     def getResourcesbyName_Description(self,name,description):
         cursor = self.conn.cursor()
@@ -102,7 +99,7 @@ class ResourceDAO:
         cursor.execute(query,(description,name) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
            
 
@@ -113,7 +110,7 @@ class ResourceDAO:
         result = []
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
       
 
     def getResourcesRequestedbyName(self,name):
@@ -123,7 +120,7 @@ class ResourceDAO:
         result = []        
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
     def getResourcesRequestedbyName_Description(self,name,description):
         cursor = self.conn.cursor()
@@ -132,7 +129,7 @@ class ResourceDAO:
         cursor.execute(query,(description,name) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
         
 
         
@@ -182,7 +179,7 @@ class ResourceDAO:
         cursor.execute(query,(region,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
     def getResourcesbyCity(self, city):
         cursor = self.conn.cursor()
@@ -197,7 +194,7 @@ class ResourceDAO:
         cursor.execute(query,(city,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
 
     def getResourcesbyRegion_Name(self, region,name):
@@ -213,7 +210,7 @@ class ResourceDAO:
         cursor.execute(query,(region,name,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
     def getResourcesbyRegion_Description(self, region,description):
         cursor = self.conn.cursor()
@@ -228,7 +225,7 @@ class ResourceDAO:
         cursor.execute(query,(region,description,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
     def getResourcesbyCity_Name(self, city,name):
         cursor = self.conn.cursor()
@@ -243,7 +240,7 @@ class ResourceDAO:
         cursor.execute(query,(city,name,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
 
 
     def getResourcesbyCity_Description(self, city,description):
@@ -259,7 +256,7 @@ class ResourceDAO:
         cursor.execute(query,(region,description,) )
         for row in cursor:
             result.append(row)        
-        return result;
+        return result
     
 
       
