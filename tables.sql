@@ -2,12 +2,12 @@ CREATE TABLE Accounts (account_ID SERIAL PRIMARY KEY, first_name VARCHAR(50), la
  phone INTEGER, photo_URL VARCHAR(255), account_type VARCHAR(15), creation_date DATE, password VARCHAR(50), 
  location_ID REFERENCES Locations (location_ID));
 
-CREATE TABLE Locations (location_ID SERIAL PRIMARY KEY, address VARCHAR(255), latitude FLOAT, longitude FLOAT,
- cityID REFERENCES Cities(city_ID));
+CREATE TABLE Location (location_ID SERIAL PRIMARY KEY, address VARCHAR(255), latitude FLOAT, longitude FLOAT,
+ city_ID REFERENCES Cities(city_ID));
 
-CREATE TABLE Cities (city_ID SERIAL PRIMARY KEY, city_name VARCHAR(50), region_ID REFERENCES Region(region_ID));
+CREATE TABLE City (city_ID SERIAL PRIMARY KEY, city_name VARCHAR(50), region_ID REFERENCES Region(region_ID));
 
-CREATE TABLE Regions (region_ID INTEGER, region_name VARCHAR(50));
+CREATE TABLE Region (region_ID INTEGER, region_name VARCHAR(50));
 
 CREATE TABLE Notifications (notification_ID SERIAL PRIMARY KEY, seen BOOLEAN, message VARCHAR(255),
  title VARCHAR(150), sent_date DATE, account_ID REFERENCES Accounts(account_ID));
