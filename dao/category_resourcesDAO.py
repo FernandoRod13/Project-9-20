@@ -1,5 +1,7 @@
 from flask import jsonify
 import json
+import psycopg2
+
 
 #List of the categories and their subcategories
 
@@ -13,62 +15,96 @@ category_fuel_list = ["diesel","propane","gasoline"]
 class category_ResourceDAO:
 
     def __init__(self):
-        pass
+        self.conn = psycopg2.connect(database='project920', user='natalia', password='none', sslmode='disable',hostaddr='35.196.249.53')
+
 
     def getCategories(self):
-        return "The Categoires are: \n {0} \n For the Category Water the subcategory are:\n {1} \n  For the Category fuel the subcategory are:\n {2} \n".format(category_list,category_water_list,category_fuel_list)
+        cursor = self.conn.cursor()
+        #Get Resources avaliable
+        query = "Select name , Resource_Type.name as category, accountID, description, class from Resources natural inner join Resource_Type  orderby category;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        #Get Resources requested
+        query = "Select name , Resource_Type.name as category, accountID, description, class from Resources_Requested natural inner join Resource_Type orderby category;"
+        cursor.execute(query)
+        for row in cursor:
+            result.append(row)        
+        return result
 
+    def getCategory(self, category):
+        cursor = self.conn.cursor()
+        #Get Resources avaliable
+        query = "Select name , Resource_Type.name as category, accountID, description, class from Resources natural inner join Resource_Type where category = %s orderby category;"
+        cursor.execute(query, (category,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        #Get Resources requested
+        query = "Select name , Resource_Type.name as category, accountID, description, class from Resources_Requested natural inner join Resource_Type whre category = %s orderby category;"
+        cursor.execute(query, (category,))
+        for row in cursor:
+            result.append(row)        
+        return result
+    
+###############################################################
+# Resources Requested
+##############################################################
     def getCategoryRequested(self, keywords):
-        if (keywords not in category_list):
-            if(keywords not in category_with_subcat_list):
-                return "Invalid Category {0} , Please Try Again".format(keywords)
-            else:
-                return "Show all resources from category {0}, with all the elements on subcategory together".format(keywords)
-        return 'Show All Resources from Category'
+        cursor = self.conn.cursor()
+        if(keywords == 'water'):
+            query = "Select name , Resource_Type.name as category, accountID, description, class from Resources_Requested natural inner join Resource_Type where category = propane OR category = gas OR category = diesel orderby category;"
+            cursor.execute(query)
 
-    def getCategoryRequested_subcategory(self, keywords,subkeywords):
-        if (keywords not in category_list):
-            if(keywords not in category_with_subcat_list):
-                return "Invalid Category {0} , Please Try Again".format(keywords)
-            else:
-                if(keywords == 'water'):
-                    if(subkeywords not in category_water_list):
-                        return "The subcategory: {0} is invalid, Please Try Again".format(subkeywords)
-                    else:
-                        return "Showing all elements in subcategory: {0}".format(subkeywords)
-                elif(keywords == 'fuel'):
-                    if(subkeywords not in category_fuel_list):
-                        return "The subcategory:{0} is invalid, Please Try Again".format(subkeywords)
-                    else:
-                        return "Showing all elements in subcategory: {0}".format(subkeywords)                
-                return "Show all resources from Sub-Category: {0}".format(subkeywords)
-        return "Category {0} does not have any subcategory, Try Again".format(subkeywords)
+        elif(keywords == 'fuel'):
+            query = "Select name , Resource_Type.name as category, accountID, description, class from Resources_Requested natural inner join Resource_Type where category = smallbottles OR category = gallonbottles orderby category;"
+            cursor.execute(query)
+           
+        else:
+            query = "Select name , Resource_Type.name as category, accountID, description, class from Resources_Requested natural inner join Resource_Type where category = %s orderby category;"
+            cursor.execute(query,(keywords,) )
+        result = []
+        for row in cursor:
+            result.append(row)        
+        return result
+
+    def getCategoriesRequested(self):
+        cursor = self.conn.cursor()
+        result =[]
+        query = "Select name , Resource_Type.name as category, accountID, description, class from Resources_Requested natural inner join Resource_Type orderby category;"
+        cursor.execute(query)
+        for row in cursor:
+            result.append(row)        
+        return result
+
+###################################################################
+#Resoruces Avaliable
+################################################
 
     def getCategoryAvaliable(self, keywords):
-        if (keywords not in category_list):
-            if(keywords not in category_with_subcat_list):
-                return "Invalid Category {0} , Please Try Again".format(keywords)
-            else:
-                return "Show all resources from category {0}, with all the elements on subcategory together".format(keywords)
-        return 'Show All Resources from Category'
+        cursor = self.conn.cursor()
+        if(keywords == 'water'):
+            query = "Select name , Resource_Type.name as category, accountID, description, class from Resources natural inner join Resource_Type where category = propane OR category = gas OR category = diesel orderby category;"
+       
+        elif(keywords == 'fuel'):
+            query = "Select name , Resource_Type.name as category, accountID, description, class from Resources natural inner join Resource_type where category = smallbottles OR category = gallonbottles orderby category;"
+           
+        else:
+            query = "Select name , Resource_Type.name as category, accountID, description, class from Resources natural inner join Resource_type where category = %s orderby category;"
+            cursor.execute(query,(keywords,) )
+        result = []
+        for row in cursor:
+            result.append(row)        
+        return result
 
-    def getCategoryAvaliable_subcategory(self, keywords,subkeywords):
-        if (keywords not in category_list):
-            if(keywords not in category_with_subcat_list):
-                return "Invalid Category {0} , Please Try Again".format(keywords)
-            else:
-                if(keywords == 'water'):
-                    if(subkeywords not in category_water_list):
-                        return "The subcategory: {0} is invalid, Please Try Again".format(subkeywords)
-                    else:
-                        return "Showing all elements in subcategory: {0}".format(subkeywords)
-                elif(keywords == 'fuel'):
-                    if(subkeywords not in category_fuel_list):
-                        return "The subcategory:{0} is invalid, Please Try Again".format(subkeywords)
-                    else:
-                        return "Showing all elements in subcategory: {0}".format(subkeywords)                
-                return "Show all resources from Sub-Category: {0}".format(subkeywords)
-        return "Category {0} does not have any subcategory, Try Again".format(subkeywords)
-
-
-
+    def getCategoriesAvaliable(self):
+        cursor = self.conn.cursor()
+        #Get Resources avaliable
+        query = "Select name , Resource_Type.name as category, accountID, description, class from Resources natural inner join Resource_Type  orderby category;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+    
