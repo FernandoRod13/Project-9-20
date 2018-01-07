@@ -15,7 +15,7 @@ CREATE TABLE Notifications (notification_ID SERIAL PRIMARY KEY, seen BOOLEAN, me
 CREATE TABLE Payment_Methods (payment_method_ID SERIAL PRIMARY KEY, card_Holder VARCHAR(255), card_number INTEGER, 
  expiration_date DATE, zip_code INTEGER, account_ID REFERENCES Accounts(account_ID));
 
-CREATE TABLE Resource_Type (resource_type_ID SERIAL PRIMARY KEY, name VARCHAR(50), description VARCHAR(255));
+CREATE TABLE Resource_Type (resource_type_ID SERIAL PRIMARY KEY, name VARCHAR(50));
 
 CREATE TABLE Resources (resource_ID SERIAL PRIMARY KEY, name VARCHAR(150), price FLOAT, description VARCHAR(255), 
  quantity INTEGER, availability INTEGER, creation_date DATE, last_update DATE, account_ID REFERENCES Accounts(account_ID),
