@@ -13,6 +13,7 @@ class ResourcesHandler:
         result['accountID'] = row[2]
         result['description'] = row[3]
         result['class'] = row[4]
+        result['quantity'] = row[5]
         return result
 
     def build_resource_requested(self,row):
@@ -80,9 +81,19 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and city:
             res = dao.getAllResourcesbyKeywords_City(keywords,city)  
         elif (len(args) == 2) and keywords and region:
-            res = dao.getAllResourcesbyKeywords_Region(keywords,Region)      
-        elif qty or price or avaliability:
-            res = dao.getAllResources()
+            res = dao.getAllResourcesbyKeywords_Region(keywords,Region)   
+        elif (len(args) == 1) and qty:
+            res = dao.getResourcesbyQty(keywords)  
+        elif (len(args) == 2) and qty and city:
+            res = dao.getAllResourcesbyQty_City(qty,city)
+        elif (len(args) == 2) and qty and region:
+            res = dao.getAllResourcesbyQty_Region(qty,region)
+        elif (len(args) == 2) and qty and keywords:
+            res = dao.getAllResourcesbyQty_Keywords(qty,keywords)
+        elif (len(args) == 2) and qty and name:
+            res = dao.getAllResourcesbyQty_Name(qty,name)
+        elif price or avaliability :
+            return jsonify(Error = "Price and Avaliablity can be only be use with Resources Avaliable")       
         else:
              return jsonify(Error = "Malformed query string"), 400
 
@@ -153,9 +164,16 @@ class ResourcesHandler:
             res = dao.getAllResourcesRequestedbyKeywords_City(keywords,city)  
         elif (len(args) == 2) and keywords and region:
             res = dao.getAllResourcesRequestedbyKeywords_Region(keywords,Region)  
-
-        elif qty or price or avaliability:
-           res = dao.getAllResourcesRequested()
+        elif (len(args) == 1) and qty:
+            res = dao.getResourcesRequestedbyQty(qty)  
+        elif (len(args) == 2) and qty and city:
+            res = dao.getAllResourcesRequestedbyQty_City(qty,city)
+        elif (len(args) == 2) and qty and region:
+            res = dao.getAllResourcesRequestedbyQty_Region(qty,region)
+        elif (len(args) == 2) and qty and keywords:
+            res = dao.getAllResourcesRequestedbyQty_Keywords(qty,keywords)
+        elif (len(args) == 2) and qty and name:
+            res = dao.getAllResourcesRequestedbyQty_Name(qty,name)
         else:
              return jsonify(Error = "Malformed query string"), 400
         result_list = []       
@@ -201,8 +219,26 @@ class ResourcesHandler:
             res = dao.getAllResourcesAvaliablebyKeywords_City(keywords,city)  
         elif (len(args) == 2) and keywords and region:
             res = dao.getAllResourcesAvaliablebyKeywords_Region(keywords,Region)    
-        elif qty or price or avaliability:
-            res = dao.getAllResourcesRequested()
+        elif (len(args) == 1) and qty:
+                res = dao.getResourcesAvaliablebyQty(qty)  
+        elif (len(args) == 2) and qty and city:
+            res = dao.getAllResourcesAvaliablebyQty_City(qty,city)
+        elif (len(args) == 2) and qty and region:
+            res = dao.getAllResourcesAvaliablebyQty_Region(qty,region)
+        elif (len(args) == 2) and qty and keywords:
+            res = dao.getAllResourcesAvaliablebyQty_Keywords(qty,keywords)
+        elif (len(args) == 2) and qty and name:
+            res = dao.getAllResourcesAvaliablebyQty_Name(qty,name)
+        elif (len(args) == 1) and price:
+            res = dao.getResourcesAvaliablebyPrice(price)  
+        elif (len(args) == 2) and price and city:
+            res = dao.getAllResourcesAvaliablebyPrice_City(price,city)
+        elif (len(args) == 2) and price and region:
+            res = dao.getAllResourcesAvaliablebyPrice_Region(price,region)
+        elif (len(args) == 2) and price and keywords:
+            res = dao.getAllResourcesAvaliablebyPrice_Keywords(price,keywords)
+        elif (len(args) == 2) and price and name:
+            res = dao.getAllResourcesAvaliablebyPrice_Name(price,name)
         else:
              return jsonify(Error = "Malformed query string"), 400
         result_list = []       
