@@ -1,5 +1,6 @@
-from dao.resourcesDAO import ResourceDAO
 from flask import jsonify
+
+from dao.resourcesDAO import ResourceDAO
 
 
 class ResourcesHandler:
@@ -13,7 +14,7 @@ class ResourcesHandler:
         result['accountID'] = row[2]
         result['description'] = row[3]
         result['class'] = row[4]
-        result['quantity'] = row[5]
+        result['qty'] = row[5]
         return result
 
     def build_resource_requested(self,row):
@@ -56,7 +57,7 @@ class ResourcesHandler:
         avaliability = args.get("avaliability")
         city = args.get("city")
         region = args.get("region")
-        keywords = args.get("keywords");
+        keywords = args.get("keywords")
                      
         if (len(args) == 1) and description:
             res = dao.getResourcesbyDescription(description)
@@ -81,7 +82,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and city:
             res = dao.getAllResourcesbyKeywords_City(keywords,city)  
         elif (len(args) == 2) and keywords and region:
-            res = dao.getAllResourcesbyKeywords_Region(keywords,Region)   
+            res = dao.getAllResourcesbyKeywords_Region(keywords,region)   
         elif (len(args) == 1) and qty:
             res = dao.getResourcesbyQty(keywords)  
         elif (len(args) == 2) and qty and city:
@@ -95,7 +96,7 @@ class ResourcesHandler:
         elif price or avaliability :
             return jsonify(Error = "Price and Avaliablity can be only be use with Resources Avaliable")       
         else:
-             return jsonify(Error = "Malformed query string"), 400
+            return jsonify(Error = "Malformed query string"), 400
 
         result_list = []
         if (len(res)==0):
@@ -163,7 +164,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and city:
             res = dao.getAllResourcesRequestedbyKeywords_City(keywords,city)  
         elif (len(args) == 2) and keywords and region:
-            res = dao.getAllResourcesRequestedbyKeywords_Region(keywords,Region)  
+            res = dao.getAllResourcesRequestedbyKeywords_Region(keywords,region)  
         elif (len(args) == 1) and qty:
             res = dao.getResourcesRequestedbyQty(qty)  
         elif (len(args) == 2) and qty and city:
@@ -185,6 +186,7 @@ class ResourcesHandler:
        
 
     def getresources_avaliable(self,args):
+        dao = ResourceDAO()
         description = args.get("description")
         qty = args.get("qty")
         name = args.get("name")          
@@ -220,7 +222,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and region:
             res = dao.getAllResourcesAvaliablebyKeywords_Region(keywords,Region)    
         elif (len(args) == 1) and qty:
-                res = dao.getResourcesAvaliablebyQty(qty)  
+            res = dao.getResourcesAvaliablebyQty(qty)  
         elif (len(args) == 2) and qty and city:
             res = dao.getAllResourcesAvaliablebyQty_City(qty,city)
         elif (len(args) == 2) and qty and region:

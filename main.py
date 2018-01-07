@@ -92,7 +92,7 @@ def getResourceRequested_category():
    
 
 @app.route('/resources/available/category')
-def getResourceAvaliable_category(category_id):
+def getResourceAvaliable_category():
     """ Get the items available in a given category"""
     if not request.args:   
         return CategoryHandler().categoriesAvaliable()
