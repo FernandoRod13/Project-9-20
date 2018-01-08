@@ -16,6 +16,7 @@ class ResourcesHandler:
         result['description'] = row[3]
         result['class'] = row[4]
         result['qty'] = row[5]
+        result['city'] = row[6]
         return result
 
     def build_resource_requested(self,row):
@@ -24,8 +25,9 @@ class ResourcesHandler:
         result['category'] = row[1]
         result['accountID'] = row[2]
         result['description'] = row[3]        
-        result['qty'] = row[5]
-        result['Requested_time'] = row[6]
+        result['qty'] = row[4]
+        result['Requested_Date'] = row[5]
+        result['city'] = row[6]
         return result
 
     def build_resource_avaliable(self,row):
@@ -38,14 +40,23 @@ class ResourcesHandler:
         result['avaliability'] = row[5]
         result['qty'] = row[6]
         result['dateAdded'] = row[7]
-        result['lastUpdate'] = row[8]   
+        result['lastUpdate'] = row[8]  
+        result['city'] = row[9] 
         return result
        
 
     def getAllresources(self):
         dao = ResourceDAO()
         res = dao.getAllResources()
-        return jsonify(Resource = res)
+        result_list = []
+
+        if (len(res)==0):
+            return jsonify(Resources = "No Resources Found with that input. Try Again Later")
+        for row in res:
+            result = self.build_resource(row)
+            result_list.append(result)            
+        result_list = sorted(result_list, key=lambda k: k['name'])
+        return jsonify(Resources = result_list)
 
     def getFindAllresources(self, args):
         dao = ResourceDAO()
@@ -59,8 +70,8 @@ class ResourcesHandler:
         keywords = args.get("keywords")
                      
         if (len(args) == 1) and description:
-            res = dao.getResourcesbyDescription(description)        
-        elif (len(args) == 1) and resID:
+            res = dao.getResourcesbyDescription(description)
+        elif (len(args) == 1) and name:
             res = dao.getResourcesbyName(name)
         elif (len(args)==2) and name and description:
             res = dao.getResourcesbyName_Description(name,description)
@@ -83,7 +94,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and region:
             res = dao.getAllResourcesbyKeywords_Region(keywords,region)   
         elif (len(args) == 1) and qty:
-            res = dao.getAllResourcesbyQty(keywords)  
+            res = dao.getAllResourcesbyQty(qty)  
         elif (len(args) == 2) and qty and city:
             res = dao.getAllResourcesbyQty_City(qty,city)
         elif (len(args) == 2) and qty and region:
@@ -103,28 +114,33 @@ class ResourcesHandler:
         for row in res:
             result = self.build_resource(row)
             result_list.append(result)  
-        sorted(result_list, key=lambda k: k['name'])
-        return jsonify(Resources = result_list)
+          
+        result_list = sorted(result_list, key=lambda k: k['name'])
+        return jsonify(Resources = res)
 
 
     def getAllresources_requested(self):
         dao = ResourceDAO()
         res = dao.getAllResourcesRequested()
+        if (len(res)==0):
+            return jsonify(Resources = "No Resources Found with that input. Try Again Later")
         result_list = []       
         for row in res:
-            result = self.build_resource_requested(row)
-            result_list.append(result)  
-        sorted(result_list, key=lambda k: k['name'])
+           result = self.build_resource_requested(row)
+           result_list.append(result)  
+        result_list = sorted(result_list, key=lambda k: k['name'])         
         return jsonify(Resources = result_list)
 
     def getAllresources_avaliable(self):
         dao = ResourceDAO()
         res = dao.getAllResourcesAvaliable()
+        if (len(res)==0):
+            return jsonify(Resources = "No Resources Found with that input. Try Again Later")
         result_list = []       
         for row in res:
             result = self.build_resource_avaliable(row)
             result_list.append(result)  
-        sorted(result_list, key=lambda k: k['name'])
+        result_list = result_list = sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list)
         
 
@@ -137,7 +153,7 @@ class ResourcesHandler:
         region = args.get("region")
         rid = args.get("rid")  
         keywords = args.get("keywords") 
-        resID = args.get("resID")
+        resid = args.get("resID")
         
 
         if (len(args) == 1) and description:
@@ -180,11 +196,13 @@ class ResourcesHandler:
             res = dao.getAllResourcesRequestedbyQty_Name(qty,name)
         else:
              return jsonify(Error = "Malformed query string"), 400
-        result_list = []       
+        result_list = []    
+        if (len(res)==0):
+            return jsonify(Resources = "No Resources Found with that input. Try Again Later")   
         for row in res:
             result = self.build_resource_requested(row)
             result_list.append(result)  
-        sorted(result_list, key=lambda k: k['name'])
+        result_list = sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list) 
        
 
@@ -198,6 +216,7 @@ class ResourcesHandler:
         sid = args.get("sid")  
         keywords = args.get("keywords")
         resID = args.get("resID")
+        price = args.get("price")
         
 
         if (len(args) == 1) and description:
@@ -249,15 +268,15 @@ class ResourcesHandler:
         elif (len(args) == 2) and price and name:
             res = dao.getAllResourcesAvaliablebyPrice_Name(price,name)
         else:
-             return jsonify(Error = "Malformed query string"), 400
-
-        print(res , sys.stdout)
+             return jsonify(Error = "Malformed query string"), 400        
         
-        result_list = []       
+        result_list = []    
+        if (len(res)==0):
+            return jsonify(Resources = "No Resources Found with that input. Try Again Later")   
         for row in res:
             result = self.build_resource_avaliable(row)
-            result_list.append(result)  
-        sorted(result_list, key=lambda k: k['name'])
+            result_list.append(result)          
+        result_list = sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list)
         
 
