@@ -1,6 +1,7 @@
+import sys
 from flask import jsonify
-
 from dao.resourcesDAO import ResourceDAO
+
 
 
 class ResourcesHandler:
@@ -60,8 +61,8 @@ class ResourcesHandler:
         keywords = args.get("keywords")
                      
         if (len(args) == 1) and description:
-            res = dao.getResourcesbyDescription(description)
-        elif (len(args) == 1) and name:
+            res = dao.getResourcesbyDescription(description)        
+        elif (len(args) == 1) and resID:
             res = dao.getResourcesbyName(name)
         elif (len(args)==2) and name and description:
             res = dao.getResourcesbyName_Description(name,description)
@@ -84,7 +85,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and region:
             res = dao.getAllResourcesbyKeywords_Region(keywords,region)   
         elif (len(args) == 1) and qty:
-            res = dao.getResourcesbyQty(keywords)  
+            res = dao.getAllResourcesbyQty(keywords)  
         elif (len(args) == 2) and qty and city:
             res = dao.getAllResourcesbyQty_City(qty,city)
         elif (len(args) == 2) and qty and region:
@@ -137,10 +138,14 @@ class ResourcesHandler:
         city = args.get("city")
         region = args.get("region")
         rid = args.get("rid")  
-        keywords = args.get("keywords");  
+        keywords = args.get("keywords") 
+        resID = args.get("resID")
+        
 
         if (len(args) == 1) and description:
             res = dao.getResourcesRequestedbyDescription(description)
+        elif (len(args) == 1) and resID:
+            res = dao.getResourcesResquestedbyresID(resID)
         elif (len(args) == 1) and name:
             res = dao.getResourcesRequestedbyName(name)
         elif (len(args)==2) and name and description:
@@ -166,7 +171,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and region:
             res = dao.getAllResourcesRequestedbyKeywords_Region(keywords,region)  
         elif (len(args) == 1) and qty:
-            res = dao.getResourcesRequestedbyQty(qty)  
+            res = dao.getAllResourcesRequestedbyQty(qty)  
         elif (len(args) == 2) and qty and city:
             res = dao.getAllResourcesRequestedbyQty_City(qty,city)
         elif (len(args) == 2) and qty and region:
@@ -193,10 +198,14 @@ class ResourcesHandler:
         city = args.get("city")
         region = args.get("region")
         sid = args.get("sid")  
-        keywords = args.get("keywords");
+        keywords = args.get("keywords")
+        resID = args.get("resID")
+        
 
         if (len(args) == 1) and description:
             res = dao.getResourcesAvaliablebyDescription(description)
+        elif (len(args) == 1) and resID:
+            res = dao.getResourcesAvaliablebyresID(resID)
         elif (len(args) == 1) and name:
             res = dao.getResourcesAvaliablebyName(name)
         elif (len(args)==2) and name and description:
@@ -222,7 +231,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and region:
             res = dao.getAllResourcesAvaliablebyKeywords_Region(keywords,Region)    
         elif (len(args) == 1) and qty:
-            res = dao.getResourcesAvaliablebyQty(qty)  
+            res = dao.getAllResourcesAvaliablebyQty(qty)  
         elif (len(args) == 2) and qty and city:
             res = dao.getAllResourcesAvaliablebyQty_City(qty,city)
         elif (len(args) == 2) and qty and region:
@@ -232,7 +241,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and qty and name:
             res = dao.getAllResourcesAvaliablebyQty_Name(qty,name)
         elif (len(args) == 1) and price:
-            res = dao.getResourcesAvaliablebyPrice(price)  
+            res = dao.getAllResourcesAvaliablebyPrice(price)  
         elif (len(args) == 2) and price and city:
             res = dao.getAllResourcesAvaliablebyPrice_City(price,city)
         elif (len(args) == 2) and price and region:
@@ -243,6 +252,9 @@ class ResourcesHandler:
             res = dao.getAllResourcesAvaliablebyPrice_Name(price,name)
         else:
              return jsonify(Error = "Malformed query string"), 400
+
+        print(res , sys.stdout)
+        
         result_list = []       
         for row in res:
             result = self.build_resource_avaliable(row)

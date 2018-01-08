@@ -11,7 +11,7 @@ class CategoryHandler:
         result['accountID'] = row[2]
         result['description'] = row[3]
         result['class'] = row[4]
-        result['qty'] = row[4]
+        result['qty'] = row[5]
         return result
 
     def build_resource_requested(self,row):
@@ -20,8 +20,8 @@ class CategoryHandler:
         result['category'] = row[1]
         result['accountID'] = row[2]
         result['description'] = row[3]        
-        result['qty'] = row[5]
-        result['Requested_time'] = row[6]
+        result['qty'] = row[4]
+        result['Requested_time'] = row[5]
         return result
 
     def build_resource_avaliable(self,row):
@@ -68,8 +68,7 @@ class CategoryHandler:
         elif (len(args) == 2 ) and category and city:
             res = dao.getCategory_City(category,city)                 
         elif (len(args) == 2 ) and category and region:
-            res = dao.getCategory_Region(category,region)     
-                
+            res = dao.getCategory_Region(category,region)    
         else:
             return jsonify(Error = "Malformed query string"), 400       
         result_list = []        
@@ -80,10 +79,23 @@ class CategoryHandler:
         return jsonify(Resources = result_list)
     
     def categoryRequested(self,args):
-        dao = category_ResourceDAO()  
-        category = args.get("cat")  
-        if category:              
-            res = dao.getCategoryRequested(category)  
+        dao = category_ResourceDAO() 
+        category = args.get("cat")
+        qty = args.get("qty")
+        price = args.get("price")
+        city = args.get("city")
+        region = args.get("region")
+       
+        if (len(args) == 1 ) and category:
+            res = dao.getCategoryRequested(category) 
+        elif (len(args) == 2 ) and category and qty:
+            res = dao.getCategoryRequested_Qty(category,qty) 
+        elif (len(args) == 2 ) and category and price:
+            res = dao.getCategoryRequested_Price(category,price) 
+        elif (len(args) == 2 ) and category and city:
+            res = dao.getCategoryRequested_City(category,city)                 
+        elif (len(args) == 2 ) and category and region:
+            res = dao.getCategoryRequested_Region(category,region)                        
         else:
             return jsonify(Error = "Malformed query string"), 400      
         result_list = []        
@@ -106,11 +118,25 @@ class CategoryHandler:
      
     def categoryAvaliable(self,args):
         dao = category_ResourceDAO() 
-        if category:             
-            category = args.get("cat")   
+        category = args.get("cat") 
+        qty = args.get("qty")
+        price = args.get("price")
+        city = args.get("city")
+        region = args.get("region")
+       
+        if (len(args) == 1 ) and category:
+            res = dao.getCategoryAvaliable(category) 
+        elif (len(args) == 2 ) and category and qty:
+            res = dao.getCategoryAvaliable_Qty(self, category,qty)
+        elif (len(args) == 2 ) and category and price:
+            res = dao.getCategoryAvaliable_Price(category,price) 
+        elif (len(args) == 2 ) and category and city:
+            res = dao.getCategoryAvaliable_City(category,city)                 
+        elif (len(args) == 2 ) and category and region:     
+            res = dao.getCategoryAvaliable_Region(category, region)
         else:
             return jsonify(Error = "Malformed query string"), 400     
-        res = dao.getCategoryAvaliable(category)       
+           
         result_list = []        
         for row in res:
             result = self.build_resource_avaliable(row)
