@@ -38,9 +38,7 @@ class ResourcesHandler:
         result['avaliability'] = row[5]
         result['qty'] = row[6]
         result['dateAdded'] = row[7]
-        result['lastUpdate'] = row[8]
-        
-        
+        result['lastUpdate'] = row[8]   
         return result
        
 
@@ -114,7 +112,7 @@ class ResourcesHandler:
         res = dao.getAllResourcesRequested()
         result_list = []       
         for row in res:
-            result = self.build_resource(row)
+            result = self.build_resource_requested(row)
             result_list.append(result)  
         sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list)
@@ -124,7 +122,7 @@ class ResourcesHandler:
         res = dao.getAllResourcesAvaliable()
         result_list = []       
         for row in res:
-            result = self.build_resource(row)
+            result = self.build_resource_avaliable(row)
             result_list.append(result)  
         sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list)
