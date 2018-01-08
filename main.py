@@ -73,24 +73,32 @@ def getSearchResourcesAvailable():
         return ResourcesHandler().getresources_avaliable(request.args)
     
 
-#Show Resources by Category Routes
+# #Show Resources by Category Routes
 @app.route('/resources/category')
 def getCategories():
-    """ See all the Categories and SubCategories."""    
-    handler = CategoryHandler()
-    return handler.categories()
+    """ See all the Categories Order by Category"""    
+    if not request.args:   
+        return CategoryHandler().categories()
+    else:
+        return CategoryHandler().category(request.args)   
 
-@app.route('/resources/requested/category/<string:category_id>')
-def getResourceRequested_category(category_id):
+@app.route('/resources/requested/category')
+def getResourceRequested_category():
     """ Get the items in a given category"""
-    handler = CategoryHandler()
-    return handler.categoryRequested(category_id)
+    if not request.args:   
+        return CategoryHandler().categoriesRequested()
+    else:
+        return CategoryHandler().categoryRequested(request.args)
+   
 
-@app.route('/resources/available/category/<string:category_id>')
-def getResourceAvaliable_category(category_id):
+@app.route('/resources/available/category')
+def getResourceAvaliable_category():
     """ Get the items available in a given category"""
-    handler = CategoryHandler()
-    return handler.categoryAvaliable(category_id)
+    if not request.args:   
+        return CategoryHandler().categoriesAvaliable()
+    else:
+        return CategoryHandler().categoryAvaliable(request.args)
+ 
 
 
 # DAILY STATISTICS
