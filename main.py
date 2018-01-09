@@ -26,7 +26,7 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 @app.errorhandler(500)
-def page_not_found(e):
+def server_error(e):
     return render_template('500.html'), 500
 
 #Show Resources Routes
@@ -36,57 +36,69 @@ def getAllresources():
     handler = ResourcesHandler()
     return handler.getAllresources()
 
-@app.route('/resources/search')
+#VERIFTY!!!!!!!!!!!!!!!!!!!!!!!!
+@app.route('/resources/find')
 def getSearchresources():
     """ Get the items requested in a given category subcategory"""    
     handler = ResourcesHandler()
-    return handler.getSeachAllresources(request.args)
+    if not request.args:
+        return ResourcesHandler().getAllresources()
+    else:
+        return handler.getFindAllresources(request.args)
 
 @app.route('/resources/requested')
 def getAllResourcesRequested():
     """ See all the Resources Requested."""
     return ResourcesHandler().getAllresources_requested()
    
-@app.route('/resources/requested/search')
+@app.route('/resources/requested/find')
 def getSearchResourcesRequested():
-    """ See all the Resources Requested."""
+    """ See all the Resources Requested. Follow by ?name=description"""
     if not request.args:
         return ResourcesHandler().getAllresources_requested()
     else:
         return ResourcesHandler().getresources_requested(request.args)
 
-@app.route('/resources/avaliable')
+@app.route('/resources/available')
 def getResourcesAvailable():
-    """ Show  Resources Avaliable."""
+    """ Show  Resources available."""
     return ResourcesHandler().getAllresources_avaliable()
     
-@app.route('/resources/avaliable/search')
+@app.route('/resources/available/find')
 def getSearchResourcesAvailable():
-    """ Search in  the Resources Avaliable."""
+    """ Search in  the Resources Avaliable. Follow by ?name=description"""
     if not request.args:
         return ResourcesHandler().getAllresources_avaliable()
     else:
         return ResourcesHandler().getresources_avaliable(request.args)
     
 
-#Show Resources by Category Routes
+# #Show Resources by Category Routes
 @app.route('/resources/category')
 def getCategories():
-    """ See all the Categories and SubCategories."""    
-    handler = CategoryHandler()
-    return handler.categories()
+    """ See all the Categories Order by Category"""    
+    if not request.args:   
+        return CategoryHandler().categories()
+    else:
+        return CategoryHandler().category(request.args)   
 
-@app.route('/resources/requested/category/<string:category_id>')
-def getResourceRequested_category(category_id):
+@app.route('/resources/requested/category')
+def getResourceRequested_category():
     """ Get the items in a given category"""
-    handler = CategoryHandler()
-    return handler.categoryRequested(category_id)
+    if not request.args:   
+        return CategoryHandler().categoriesRequested()
+    else:
+        return CategoryHandler().categoryRequested(request.args)
+   
 
-@app.route('/resources/avaliable/category/<string:category_id>')
-def getResourceAvaliable_category(category_id):
-    """ Get the items avaliable in a given category"""
-    handler = CategoryHandler()
-    return handler.categoryAvaliable(category_id)
+@app.route('/resources/available/category')
+def getResourceAvaliable_category():
+    """ Get the items available in a given category"""
+    if not request.args:   
+        return CategoryHandler().categoriesAvaliable()
+    else:
+        return CategoryHandler().categoryAvaliable(request.args)
+ 
 
 
 # DAILY STATISTICS
@@ -167,10 +179,6 @@ def getRequesters():
     """Get all requester"""
     handler = AccountHandler()   
     return handler.getAllRequester(request.args)
-
-
-
-
 
 if __name__ == '__main__':
     app.run()
