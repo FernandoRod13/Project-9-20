@@ -5,7 +5,7 @@ from handler.statisc_resources import StatiscHandler
 from handler.account import  AccountHandler
 from handler.transaction import TransactionHandler
 from handler.supplier import  SupplierHandler
-
+from handler.requester import  RequesterHandler
 
 
 app = Flask(__name__)
