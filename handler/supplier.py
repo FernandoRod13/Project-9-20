@@ -35,10 +35,18 @@ class SupplierHandler:
         dao = SupplierDAO()
         city = args.get('city')
         region = args.get('region')
+        resource_name = args.get('resource_name')
+        type_name = args.get('type_name')
         if len(args) == 1 and city:
             res = dao.searchSuppliersByCity(city)
         elif len(args) == 1 and region:
             res = dao.searchSuppliersByRegion(region)
+        elif len(args) == 1 and resource_name:
+            res = dao.searchSuppliersSupplingResource(resource_name)
+        elif len(args) == 1 and type_name:
+            res = dao.searchSuppliersSupplingResourceByCategory(type_name)
+        elif len(args) == 2 and resource_name and city:
+            res = dao.searchSuppliersSupplingResourceInCity(resource_name, city)
         else:
             return jsonify(Error = "Malformed query string"), 400
 
@@ -58,4 +66,4 @@ class SupplierHandler:
             return jsonify(Error = "Supplier Not Found"), 404
         else:
             part = self.build_supplier(row)
-            return jsonify(Suppliert = part)
+            return jsonify(Supplier = part)

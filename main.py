@@ -176,10 +176,12 @@ def getAllSuppliers():
         return handler.getAllSuppliers()
     else:
         return handler.searchAllSuppliersByParameter(request.args)
+    
 @app.route('/suppliers/<int:sid>')
 def getSupplierByID(sid):   
     handler = SupplierHandler()
     return handler.getSupplierByID(sid)
+
 @app.route('/accounts/requester')
 def getRequesters():
     """Get all requester"""

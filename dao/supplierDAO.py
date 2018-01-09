@@ -39,3 +39,30 @@ class SupplierDAO:
         query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city where account_type = 'Supplier' and account_id = %s;"
         cursor.execute(query, (id,))
         return cursor.fetchone()
+
+    def searchSuppliersSupplingResource(self,resource_name):
+        cursor = self.conn.cursor()
+        query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources where account_type = 'Supplier' and resource_name = %s;"
+        cursor.execute(query, (resource_name,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def searchSuppliersSupplingResourceByCategory(self, type_name):
+        cursor = self.conn.cursor()
+        query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources natural inner join resource_type where account_type = 'Supplier' and type_name = %s;"
+        cursor.execute(query, (type_name,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def searchSuppliersSupplingResourceInCity(self, resource_name, city):
+        cursor = self.conn.cursor()
+        query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources where account_type = 'Supplier' and resource_name = %s and city_name = %s;"
+        cursor.execute(query, (resource_name, city,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
