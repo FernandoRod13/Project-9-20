@@ -49,7 +49,6 @@ class ResourcesHandler:
         dao = ResourceDAO()
         res = dao.getAllResources()
         result_list = []
-
         if (len(res)==0):
             return jsonify(Resources = "No Resources Found with that input. Try Again Later")
         for row in res:
@@ -57,7 +56,7 @@ class ResourcesHandler:
             result_list.append(result)            
         result_list = sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list)
-
+      
     def getFindAllresources(self, args):
         dao = ResourceDAO()
         description = args.get("description")
@@ -155,9 +154,6 @@ class ResourcesHandler:
         region = args.get("region")
         rid = args.get("rid")  
         keywords = args.get("keywords") 
-        
-        
-
         if (len(args) == 1) and description:
             res = dao.getResourcesRequestedbyDescription(description)        
         elif (len(args) == 1) and name:
