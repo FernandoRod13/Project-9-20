@@ -7,8 +7,6 @@ class ResourceDAO:
     def __init__(self):                              
         self.conn = psycopg2.connect(database='project920', user='postgres', password='ManuelDB', sslmode='disable',hostaddr='35.196.249.53')     
 
-       
-   
     def getAllResources(self):
         cursor = self.conn.cursor()
         #Get Resources avaliable

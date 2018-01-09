@@ -2,7 +2,7 @@ from flask import Flask, jsonify,render_template,request
 from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
 from handler.statisc_resources import StatiscHandler
-from handler.account import  AccountHandler
+from handler.supplier import  SupplierHandler
 
 
 app = Flask(__name__)
@@ -168,12 +168,18 @@ def verifyAccount():
         handler = AccountHandler()
         return handler.verifyAccount(request.args)
 
-@app.route('/accounts/suppliers')
-def getSuppliers():
+@app.route('/suppliers')
+def getAllSuppliers():
     """ Get all suppliers"""
-    handler = AccountHandler()
-    return handler.getAllSuppliers(request.args)
-   
+    handler = SupplierHandler()
+    if not request.args:
+        return handler.getAllSuppliers()
+    else:
+        return handler.searchAllSuppliersByParameter(request.args)
+@app.route('/suppliers/<int:sid>')
+def getSupplierByID(sid):   
+    handler = SupplierHandler()
+    return handler.getSupplierByID(sid)
 @app.route('/accounts/requester')
 def getRequesters():
     """Get all requester"""
