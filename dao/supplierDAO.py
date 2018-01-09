@@ -40,7 +40,7 @@ class SupplierDAO:
         cursor.execute(query, (id,))
         return cursor.fetchone()
 
-    def searchSuppliersSupplingResource(self,resource_name):
+    def searchSuppliersSupplyingResource(self,resource_name):
         cursor = self.conn.cursor()
         query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources where account_type = 'Supplier' and resource_name = %s;"
         cursor.execute(query, (resource_name,))
@@ -49,7 +49,7 @@ class SupplierDAO:
             result.append(row)
         return result
 
-    def searchSuppliersSupplingResourceByCategory(self, type_name):
+    def searchSuppliersSupplyingResourceByCategory(self, type_name):
         cursor = self.conn.cursor()
         query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources natural inner join resource_type where account_type = 'Supplier' and type_name = %s;"
         cursor.execute(query, (type_name,))
@@ -58,10 +58,28 @@ class SupplierDAO:
             result.append(row)
         return result
 
-    def searchSuppliersSupplingResourceInCity(self, resource_name, city):
+    def searchSuppliersSupplyingResourceInCity(self, resource_name, city):
         cursor = self.conn.cursor()
         query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources where account_type = 'Supplier' and resource_name = %s and city_name = %s;"
         cursor.execute(query, (resource_name, city,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def searchSuppliersByName(self, name): 
+        cursor = self.conn.cursor()
+        query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city where account_type = 'Supplier' and  (first_name = %s or last_name =%s);"
+        cursor.execute(query, (name, name,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def searchSuppliersByResourceKeyword(self,keyword):
+        cursor = self.conn.cursor()
+        query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources natural inner join resource_keyword where account_type = 'Supplier' and  keyword LIKE '%%' || %s || '%%';"
+        cursor.execute(query, (keyword,))
         result = []
         for row in cursor:
             result.append(row)

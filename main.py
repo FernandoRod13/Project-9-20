@@ -3,7 +3,7 @@ from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
 from handler.statisc_resources import StatiscHandler
 from handler.supplier import  SupplierHandler
-
+from handler.requester import  RequesterHandler
 
 app = Flask(__name__)
 
@@ -182,11 +182,19 @@ def getSupplierByID(sid):
     handler = SupplierHandler()
     return handler.getSupplierByID(sid)
 
-@app.route('/accounts/requester')
-def getRequesters():
-    """Get all requester"""
-    handler = AccountHandler()   
-    return handler.getAllRequester(request.args)
+@app.route('/requesters')
+def getAllRequesters():
+    """ Get all requesters"""
+    handler = RequesterHandler()
+    if not request.args:
+        return handler.getAllRequesters()
+    else:
+        return handler.searchAllRequestersByParameter(request.args)
+    
+@app.route('/requesters/<int:rid>')
+def getRequestersByID(rid):   
+    handler = RequesterHandler()
+    return handler.getRequesterByID(rid)
 
 if __name__ == '__main__':
     app.run()
