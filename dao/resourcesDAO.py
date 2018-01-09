@@ -22,6 +22,21 @@ class ResourceDAO:
             result.append(row)        
         return result
 
+    def getAllResourcesbyAid(self, aid):
+        cursor = self.conn.cursor()
+        #Get Resources avaliable
+        query = "Select resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where account_id = %s order  by resource_name;"
+        cursor.execute(query,(aid,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        #Get Resources requested
+        query = "Select requested_name , type_name as category, account_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where account_id = %s order by requested_name ;"
+        cursor.execute(query,(aid,))
+        for row in cursor:
+            result.append(row)        
+        return result
+        
     def getResourcesbyDescription(self,description):
         cursor = self.conn.cursor()
         #Get Resources avaliable
@@ -614,7 +629,7 @@ class ResourceDAO:
         cursor = self.conn.cursor()
         #Get Resources avaliable
         query = "Select resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join resource_keyword where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"
-        cursor.execute(query,(region,keywords) )
+        cursor.execute(query,(region,keywords,) )
         result = []
         for row in cursor:
             result.append(row)        

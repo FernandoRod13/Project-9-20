@@ -68,7 +68,7 @@ class ResourcesHandler:
         city = args.get("city")
         region = args.get("region")
         keywords = args.get("keywords")
-                     
+        aid = args.get('aid')                  
         if (len(args) == 1) and description:
             res = dao.getResourcesbyDescription(description)
         elif (len(args) == 1) and name:
@@ -103,6 +103,8 @@ class ResourcesHandler:
             res = dao.getAllResourcesbyQty_Keywords(qty,keywords)
         elif (len(args) == 2) and qty and name:
             res = dao.getAllResourcesbyQty_Name(qty,name)
+        elif (len(args) ==1) and aid:
+            res = dao.getAllResourcesbyAid(aid)
         elif price or avaliability :
             return jsonify(Error = "Price and Avaliablity can be only be use with Resources Avaliable") 
         else:
@@ -244,7 +246,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and city:
             res = dao.getAllResourcesAvaliablebyKeywords_City(keywords,city)  
         elif (len(args) == 2) and keywords and region:
-            res = dao.getAllResourcesAvaliablebyKeywords_Region(keywords,Region)    
+            res = dao.getAllResourcesAvaliablebyKeywords_Region(keywords,region)    
         elif (len(args) == 1) and qty:
             res = dao.getAllResourcesAvaliablebyQty(qty)  
         elif (len(args) == 2) and qty and city:
