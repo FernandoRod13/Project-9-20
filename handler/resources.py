@@ -49,7 +49,6 @@ class ResourcesHandler:
         dao = ResourceDAO()
         res = dao.getAllResources()
         result_list = []
-
         if (len(res)==0):
             return jsonify(Resources = "No Resources Found with that input. Try Again Later")
         for row in res:
@@ -57,7 +56,7 @@ class ResourcesHandler:
             result_list.append(result)            
         result_list = sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list)
-
+      
     def getFindAllresources(self, args):
         dao = ResourceDAO()
         description = args.get("description")
@@ -68,7 +67,7 @@ class ResourcesHandler:
         city = args.get("city")
         region = args.get("region")
         keywords = args.get("keywords")
-                     
+        aid = args.get('aid')                  
         if (len(args) == 1) and description:
             res = dao.getResourcesbyDescription(description)
         elif (len(args) == 1) and name:
@@ -103,6 +102,8 @@ class ResourcesHandler:
             res = dao.getAllResourcesbyQty_Keywords(qty,keywords)
         elif (len(args) == 2) and qty and name:
             res = dao.getAllResourcesbyQty_Name(qty,name)
+        elif (len(args) ==1) and aid:
+            res = dao.getAllResourcesbyAid(aid)
         elif price or avaliability :
             return jsonify(Error = "Price and Avaliablity can be only be use with Resources Avaliable") 
         else:
@@ -153,9 +154,6 @@ class ResourcesHandler:
         region = args.get("region")
         rid = args.get("rid")  
         keywords = args.get("keywords") 
-        
-        
-
         if (len(args) == 1) and description:
             res = dao.getResourcesRequestedbyDescription(description)        
         elif (len(args) == 1) and name:
@@ -244,7 +242,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and keywords and city:
             res = dao.getAllResourcesAvaliablebyKeywords_City(keywords,city)  
         elif (len(args) == 2) and keywords and region:
-            res = dao.getAllResourcesAvaliablebyKeywords_Region(keywords,Region)    
+            res = dao.getAllResourcesAvaliablebyKeywords_Region(keywords,region)    
         elif (len(args) == 1) and qty:
             res = dao.getAllResourcesAvaliablebyQty(qty)  
         elif (len(args) == 2) and qty and city:
