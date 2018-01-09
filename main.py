@@ -208,6 +208,11 @@ def getSupplierTransaction():
     if request.method == 'GET':
         return TransactionHandler().getTransactionBySupplier(request.args)
 
+@app.route('/transactions/getResourceTransaction', methods=['GET'])
+def getResourceTransaction():
+    if request.method == 'GET':
+        return TransactionHandler().getTransactionByResource(request.args)
+
 if __name__ == '__main__':
     app.run()
 

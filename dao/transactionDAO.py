@@ -41,10 +41,12 @@ class TransactionDAO:
         query = "select T.purchase_id, T.resource_id, R.resource_name, " \
                 "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
                 "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
-                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name, " \
+                "T.city_name as buyer_city_name, T.region_name as buyer_region_name " \
                 "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
-                "quantity, purchase_price, purchase_date " \
-                "from purchases natural inner join accounts) as T, " \
+                "quantity, purchase_price, purchase_date, city_name, region_name " \
+                "from purchases natural inner join accounts natural inner join location " \
+                "natural inner join city natural inner join region) as T, " \
                 "(select resource_id, resource_name, description, account_id, first_name, last_name " \
                 "from accounts natural inner join resources) as R " \
                 "where T.resource_id = R.resource_id " \
@@ -58,7 +60,19 @@ class TransactionDAO:
     # Get transaction history of certain buyer by the id and by region.
     def getTransactionByBuyerIdAndRegion(self, accountId, region):
         cursor = self.conn.cursor()
-        query = "select purchase_id, resource_id, resource_name, description, quantity, purchase_price, purchase_date from purchases natural inner join accounts natural inner join resources natural inner join location natural inner join city natural inner join region where account_id = %s and region_name = '%s';"
+        query = "select T.purchase_id, T.resource_id, R.resource_name, " \
+                "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
+                "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name, " \
+                "T.city_name as buyer_city_name, T.region_name as buyer_region_name " \
+                "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
+                "quantity, purchase_price, purchase_date, city_name, region_name " \
+                "from purchases natural inner join accounts natural inner join location " \
+                "natural inner join city natural inner join region) as T, " \
+                "(select resource_id, resource_name, description, account_id, first_name, last_name " \
+                "from accounts natural inner join resources) as R " \
+                "where T.resource_id = R.resource_id " \
+                "and T.account_id = %s and T.region_name = %s;"
         cursor.execute(query, (accountId, region))
         result = []
         for row in cursor:
@@ -68,7 +82,19 @@ class TransactionDAO:
     # Get transaction history of certain buyer by the id and by city.
     def getTransactionByBuyerIdAndCity(self, accountId, city):
         cursor = self.conn.cursor()
-        query = "select purchase_id, resource_id, resource_name, description, quantity, purchase_price, purchase_date from purchases natural inner join accounts natural inner join resources natural inner join location natural inner join city where account_id = %s and city_name = '%s';"
+        query = "select T.purchase_id, T.resource_id, R.resource_name, " \
+                "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
+                "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name, " \
+                "T.city_name as buyer_city_name, T.region_name as buyer_region_name " \
+                "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
+                "quantity, purchase_price, purchase_date, city_name, region_name " \
+                "from purchases natural inner join accounts natural inner join location " \
+                "natural inner join city natural inner join region) as T, " \
+                "(select resource_id, resource_name, description, account_id, first_name, last_name " \
+                "from accounts natural inner join resources) as R " \
+                "where T.resource_id = R.resource_id " \
+                "and T.account_id = %s and T.city_name = %s;"
         cursor.execute(query, (accountId, city))
         result = []
         for row in cursor:
@@ -78,7 +104,19 @@ class TransactionDAO:
     # Get transaction history of certain supplier by the id.
     def getTransactionBySupplierId(self, accountId):
         cursor = self.conn.cursor()
-        query = "select purchase_id, resource_id, resource_name, description, quantity, purchase_price, purchase_date from purchases natural inner join accounts natural inner join resources where account_id = %s and account_type = 'Supplier';"
+        query = "select T.purchase_id, T.resource_id, R.resource_name, " \
+                "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
+                "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name, " \
+                "T.city_name as buyer_city_name, T.region_name as buyer_region_name " \
+                "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
+                "quantity, purchase_price, purchase_date, city_name, region_name " \
+                "from purchases natural inner join accounts natural inner join location " \
+                "natural inner join city natural inner join region) as T, " \
+                "(select resource_id, resource_name, description, account_id, first_name, last_name " \
+                "from accounts natural inner join resources) as R " \
+                "where T.resource_id = R.resource_id " \
+                "and R.account_id = %s;"
         cursor.execute(query, (accountId,))
         result = []
         for row in cursor:
@@ -88,7 +126,21 @@ class TransactionDAO:
     # Get transaction history of certain supplier by the id and by region.
     def getTransactionBySupplierIdAndRegion(self, accountId, region):
         cursor = self.conn.cursor()
-        query = "select purchase_id, resource_id, resource_name, description, quantity, purchase_price, purchase_date from purchases natural inner join accounts natural inner join resources natural inner join location natural inner join city natural inner join region where account_id = %s and region_name = '%s';"
+        query = "select T.purchase_id, T.resource_id, R.resource_name, " \
+                "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
+                "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name, " \
+                "T.city_name as buyer_city_name, T.region_name as buyer_region_name " \
+                "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
+                "quantity, purchase_price, purchase_date, city_name, region_name " \
+                "from purchases natural inner join accounts natural inner join location " \
+                "natural inner join city natural inner join region) as T, " \
+                "(select resource_id, resource_name, description, account_id, first_name, last_name, " \
+                "city_name, region_name " \
+                "from accounts natural inner join resources " \
+                "natural inner join location natural inner join city natural inner join region) as R " \
+                "where T.resource_id = R.resource_id " \
+                "and R.account_id = %s and R.region_name = %s;"
         cursor.execute(query, (accountId, region))
         result = []
         for row in cursor:
@@ -98,10 +150,67 @@ class TransactionDAO:
     # Get transaction history of certain supplier by the id and by city.
     def getTransactionBySupplierIdAndCity(self, accountId, city):
         cursor = self.conn.cursor()
-        query = "select purchase_id, resource_id, resource_name, description, quantity, purchase_price, purchase_date from purchases natural inner join accounts natural inner join resources natural inner join location natural inner join city where account_id = %s and city_name = '%s';"
+        query = "select T.purchase_id, T.resource_id, R.resource_name, " \
+                "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
+                "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name, " \
+                "T.city_name as buyer_city_name, T.region_name as buyer_region_name " \
+                "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
+                "quantity, purchase_price, purchase_date, city_name, region_name " \
+                "from purchases natural inner join accounts natural inner join location " \
+                "natural inner join city natural inner join region) as T, " \
+                "(select resource_id, resource_name, description, account_id, first_name, last_name, " \
+                "city_name, region_name " \
+                "from accounts natural inner join resources " \
+                "natural inner join location natural inner join city natural inner join region) as R " \
+                "where T.resource_id = R.resource_id " \
+                "and R.account_id = %s and R.city_name = %s;"
         cursor.execute(query, (accountId, city))
         result = []
         for row in cursor:
             result.append(row)
         return result
 
+    # Get transaction history of a certain resource id
+    def getTransactionByResourceId(self, resourceId):
+        cursor = self.conn.cursor()
+        query = "select T.purchase_id, T.resource_id, R.resource_name, " \
+                "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
+                "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name, " \
+                "T.city_name as buyer_city_name, T.region_name as buyer_region_name " \
+                "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
+                "quantity, purchase_price, purchase_date, city_name, region_name " \
+                "from purchases natural inner join accounts natural inner join location " \
+                "natural inner join city natural inner join region) as T, " \
+                "(select resource_id, resource_name, description, account_id, first_name, last_name " \
+                "from accounts natural inner join resources) as R " \
+                "where T.resource_id = R.resource_id " \
+                "and R.resource_id = %s;"
+        cursor.execute(query, (resourceId,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    # Get transaction history of a certain resource name
+    def getTransactionByResourceName(self, resourceName):
+        cursor = self.conn.cursor()
+        query = "select T.purchase_id, T.resource_id, R.resource_name, " \
+                "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
+                "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name, " \
+                "T.city_name as buyer_city_name, T.region_name as buyer_region_name " \
+                "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
+                "quantity, purchase_price, purchase_date, city_name, region_name " \
+                "from purchases natural inner join accounts natural inner join location " \
+                "natural inner join city natural inner join region) as T, " \
+                "(select resource_id, resource_name, description, account_id, first_name, last_name " \
+                "from accounts natural inner join resources) as R " \
+                "where T.resource_id = R.resource_id " \
+                "and R.resource_name = %s;"
+        cursor.execute(query, (resourceName,))
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

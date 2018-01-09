@@ -30,6 +30,8 @@ class TransactionHandler:
         result['supplier_id'] = row[10]
         result['supplier_first_name'] = row[11]
         result['supplier_last_name'] = row[12]
+        result['buyer_city_name'] = row[13]
+        result['buyer_region_name'] = row[14]
         return result
 
     # METHODS
@@ -97,3 +99,23 @@ class TransactionHandler:
             result_list.append(result)
         return jsonify(Transactions=result_list)
 
+
+    # Get transaction history of certain buyer by the id.
+    def getTransactionByResource(self, args):
+        resourceId = args.get("resourceid")
+        resourceName = args.get("resourcename")
+        dao = TransactionDAO()
+
+        transactionsList = []
+        if(len(args) == 1 and resourceId):
+            transactionsList = dao.getTransactionByResourceId(resourceId)
+        elif(len(args) == 1 and resourceName):
+            transactionsList = dao.getTransactionByResourceName(resourceName)
+        else:
+            return jsonify(Error = "Malfored query string"), 400
+
+        result_list = []
+        for row in transactionsList:
+            result = self.build_transaction_dict(row)
+            result_list.append(result)
+        return jsonify(Transactions=result_list)
