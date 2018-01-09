@@ -4,40 +4,50 @@ import json
 class accountDAO:
     
     def __init__(self):
-        pass
+        self.conn = psycopg2.connect(database='project920', user='natalia', password='none', sslmode='disable',hostaddr='35.196.249.53')
     
       # Account verification
     def verifyAccount(self, accountid, accountpass):
+        cursor = self.conn.cursor()
+        query = "select * from Accounts where account_ID = %s and password = %s;"
+        cursor.execute(query, accountid, accountpass)
         result = []
-        result.append("This is to verify if account " + accountid + "is correct")
+        for row in cursor:
+            result.append(row)
         return result
     
     def getSuppliers(self):
-        with open('JsonMakers/requester.json') as data_file:    
-            return json.load(data_file)
+        cursor = self.conn.cursor()
+        query = "select * from Accounts where account_type='supplier"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getSuppliersbyCity(self,city):
-        with open('JsonMakers/requester.json') as data_file: 
-            data = json.load(data_file)
-            res = []
-            for supplier in data:
-                if( city.lower() in supplier['city'].lower()):
-                    res.append(supplier)
-            if(len(res)==0):
-                return "There are no supplier in that City"
-            return res
+        cursor = self.conn.cursor()
+        query = "select * from Accounts natural inner join Location natural inner join City where city_name = %s;"
+        cursor.execute(query, city)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getRequester(self):
-        with open('JsonMakers/suppliers.json') as data_file:    
-            return json.load(data_file)
+        cursor = self.conn.cursor()
+        query = "select * from Resources_Requested natural inner Accounts;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def getRequesterByCity(self,city):
-        with open('JsonMakers/suppliers.json') as data_file: 
-            data = json.load(data_file)
-            res = []
-            for supplier in data:
-                if( city.lower() in supplier['city'].lower()):
-                    res.append(supplier)
-            if len(res)==0:
-                return "There are no supplier in that City"
-            return res
+        cursor = self.conn.cursor()
+        query = "select * from Resources_Requested natural inner Accounts natural inner join Location natural inner join City where city_name = %s;"
+        cursor.execute(query, city)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result

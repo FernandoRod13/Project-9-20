@@ -4,6 +4,8 @@ from handler.category_resources import CategoryHandler
 from handler.statisc_resources import StatiscHandler
 from handler.account import  AccountHandler
 from handler.transaction import TransactionHandler
+from handler.supplier import  SupplierHandler
+
 
 
 app = Flask(__name__)
@@ -169,18 +171,26 @@ def verifyAccount():
         handler = AccountHandler()
         return handler.verifyAccount(request.args)
 
-@app.route('/accounts/suppliers')
-def getSuppliers():
+@app.route('/suppliers')
+def getAllSuppliers():
     """ Get all suppliers"""
-    handler = AccountHandler()
-    return handler.getAllSuppliers(request.args)
-   
+    handler = SupplierHandler()
+    if not request.args:
+        return handler.getAllSuppliers()
+    else:
+        return handler.searchAllSuppliersByParameter(request.args)
+    
+@app.route('/suppliers/<int:sid>')
+def getSupplierByID(sid):   
+    handler = SupplierHandler()
+    return handler.getSupplierByID(sid)
+
 @app.route('/accounts/requester')
 def getRequesters():
     """Get all requester"""
     handler = AccountHandler()   
     return handler.getAllRequester(request.args)
-
+  
 #          TRANSACTIONS ROUTES
 
 @app.route('transactions/getPaymentMethods', methods=['GET'])
@@ -197,7 +207,6 @@ def getBuyerTransaction():
 def getSupplierTransaction():
     if request.method == 'GET':
         return TransactionHandler.getTransactionBySupplier(request.args)
-
 
 if __name__ == '__main__':
     app.run()
