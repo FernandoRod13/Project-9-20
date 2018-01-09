@@ -201,12 +201,12 @@ def getPaymentMethods():
 @app.route('/transactions/getBuyerTransaction', methods=['GET'])
 def getBuyerTransaction():
     if request.method == 'GET':
-        return TransactionHandler.getTransactionByBuyer(request.args)
+        return TransactionHandler().getTransactionByBuyer(request.args)
 
 @app.route('/transactions/getSupplierTransaction', methods=['GET'])
 def getSupplierTransaction():
     if request.method == 'GET':
-        return TransactionHandler.getTransactionBySupplier(request.args)
+        return TransactionHandler().getTransactionBySupplier(request.args)
 
 if __name__ == '__main__':
     app.run()

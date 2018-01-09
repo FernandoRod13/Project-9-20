@@ -38,7 +38,17 @@ class TransactionDAO:
     # Get transaction history of certain buyer by the id.
     def getTransactionByBuyerId(self, accountId):
         cursor = self.conn.cursor()
-        query = "select purchase_id, resource_id, resource_name, description, quantity, purchase_price, purchase_date from purchases natural inner join accounts natural inner join resources where account_id = %s and account_type = 'Requester';"
+        query = "select T.purchase_id, T.resource_id, R.resource_name, " \
+                "R.description, T.quantity, T.purchase_price, T.purchase_date, " \
+                "T.account_id as buyer_id, T.first_name as buyer_first_name, T.last_name as buyer_last_name, " \
+                "R.account_id as supplier_id, R.first_name as supplier_first_name, R.last_name as supplier_last_name " \
+                "from (select first_name, last_name, account_id, purchase_id, resource_id, " \
+                "quantity, purchase_price, purchase_date " \
+                "from purchases natural inner join accounts) as T, " \
+                "(select resource_id, resource_name, description, account_id, first_name, last_name " \
+                "from accounts natural inner join resources) as R " \
+                "where T.resource_id = R.resource_id " \
+                "and T.account_id = %s;"
         cursor.execute(query, (accountId,))
         result = []
         for row in cursor:

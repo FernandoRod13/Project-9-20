@@ -19,10 +19,17 @@ class TransactionHandler:
         result = {}
         result['purchase_id'] = row[0]
         result['resource_id'] = row[1]
-        result['description'] = row[2]
-        result['quantity'] = row[3]
-        result['purchase_price'] = row[4]
-        result['purchase_date'] = row[5]
+        result['resource_name'] = row[2]
+        result['description'] = row[3]
+        result['quantity'] = row[4]
+        result['purchase_price'] = row[5]
+        result['purchase_date'] = row[6]
+        result['buyer_id'] = row[7]
+        result['buyer_first_name'] = row[8]
+        result['buyer_last_name'] = row[9]
+        result['supplier_id'] = row[10]
+        result['supplier_first_name'] = row[11]
+        result['supplier_last_name'] = row[12]
         return result
 
     # METHODS
@@ -49,7 +56,7 @@ class TransactionHandler:
         accountId = args.get("accountid")
         region = args.get("region")
         city = args.get("city")
-        dao = TransactionDAO
+        dao = TransactionDAO()
 
         transactionsList = []
         if(len(args) == 2 and accountId and region):
@@ -65,14 +72,14 @@ class TransactionHandler:
         for row in transactionsList:
             result = self.build_transaction_dict(row)
             result_list.append(result)
-        return jsonify(Transactions=transactionsList)
+        return jsonify(Transactions=result_list)
 
     # Get transaction history of certain supplier by the id.
     def getTransactionBySupplier(self, args):
         accountId = args.get("accountid")
         region = args.get("region")
         city = args.get("city")
-        dao = TransactionDAO
+        dao = TransactionDAO()
 
         transactionsList = []
         if (len(args) == 2 and accountId and region):
@@ -88,5 +95,5 @@ class TransactionHandler:
         for row in transactionsList:
             result = self.build_transaction_dict(row)
             result_list.append(result)
-        return jsonify(Transactions=transactionsList)
+        return jsonify(Transactions=result_list)
 
