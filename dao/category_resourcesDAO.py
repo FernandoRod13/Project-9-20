@@ -34,13 +34,13 @@ class category_ResourceDAO:
             result.append(row)
 
         if(keywords == 'water'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City = propane OR category = gas OR category = diesel order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where  category = propane OR category = gas OR category = diesel order by category;"
             cursor.execute(query)
         elif(keywords == 'fuel'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City = smallbottles OR category = gallonbottles order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where  category = smallbottles OR category = gallonbottles order by category;"
             cursor.execute(query)
         else:
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  where category = %s order by category;"
             cursor.execute(query, (category,))
 
         for row in cursor:

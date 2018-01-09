@@ -193,17 +193,17 @@ def getRequesters():
   
 #          TRANSACTIONS ROUTES
 
-@app.route('transactions/getPaymentMethods', methods=['GET'])
+@app.route('/transactions/getPaymentMethods', methods=['GET'])
 def getPaymentMethods():
     if request.method == 'GET':
         return TransactionHandler().getPaymentMethods(request.args)
 
-@app.route('transactions/getBuyerTransaction', methods=['GET'])
+@app.route('/transactions/getBuyerTransaction', methods=['GET'])
 def getBuyerTransaction():
     if request.method == 'GET':
         return TransactionHandler.getTransactionByBuyer(request.args)
 
-@app.route('transactions/getSupplierTransaction', methods=['GET'])
+@app.route('/transactions/getSupplierTransaction', methods=['GET'])
 def getSupplierTransaction():
     if request.method == 'GET':
         return TransactionHandler.getTransactionBySupplier(request.args)
