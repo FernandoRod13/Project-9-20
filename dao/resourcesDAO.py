@@ -1,14 +1,12 @@
 import json
 import psycopg2
 from flask import jsonify
-
+from config.dbconfig import pg_config
 
 class ResourceDAO:
     def __init__(self):                              
         self.conn = psycopg2.connect(database='project920', user='postgres', password='ManuelDB', sslmode='disable',hostaddr='35.196.249.53')     
 
-       
-   
     def getAllResources(self):
         cursor = self.conn.cursor()
         #Get Resources avaliable
@@ -67,8 +65,7 @@ class ResourceDAO:
         cursor.execute(query,(description,name) )
         for row in cursor:
             result.append(row)        
-        return result     
-   
+        return result
 
     def getResourcesbyRegion(self, Region):
         cursor = self.conn.cursor()
@@ -539,9 +536,8 @@ class ResourceDAO:
         cursor.execute(query,(City,) )
         result = []
         for row in cursor:
-            result.append(row)              
+            result.append(row)        
         return result
-
 
     def getResourcesAvaliablebyRegion_Name(self, Region,name):
         cursor = self.conn.cursor()
@@ -698,7 +694,7 @@ class ResourceDAO:
         cursor.execute(query,(qty,city,))
         result = []
         for row in cursor:
-            result.append(row)             
+            result.append(row)        
         return result
 
     def getAllResourcesAvaliablebyQty_Region(self,qty,region):
@@ -730,9 +726,8 @@ class ResourceDAO:
         cursor.execute(query,(qty,name,) )
         result = []
         for row in cursor:
-            result.append(row)              
+            result.append(row)        
         return result
-    
     
     def getAllResourcesAvaliablebyPrice(self, price):
         cursor = self.conn.cursor()
