@@ -3,6 +3,7 @@ from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
 from handler.statisc_resources import StatiscHandler
 from handler.account import  AccountHandler
+from handler.transaction import TransactionHandler
 
 
 app = Flask(__name__)
@@ -179,6 +180,24 @@ def getRequesters():
     """Get all requester"""
     handler = AccountHandler()   
     return handler.getAllRequester(request.args)
+
+#          TRANSACTIONS ROUTES
+
+@app.route('transactions/getPaymentMethods', methods=['GET'])
+def getPaymentMethods():
+    if request.method == 'GET':
+        return TransactionHandler().getPaymentMethods(request.args)
+
+@app.route('transactions/getBuyerTransaction', methods=['GET'])
+def getBuyerTransaction():
+    if request.method == 'GET':
+        return TransactionHandler.getTransactionByBuyer(request.args)
+
+@app.route('transactions/getSupplierTransaction', methods=['GET'])
+def getSupplierTransaction():
+    if request.method == 'GET':
+        return TransactionHandler.getTransactionBySupplier(request.args)
+
 
 if __name__ == '__main__':
     app.run()
