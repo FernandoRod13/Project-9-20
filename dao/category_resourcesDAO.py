@@ -34,13 +34,13 @@ class category_ResourceDAO:
             result.append(row)
 
         if(keywords == 'water'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources natural inner join Resource_Type where category = propane OR category = gas OR category = diesel order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City = propane OR category = gas OR category = diesel order by category;"
             cursor.execute(query)
         elif(keywords == 'fuel'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources natural inner join Resource_type where category = smallbottles OR category = gallonbottles order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City = smallbottles OR category = gallonbottles order by category;"
             cursor.execute(query)
         else:
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources natural inner join Resource_type where category = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City = %s order by category;"
             cursor.execute(query, (category,))
 
         for row in cursor:
@@ -65,14 +65,14 @@ class category_ResourceDAO:
     def getCategory_Qty(self, category,qty):
         cursor = self.conn.cursor()
         if(keywords == 'water'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type where quantity = %s and (category = propane OR category = gas OR category = diesel) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity = %s and (category = propane OR category = gas OR category = diesel) order by category;"
             cursor.execute(query, (qty,))
         elif(keywords == 'fuel'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type where quantity = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
             cursor.execute(query, (qty,))          
         else:
             #Get Resources avaliable
-            query = "Select name , Resource_Type.name as category, account_id, description, class, quantity from Resources natural inner join Resource_Type where category = %s and quantity = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class, quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City = %s and quantity = %s order by category;"
             cursor.execute(query, (category,qty,))
         result = []
         for row in cursor:
@@ -85,7 +85,7 @@ class category_ResourceDAO:
             query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources natural inner join Resource_type where quantity= %s (category = smallbottles OR category = gallonbottles) order by category;"
             cursor.execute(query, (qty,))
         else:
-            query = "Select name , Resource_Type.name as category, account_id, description, class, quantity from Resources_Requested natural inner join Resource_Type where category = %s and quantity = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class, quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where category = %s and quantity = %s order by category;"
             cursor.execute(query, (category,qty))
         for row in cursor:
             result.append(row)        
@@ -95,26 +95,26 @@ class category_ResourceDAO:
         cursor = self.conn.cursor()
         #Get Resources avaliable
         if(keywords == 'water'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type where price = %s and (category = propane OR category = gas OR category = diesel) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where price = %s and (category = propane OR category = gas OR category = diesel) order by category;"
             cursor.execute(query, (price,))
         elif(keywords == 'fuel'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type where price = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where price = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
             cursor.execute(query, (price,))          
         else:
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources natural inner join Resource_Type where category = %s and price = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City = %s and price = %s order by category;"
             cursor.execute(query, (category,price))
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
         if(keywords == 'water'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type where price = %s and (category = propane OR category = gas OR category = diesel) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where price = %s and (category = propane OR category = gas OR category = diesel) order by category;"
             cursor.execute(query, (price,))
         elif(keywords == 'fuel'):
-            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type where price = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where price = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
             cursor.execute(query, (price,))          
         else:
-            query = "Select name , Resource_Type.name as category, account_id, description, class, quantity from Resources_Requested natural inner join Resource_Type where category = %s and price = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, class, quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where category = %s and price = %s order by category;"
             cursor.execute(query, (category,price))
         for row in cursor:
             result.append(row)        
@@ -138,10 +138,10 @@ class category_ResourceDAO:
         #Get Resources requested
         if(keywords == 'water'):
             query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where city_name = %s and (category = propane OR category = gas OR category = diesel) order by category;"
-            cursor.execute(query, (price,))
+            cursor.execute(query, (city,))
         elif(keywords == 'fuel'):
             query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where city_anme = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
-            cursor.execute(query, (price,))          
+            cursor.execute(query, (city,))          
         else:
             query = "Select name , Resource_Type.name as category, account_id, description, class , quantity from Resources_Requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where category = %s and city_name = %s order by category;"
             cursor.execute(query, (category,city))
@@ -184,15 +184,15 @@ class category_ResourceDAO:
     def getCategoryRequested(self, keywords):
         cursor = self.conn.cursor()
         if(keywords == 'water'):
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate from Resources_Requested natural inner join Resource_Type where category = propane OR category = gas OR category = diesel order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where category = propane OR category = gas OR category = diesel order by category;"
             cursor.execute(query)
 
         elif(keywords == 'fuel'):
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity, creationDate from Resources_Requested natural inner join Resource_Type where category = smallbottles OR category = gallonbottles order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity, creationDate , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where category = smallbottles OR category = gallonbottles order by category;"
             cursor.execute(query)
            
         else:
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity, creationDate from Resources_Requested natural inner join Resource_Type where category = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity, creationDate , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where category = %s order by category;"
             cursor.execute(query,(keywords,) )
         result = []
         for row in cursor:
@@ -202,7 +202,7 @@ class category_ResourceDAO:
     def getCategoriesRequested(self):
         cursor = self.conn.cursor()
         result =[]
-        query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate from Resources_Requested natural inner join Resource_Type order by category;"
+        query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City order by category;"
         cursor.execute(query)
         for row in cursor:
             result.append(row)        
@@ -214,13 +214,13 @@ class category_ResourceDAO:
             result.append(row)
         #Get Resources requested
         if(keywords == 'water'):
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity from Resources natural inner join Resource_Type where quantity = %s (category = propane OR category = gas OR category = diesel) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity = %s (category = propane OR category = gas OR category = diesel) order by category;"
             cursor.execute(query, (qty,))
         elif(keywords == 'fuel'):
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity from Resources natural inner join Resource_type where quantity= %s (category = smallbottles OR category = gallonbottles) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity= %s (category = smallbottles OR category = gallonbottles) order by category;"
             cursor.execute(query, (qty,))
         else:
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate from Resources_Requested natural inner join Resource_Type where category = %s and quantity = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where category = %s and quantity = %s order by category;"
             cursor.execute(query, (category,qty))
         for row in cursor:
             result.append(row)        
@@ -234,13 +234,13 @@ class category_ResourceDAO:
             result.append(row)
         #Get Resources requested
         if(keywords == 'water'):
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity from Resources_Requested natural inner join Resource_Type where price = %s and (category = propane OR category = gas OR category = diesel) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where price = %s and (category = propane OR category = gas OR category = diesel) order by category;"
             cursor.execute(query, (price,))
         elif(keywords == 'fuel'):
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity from Resources_Requested natural inner join Resource_Type where price = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where price = %s and (category = smallbottles OR category = gallonbottles ) order by category;"
             cursor.execute(query, (price,))          
         else:
-            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate from Resources_Requested natural inner join Resource_Type where category = %s and price = %s order by category;"
+            query = "Select name , Resource_Type.name as category, account_id, description, quantity, creationDate, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where category = %s and price = %s order by category;"
             cursor.execute(query, (category,price))
         for row in cursor:
             result.append(row)        

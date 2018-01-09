@@ -12,6 +12,7 @@ class CategoryHandler:
         result['description'] = row[3]
         result['class'] = row[4]
         result['qty'] = row[5]
+        result['city'] = row[6]
         return result
 
     def build_resource_requested(self,row):
@@ -21,7 +22,8 @@ class CategoryHandler:
         result['accountID'] = row[2]
         result['description'] = row[3]        
         result['qty'] = row[4]
-        result['Requested_time'] = row[5]
+        result['Requested_Date'] = row[5]
+        result['city'] = row[6]
         return result
 
     def build_resource_avaliable(self,row):
@@ -34,7 +36,8 @@ class CategoryHandler:
         result['avaliability'] = row[5]
         result['qty'] = row[6]
         result['dateAdded'] = row[7]
-        result['lastUpdate'] = row[8]     
+        result['lastUpdate'] = row[8]  
+        result['city'] = row[9] 
         return result   
 
     def __init__(self):
