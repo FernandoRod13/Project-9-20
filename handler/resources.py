@@ -104,7 +104,7 @@ class ResourcesHandler:
         elif (len(args) == 2) and qty and name:
             res = dao.getAllResourcesbyQty_Name(qty,name)
         elif price or avaliability :
-            return jsonify(Error = "Price and Avaliablity can be only be use with Resources Avaliable")       
+            return jsonify(Error = "Price and Avaliablity can be only be use with Resources Avaliable") 
         else:
             return jsonify(Error = "Malformed query string"), 400
 
@@ -153,13 +153,11 @@ class ResourcesHandler:
         region = args.get("region")
         rid = args.get("rid")  
         keywords = args.get("keywords") 
-        resid = args.get("resID")
+        
         
 
         if (len(args) == 1) and description:
-            res = dao.getResourcesRequestedbyDescription(description)
-        elif (len(args) == 1) and resID:
-            res = dao.getResourcesResquestedbyresID(resID)
+            res = dao.getResourcesRequestedbyDescription(description)        
         elif (len(args) == 1) and name:
             res = dao.getResourcesRequestedbyName(name)
         elif (len(args)==2) and name and description:
@@ -215,7 +213,7 @@ class ResourcesHandler:
         region = args.get("region")
         sid = args.get("sid")  
         keywords = args.get("keywords")
-        resID = args.get("resID")
+        resID = args.get("resid")
         price = args.get("price")
         
 
@@ -240,7 +238,7 @@ class ResourcesHandler:
         elif (len(args)==2) and city and description:
             res = dao.getResourcesAvaliablebyCity_Description(city,description)     
         elif (len(args) == 1) and sid:
-            res = dao.getAllResourcesAvaliablebySID(rid)   
+            res = dao.getAllResourcesAvaliablebySID(sid)   
         elif (len(args) == 1) and keywords:
             res = dao.getAllResourcesAvaliablebyKeywords(keywords)  
         elif (len(args) == 2) and keywords and city:
