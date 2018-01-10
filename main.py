@@ -2,7 +2,6 @@ from flask import Flask, jsonify,render_template,request
 from handler.resources import ResourcesHandler
 from handler.category_resources import CategoryHandler
 from handler.statisc_resources import StatiscHandler
-from handler.account import  AccountHandler
 from handler.transaction import TransactionHandler
 from handler.supplier import  SupplierHandler
 from handler.requester import  RequesterHandler
@@ -39,7 +38,6 @@ def getAllresources():
     handler = ResourcesHandler()
     return handler.getAllresources()
 
-#VERIFTY!!!!!!!!!!!!!!!!!!!!!!!!
 @app.route('/resources/find')
 def getSearchresources():
     """ Get the items requested in a given category subcategory"""    
@@ -53,6 +51,12 @@ def getSearchresources():
 def getAllResourcesRequested():
     """ See all the Resources Requested."""
     return ResourcesHandler().getAllresources_requested()
+
+@app.route('/resources/requested/<int:rid>')
+def getResourceAvailableByID(rid):
+    """ Get Resources Requested by id"""
+    return ResourcesHandler().getResourceRequestedByID(rid)
+
    
 @app.route('/resources/requested/find')
 def getSearchResourcesRequested():
@@ -66,6 +70,17 @@ def getSearchResourcesRequested():
 def getResourcesAvailable():
     """ Show  Resources available."""
     return ResourcesHandler().getAllresources_avaliable()
+
+@app.route('/resources/available/<int:rid>')
+def getResourcesAvailableByID(rid):
+    """Get Resource By ID"""
+    return ResourcesHandler().getResourceAvaliableByRID(rid)
+
+
+@app.route('/resources/available/<int:rid>/suppliers')
+def getResourceSupplierByResourceID(rid):
+    """Get Suppliers who supply a Resource"""
+    return ResourcesHandler().getSuppliersForAvailableResourceByRID(rid)
     
 @app.route('/resources/available/find')
 def getSearchResourcesAvailable():

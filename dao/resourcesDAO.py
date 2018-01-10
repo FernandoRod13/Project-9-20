@@ -418,7 +418,7 @@ class ResourceDAO:
         return result
 
 
-    def getAllResourcesRequestedbyRID(self, rid):
+    def getResourceRequestedByRID(self, rid):
         cursor = self.conn.cursor()        
         result = []        
         query = "Select requested_name , type_name as category, account_id, description, quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where request_id = %s order by requested_name ;"
@@ -509,8 +509,7 @@ class ResourceDAO:
         for row in cursor:
             result.append(row)        
         return result
-  
-
+    
 ###################################################################
 #RESOURCES AVALIABLE
 ####################################################################
@@ -618,12 +617,11 @@ class ResourceDAO:
             result.append(row)              
         return result
 
-    def getAllResourcesAvaliablebySID(self, sid):
+    def getResourceAvaliableByRID(self, rid):
         cursor = self.conn.cursor()
         #Get Resources avaliable
         query = "Select resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where resource_id = %s order by resource_name  ;"
-
-        cursor.execute(query,(sid,) )
+        cursor.execute(query,(rid,) )
         result = []
         for row in cursor:
             result.append(row)              
@@ -823,10 +821,10 @@ class ResourceDAO:
             result.append(row)              
         return result
     
-    def getResourcesAvaliablebyresID(self, resID):
+    def getSupplierOfResourceAvaliablebyRID(self, rid):
         cursor = self.conn.cursor()
-        query = "Select resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where resource_id = %s order by resource_name ;"
-        cursor.execute(query,(resID,))       
+        query = "Select account_id as supplier_id, first_name, last_name, email, phone, city_name from resources natural inner join accounts natural inner join location natural inner join city where resource_id = %s and account_type = 'Supplier';"
+        cursor.execute(query,(rid,))       
         result = []
         for row in cursor:
             result.append(row)

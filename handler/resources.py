@@ -3,7 +3,6 @@ from flask import jsonify
 from dao.resourcesDAO import ResourceDAO
 
 
-
 class ResourcesHandler:
     def __init__(self):
         pass
@@ -42,6 +41,16 @@ class ResourcesHandler:
         result['dateAdded'] = row[7]
         result['lastUpdate'] = row[8]  
         result['city'] = row[9] 
+        return result
+
+    def build_supplier(self,row):
+        result = {}
+        result['supplier_id'] = row[0]
+        result['first_name'] = row[1]
+        result['list_name'] = row[2]
+        result['email'] = row[3]
+        result['phone'] = row[4]
+        result['city'] = row[5]
         return result
        
 
@@ -119,6 +128,17 @@ class ResourcesHandler:
         result_list = sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = res)
 
+    def getResourceRequestedByID(self,rid):
+        dao = ResourceDAO()
+        res = dao.getResourceRequestedByRID(rid)
+        if (len(res)==0):
+            return jsonify(Error = "No Resources Found with that input."), 404  
+        result_list = [] 
+        for row in res:
+            result = self.build_resource_requested(row)
+            result_list.append(result)          
+        return jsonify(Resources = result_list)
+
 
     def getAllresources_requested(self):
         dao = ResourceDAO()
@@ -151,8 +171,7 @@ class ResourcesHandler:
         qty = args.get("qty")
         name = args.get("name")          
         city = args.get("city")
-        region = args.get("region")
-        rid = args.get("rid")  
+        region = args.get("region") 
         keywords = args.get("keywords") 
         if (len(args) == 1) and description:
             res = dao.getResourcesRequestedbyDescription(description)        
@@ -171,9 +190,7 @@ class ResourcesHandler:
         elif (len(args)==2) and city and name:
             res = dao.getResourcesRequestedbyCity_Name(city,name)
         elif (len(args)==2) and city and description:
-            res = dao.getResourcesRequestedbyCity_Description(city,description)     
-        elif (len(args) == 1) and rid:
-            res = dao.getAllResourcesRequestedbyRID(rid)   
+            res = dao.getResourcesRequestedbyCity_Description(city,description)       
         elif (len(args) == 1) and keywords:
             res = dao.getAllResourcesRequestedbyKeywords(keywords)  
         elif (len(args) == 2) and keywords and city:
@@ -208,17 +225,13 @@ class ResourcesHandler:
         qty = args.get("qty")
         name = args.get("name")          
         city = args.get("city")
-        region = args.get("region")
-        sid = args.get("sid")  
+        region = args.get("region")  
         keywords = args.get("keywords")
-        resID = args.get("resid")
         price = args.get("price")
         
 
         if (len(args) == 1) and description:
             res = dao.getResourcesAvaliablebyDescription(description)
-        elif (len(args) == 1) and resID:
-            res = dao.getResourcesAvaliablebyresID(resID)
         elif (len(args) == 1) and name:
             res = dao.getResourcesAvaliablebyName(name)
         elif (len(args)==2) and name and description:
@@ -234,9 +247,7 @@ class ResourcesHandler:
         elif (len(args)==2) and city and name:
             res = dao.getResourcesAvaliablebyCity_Name(city,name)
         elif (len(args)==2) and city and description:
-            res = dao.getResourcesAvaliablebyCity_Description(city,description)     
-        elif (len(args) == 1) and sid:
-            res = dao.getAllResourcesAvaliablebySID(sid)   
+            res = dao.getResourcesAvaliablebyCity_Description(city,description)   
         elif (len(args) == 1) and keywords:
             res = dao.getAllResourcesAvaliablebyKeywords(keywords)  
         elif (len(args) == 2) and keywords and city:
@@ -268,12 +279,34 @@ class ResourcesHandler:
         
         result_list = []    
         if (len(res)==0):
-            return jsonify(Resources = "No Resources Found with that input. Try Again Later")   
+            return jsonify(Error = "No Resources Found with that input."), 404   
         for row in res:
             result = self.build_resource_avaliable(row)
             result_list.append(result)          
         result_list = sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list)
+
+    def getResourceAvaliableByRID(self,rid):
+        dao = ResourceDAO()
+        res = dao.getResourceAvaliableByRID(rid)
+        if (len(res)==0):
+            return jsonify(Error = "No Resources Found with that input."), 404  
+        result_list = [] 
+        for row in res:
+            result = self.build_resource_avaliable(row)
+            result_list.append(result)          
+        return jsonify(Resources = result_list)
+
+    def getSuppliersForAvailableResourceByRID(self, rid):
+        dao = ResourceDAO()
+        res = dao.getSupplierOfResourceAvaliablebyRID(rid)
         
+        if (len(res)==0):
+            return jsonify(Error = "No Resources Found with that input."), 404 
+        result_list = []  
+        for row in res:
+            result = self.build_supplier(row)
+            result_list.append(result)          
+        return jsonify(Supplier = result_list)
 
     
