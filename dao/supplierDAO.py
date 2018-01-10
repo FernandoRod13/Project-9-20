@@ -54,7 +54,7 @@ class SupplierDAO:
         if (type_name == 'fuel'):
             query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources natural inner join resource_type where account_type = 'Supplier' and (type_name = 'gasoline' OR type_name = 'propane' OR type_name = 'diesel') ;"
             cursor.execute(query)
-        else if (type_name == 'water'):
+        elif (type_name == 'water'):
             query = "select account_id as supplier_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources natural inner join resource_type where account_type = 'Supplier' and (type_name = 'gallonbottles' OR type_name = 'smallbottles' ) ;"
             cursor.execute(query)
         else:
