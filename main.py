@@ -176,16 +176,6 @@ def getAllTrendingResBetweenByregion_id(region_id):
     handler = StatiscHandler()
     return handler.getAllDailyRes_BetweenBySenate(region_id)
 
-#account routes
-@app.route('/accounts/login')
-def verifyAccount():
-    """ Account login"""    
-    if not request.args:
-        return jsonify("Invalid Input plese enter accountid and accountpass")
-    else:       
-        handler = AccountHandler()
-        return handler.verifyAccount(request.args)
-
 @app.route('/suppliers')
 def getAllSuppliers():
     """ Get all suppliers"""
@@ -200,12 +190,19 @@ def getSupplierByID(sid):
     handler = SupplierHandler()
     return handler.getSupplierByID(sid)
 
-@app.route('/accounts/requester')
+@app.route('/requesters')
 def getRequesters():
     """Get all requester"""
-    handler = AccountHandler()   
-    return handler.getAllRequester(request.args)
-  
+    handler = RequesterHandler() 
+    if not request.args:
+        return handler.getAllRequesters()
+    else:
+        return handler.searchAllRequestersByParameter(request.args)  
+
+@app.route('/requesters/<int:rid>')
+def getRequesterByID(rid):
+    handler = RequesterHandler()
+    return handler.getRequesterByID(rid)
 #          TRANSACTIONS ROUTES
 
 @app.route('/transactions/getPaymentMethods', methods=['GET'])
