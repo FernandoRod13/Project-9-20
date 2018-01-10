@@ -57,17 +57,14 @@ class CategoryHandler:
     def category(self,args):
         dao = category_ResourceDAO()
         category = args.get("cat")
-        qty = args.get("qty")
-        price = args.get("price")
+        qty = args.get("qty")        
         city = args.get("city")
         region = args.get("region")
        
         if (len(args) == 1 ) and category:
             res = dao.getCategory(category) 
         elif (len(args) == 2 ) and category and qty:
-            res = dao.getCategory_Qty(category,qty) 
-        elif (len(args) == 2 ) and category and price:
-            res = dao.getCategory_Price(category,price) 
+            res = dao.getCategory_Qty(category,qty)
         elif (len(args) == 2 ) and category and city:
             res = dao.getCategory_City(category,city)                 
         elif (len(args) == 2 ) and category and region:
@@ -84,17 +81,14 @@ class CategoryHandler:
     def categoryRequested(self,args):
         dao = category_ResourceDAO() 
         category = args.get("cat")
-        qty = args.get("qty")
-        price = args.get("price")
+        qty = args.get("qty")        
         city = args.get("city")
         region = args.get("region")
        
         if (len(args) == 1 ) and category:
             res = dao.getCategoryRequested(category) 
         elif (len(args) == 2 ) and category and qty:
-            res = dao.getCategoryRequested_Qty(category,qty) 
-        elif (len(args) == 2 ) and category and price:
-            res = dao.getCategoryRequested_Price(category,price) 
+            res = dao.getCategoryRequested_Qty(category,qty)         
         elif (len(args) == 2 ) and category and city:
             res = dao.getCategoryRequested_City(category,city)                 
         elif (len(args) == 2 ) and category and region:
@@ -130,7 +124,7 @@ class CategoryHandler:
         if (len(args) == 1 ) and category:
             res = dao.getCategoryAvaliable(category) 
         elif (len(args) == 2 ) and category and qty:
-            res = dao.getCategoryAvaliable_Qty(self, category,qty)
+            res = dao.getCategoryAvaliable_Qty(category,qty)
         elif (len(args) == 2 ) and category and price:
             res = dao.getCategoryAvaliable_Price(category,price) 
         elif (len(args) == 2 ) and category and city:
