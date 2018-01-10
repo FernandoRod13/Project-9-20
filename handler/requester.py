@@ -10,7 +10,7 @@ class RequesterHandler:
         result = {}
         result['requester_id'] = row[0]
         result['first_name'] = row[1]
-        result['list_name'] = row[2]
+        result['last_name'] = row[2]
         result['email'] = row[3]
         result['phone'] = row[4]
         result['city'] = row[5]
