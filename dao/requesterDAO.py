@@ -51,8 +51,15 @@ class RequesterDAO:
 
     def searchRequestersRequestingResourceByCategory(self, type_name):
         cursor = self.conn.cursor()
-        query = "select account_id as requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources_requested natural inner join resource_type where account_type = 'Requester' and type_name = %s;"
-        cursor.execute(query, (type_name,))
+        if( type_name == 'fuel'):
+            query = "select account_id as requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources_requested natural inner join resource_type where account_type = 'Requester' and ( type_name = 'propane' or type_name = 'gasoline' or type_name = 'diesel');"
+            cursor.execute(query)
+        elif( type_name == 'water'):
+            query = "select account_id as requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources_requested natural inner join resource_type where account_type = 'Requester' and ( type_name = 'smallbottles' or type_name = 'gallonbottles' );"
+            cursor.execute(query)
+        else:
+            query = "select account_id as requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join resources_requested n  'atural inner join resource_type where account_type = 'Requester' and type_name = %s;"
+            cursor.execute(query, (type_name,))
         result = []
         for row in cursor:
             result.append(row)
