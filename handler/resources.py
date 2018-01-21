@@ -309,4 +309,25 @@ class ResourcesHandler:
             result_list.append(result)          
         return jsonify(Supplier = result_list)
 
+
+
+#########################################################
+####  PUT
+#########################################################
+
+def insertResourcesRequested(self, form):
+    if len(form) != 4:
+        return jsonify(Error = "Malformed post request"), 400
+    else:
+        name = form['name']
+        resource_type = form['resource_type']
+        requester_id = form['requester_id']
+        qty = form['qty']
+        if name and resource_type and rquester_id and qty:
+            dao = ResourceDAOAO()
+            pid = dao.insertRequested(name, resource_type, requester_id, qty)
+            result = self.build_part_attributes(pid, pname, pcolor, pmaterial, pprice)
+            return jsonify(Part=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
     
