@@ -71,3 +71,94 @@ class RequesterHandler:
         else:
             part = self.build_requester(row)
             return jsonify(Requester = part)
+
+
+##################################################################
+#############  Insert
+########################################################################
+
+    def hash_password(self,password):
+        # uuid is used to generate a random number
+        salt = uuid.uuid4().hex
+        return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+    
+    def check_password(self, hashed_password, user_password):
+        password, salt = hashed_password.split(':')
+        return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+
+    def insertRequester(self, form):
+        first_name = form['first_name']
+        last_name = form['last_name']
+        email = form['email']
+        phone = form['phone']
+        address = form['address']
+        city_id = form['city_id']
+        latitude = form['latitude']
+        longitud = form['longitud']
+        photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
+        password = form['password']
+        dt = datetime.now()
+        #Hash password
+        password = self.hash_password(password)
+        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url  and password :
+            dao = RequesterDAO()
+            pid = dao.addRequester(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Requester' , password,dt)
+            result = self.getRequesterByID(pid)
+            return jsonify(Part=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
+
+
+
+############################################################################
+############ UPDATE
+#############################################################################
+
+
+    def PutRequester(self, form):
+        first_name = form['first_name']
+        last_name = form['last_name']
+        email = form['email']
+        phone = form['phone']
+        address = form['address']
+        city_id = form['city_id']
+        latitude = form['latitude']
+        longitud = form['longitud']
+        photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
+        account_type = form['account_type']
+        password = form['password']
+        dt = datetime.now()
+        id = form['id']
+        #Hash password
+        password = self.hash_password(password)
+        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and  password :
+            dao = RequesterDAO()
+            tid = dao.updateRequester(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Requester' , password,dt)
+            result = self.getRequesterByID(tid)
+            return jsonify(Part=result), 201
+
+        elif email and id and (len(form)==2):
+            dao = RequesterDAO()
+            tid = dao.updateRequesterEmail(id,email)
+            result = self.getRequesterByID(tid)
+            return jsonify(Part=result), 201
+
+        elif phone and id and (len(form)==2):
+            dao = RequesterDAO()
+            tid = dao.updateRequesterPhone(id,phone)
+            result = self.getRequesterByID(tid)
+            return jsonify(Part=result), 201
+
+        elif first_name and id and (len(form)==2):
+            dao = RequesterDAO()
+            tid = dao.updateRequesterFirst_name(id,first_name)
+            result = self.getRequesterByID(tid)
+            return jsonify(Part=result), 201
+
+        elif last_name and id and (len(form)==2):
+            dao = RequesterDAO()
+            tid = dao.updateRequesterLast_name(id,last_name)
+            result = self.getRequesterByID(tid)
+            return jsonify(Part=result), 201    
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400

@@ -232,6 +232,20 @@ class ResourcesHandler:
             result_list.append(result)  
         result_list = sorted(result_list, key=lambda k: k['name'])
         return jsonify(Resources = result_list) 
+
+
+
+    def getResourcesRequestedOfRequesterByID(self, id):
+        dao = ResourceDAO()
+        res = dao.getResourceAvaliablebSuppliedbyID(id)
+        
+        if (len(res)==0):
+            return jsonify(Error = "Requester does not wish any resources at the moment."), 404 
+        result_list = []  
+        for row in res:
+            result = self.build_resource_avaliable(row)
+            result_list.append(result)          
+        return jsonify(Resources = result_list)
        
 
     def getresources_avaliable(self,args):
@@ -323,6 +337,18 @@ class ResourcesHandler:
             result = self.build_supplier(row)
             result_list.append(result)          
         return jsonify(Supplier = result_list)
+
+    def getResourcesAvalibleOfSupplierByID(self, id):
+        dao = ResourceDAO()
+        res = dao.getResourceAvaliablebSuppliedbyID(id)
+        
+        if (len(res)==0):
+            return jsonify(Error = "Supplier does not supplie anything at the moment."), 404 
+        result_list = []  
+        for row in res:
+            result = self.build_resource_avaliable(row)
+            result_list.append(result)          
+        return jsonify(Resources = result_list)
 
 
 
@@ -473,3 +499,4 @@ def updateResourcesAvailable(self, form):
             
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
+
