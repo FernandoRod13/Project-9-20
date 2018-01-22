@@ -866,5 +866,31 @@ class ResourceDAO:
         query = "update resources_requested set quantity = %s where resource_id = %s;"
         cursor.execute(query, (name, qty, id,))
         self.conn.commit()
+
+/
+    def updateAvailable(self,id, name,resource_type,supplier_id,price,description,qty,availability):
+        cursor = self.conn.cursor()       
+        query = "update resources set resource_name = %s, resource_type_id = %s, account_id = %s ,price=%s, description=%s, quantity=%s,availability=%s where resource_id = %s;"
+        cursor.execute(query, (name,resource_type,supplier_id,price,description,qty,availability,id,))
+        self.conn.commit()
+
+    def updateAvailableQty(self,id, qty):
+        cursor = self.conn.cursor()       
+        query = "update resources set quantity=%s where resource_id = %s;"
+        cursor.execute(query, (qty,id,))
+        self.conn.commit()
+
+    def updateAvailableQty(self,id, price):
+        cursor = self.conn.cursor()       
+        query = "update resources set price=%s where resource_id = %s;"
+        cursor.execute(query, (price,id,))
+        self.conn.commit()
+
+    def updateAvailableAvailability(self,id, availability):
+        cursor = self.conn.cursor()       
+        query = "update resources set availability=%s where resource_id = %s;"
+        cursor.execute(query, (availability,id,))
+        self.conn.commit()
+        
         
         

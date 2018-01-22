@@ -1,5 +1,7 @@
 from dao.supplierDAO import SupplierDAO
 from flask import jsonify
+import uuid
+import hashlib
 
 
 
@@ -73,3 +75,34 @@ class SupplierHandler:
         else:
             part = self.build_supplier(row)
             return jsonify(Supplier = part)
+
+###################################################################
+###########  POST
+
+    def hash_password(self,password):
+        # uuid is used to generate a random number
+        salt = uuid.uuid4().hex
+        return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+    
+    def check_password(self, hashed_password, user_password):
+        password, salt = hashed_password.split(':')
+        return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+
+    def insertSupplier(self, form):
+        first_name = form['first_name']
+        last_name = form['last_name']
+        email = form['email']
+        phone = form['phone']
+        address = form['address']
+        city_id = form['city_id']
+        latitude = form['latitude']
+        longitud = form['longitud']
+        photo = 
+        account_type = form['account_type']
+        password = form['password']
+        #Hash password
+        password = self.hash_password(password)
+
+        
+        
+       
