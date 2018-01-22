@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 from flask import jsonify
 from dao.resourcesDAO import ResourceDAO
 
@@ -9,38 +10,41 @@ class ResourcesHandler:
                
     def build_resource(self,row):
         result = {}
-        result['name'] = row[0]
-        result['category'] = row[1]
-        result['accountID'] = row[2]
-        result['description'] = row[3]
-        result['class'] = row[4]
-        result['qty'] = row[5]
-        result['city'] = row[6]
+        result['resource_id'] = row[0]
+        result['name'] = row[1]
+        result['category'] = row[2]
+        result['accountID'] = row[3]
+        result['description'] = row[4]
+        result['class'] = row[5]
+        result['qty'] = row[6]
+        result['city'] = row[7]
         return result
 
     def build_resource_requested(self,row):
         result = {}
-        result['name'] = row[0]
-        result['category'] = row[1]
-        result['accountID'] = row[2]
-        result['description'] = row[3]        
-        result['qty'] = row[4]
-        result['Requested_Date'] = row[5]
-        result['city'] = row[6]
+        result['resource_id'] = row[0]
+        result['name'] = row[1]
+        result['category'] = row[2]
+        result['accountID'] = row[3]
+        result['description'] = row[4]        
+        result['qty'] = row[5]
+        result['requested_date'] = row[6]
+        result['city'] = row[7]
         return result
 
     def build_resource_avaliable(self,row):
         result = {}
-        result['name'] = row[0]
-        result['category'] = row[1]
-        result['accountID'] = row[2]
-        result['price'] = row[3]
-        result['description'] = row[4]
-        result['avaliability'] = row[5]
-        result['qty'] = row[6]
-        result['dateAdded'] = row[7]
-        result['lastUpdate'] = row[8]  
-        result['city'] = row[9] 
+        result['resource_id'] = row[0]
+        result['name'] = row[1]
+        result['category'] = row[2]
+        result['accountID'] = row[3]
+        result['price'] = row[4]
+        result['description'] = row[5]
+        result['avaliability'] = row[6]
+        result['qty'] = row[7]
+        result['dateAdded'] = row[8]
+        result['lastUpdate'] = row[9]  
+        result['city'] = row[10] 
         return result
 
     def build_supplier(self,row):
@@ -52,6 +56,17 @@ class ResourcesHandler:
         result['phone'] = row[4]
         result['city'] = row[5]
         return result
+
+    def build_resoucesRequested_attributes(self, request_id, name, resource_type, requester_id, description, qty,dt):
+        result = {}
+        result['request_id'] = request_id
+        result['name'] = name
+        result['category_number'] = resource_type
+        result['accountID'] = requester_id
+        result['description'] = description        
+        result['qty'] = qty
+        result['Requested_Date'] =dt
+        return result  
        
 
     def getAllresources(self):
@@ -316,18 +331,122 @@ class ResourcesHandler:
 #########################################################
 
 def insertResourcesRequested(self, form):
-    if len(form) != 4:
+    if len(form) != 5:
         return jsonify(Error = "Malformed post request"), 400
     else:
         name = form['name']
         resource_type = form['resource_type']
         requester_id = form['requester_id']
         qty = form['qty']
-        if name and resource_type and rquester_id and qty:
-            dao = ResourceDAOAO()
-            pid = dao.insertRequested(name, resource_type, requester_id, qty)
-            result = self.build_part_attributes(pid, pname, pcolor, pmaterial, pprice)
+        description = form['description']
+        dt = datetime.now()
+        if name and resource_type and requester_id and qty and description:
+            dao = ResourceDAO()
+            pid = dao.insertRequested(name, resource_type, requester_id,description, qty,dt)
+            res = self.getResourceRequestedByID(pid)
+            for row in res:
+                result = self.build_resource_requested(row)
+                result_list.append(result)   
+            return jsonify(Resource=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
+    
+
+def insertResourcesAvailable(self, form):
+    if len(form) != 6:
+        return jsonify(Error = "Malformed post request"), 400
+    else:
+        name = form['name']
+        resource_type = form['resource_type']
+        supplier_id = form['supplier_id']
+        price = form['price']
+        description = form['description']
+        qty = form['qty']
+        availability = form['qty']
+        dt = datetime.now()
+        if name and resource_type and supplier_id and qty and price and description and qty and availability:
+            dao = ResourceDAO()
+            pid = dao.insertAvailable(name,resource_type,supplier_id,price,description,qty,availability,dt,dt)
+            result = self.build_resoucesRequested_attributes(pid,name,resource_type,supplier_id,price,description,qty,availability,dt,dt)
             return jsonify(Part=result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
     
+
+#########################################################
+####  UPDATE
+#########################################################
+
+def updateResourcesRequested(self, form):
+    id = form['id']
+    name = form['name']
+    resource_type = form['resource_type']
+    requester_id = form['requester_id']
+    qty = form['qty']
+    description = form['description']
+    dt = datetime.now()  
+    result_list= {} 
+    if name and resource_type and requester_id and qty and description and (len(form)==5):
+        dao = ResourceDAO()
+        dao.updateRequested(id,name, resource_type, requester_id,description, qty,dt)
+        res = self.getResourceRequestedByID(id)
+        for row in res:
+            result = self.build_resource_requested(row)
+            result_list.append(result)   
+        return jsonify(Resource=result), 201
+
+    elif id and qty and (len(form)==2):
+        id = form['id']
+        qty = form['qty']
+        dao = ResourceDAO()
+        dao.updateRequestedQty(id,name, resource_type, requester_id,description, qty,dt)
+        res = self.getResourceRequestedByID(id)
+        for row in res:
+            result = self.build_resource_requested(row)
+            result_list.append(result)   
+        return jsonify(Resource=result), 201
+
+    elif len(form) != 6:
+        return jsonify(Error="Unexpected attributes in post request"), 400     
+    else:
+        return jsonify(Error = "Malformed post request"), 400
+
+def updateResourcesAvailable(self, form):
+    
+        name = form['name']
+        resource_type = form['resource_type']
+        supplier_id = form['supplier_id']
+        price = form['price']
+        description = form['description']
+        qty = form['qty']
+        availability = form['availability']
+        id = form['id']
+        result_list = {}
+        if name and resource_type and supplier_id and qty and price and description and qty and availability and (len(form)==6):
+            dao = ResourceDAO()
+            dao.updateAvailable(id, name,resource_type,supplier_id,price,description,qty,availability)
+            res = dao.getResourceAvaliableByRID(id)
+            for row in res:
+                result = self.build_resource_requested(row)
+                result_list.append(result)   
+            return jsonify(Resource=result), 201
+        elif id and qty and (len(form)==2):
+            dao = ResourceDAO()
+            dao.updateAvailableQty(id, name,resource_type,supplier_id,price,description,qty,availability)
+            res = dao.getResourceAvaliableByRID(id)
+            for row in res:
+                result = self.build_resource_requested(row)
+                result_list.append(result)   
+            return jsonify(Resource=result), 201
+        
+        elif id and price and (len(form)==2):
+            dao = ResourceDAO()
+            dao.updateAvailablePrice(id, name,resource_type,supplier_id,price,description,qty,availability)
+            res = dao.getResourceAvaliableByRID(id)
+            for row in res:
+                result = self.build_resource_requested(row)
+                result_list.append(result)   
+            return jsonify(Resource=result), 201
+            
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
