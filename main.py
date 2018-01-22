@@ -5,6 +5,8 @@ from handler.statisc_resources import StatiscHandler
 from handler.transaction import TransactionHandler
 from handler.supplier import  SupplierHandler
 from handler.requester import  RequesterHandler
+from handler.accounts import  AccountHandler
+
 
 
 app = Flask(__name__)
@@ -49,13 +51,13 @@ def getSearchresources():
 
 @app.route('/resources/requested', methods=['GET', 'POST', 'PUT'])
 def getAllResourcesRequested():
-    if request.method == 'GET':
-    """ See all the Resources Requested."""
+    ## """ See all the Resources Requested."""
+    if  request.method == 'GET':   
         return ResourcesHandler().getAllresources_requested()
     elif request.method == 'PUT':
         return ResourcesHandler().updateResourcesRequested(request.form)       
     elif request.method == 'POST':
-        return ResourcesHandler().insertResourcesRequested(request.form):
+        return ResourcesHandler().insertResourcesRequested(request.form)
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -73,15 +75,21 @@ def getSearchResourcesRequested():
     else:
         return ResourcesHandler().getresources_requested(request.args)
 
+
+@app.route('/resources/available/requester/<int:id>')
+def getResourceSupplierByResourceID(id):
+    """Get Resources that a given requester id supplies"""
+    return ResourcesHandler().getResourcesRequestedOfRequesterByID(rid)
+
 @app.route('/resources/available',methods=['GET', 'POST', 'PUT'])
 def getResourcesAvailable():
     if request.method == 'GET':
-    """ Show  Resources available."""
+   ## """ Show  Resources available."""
         return ResourcesHandler().getAllresources_avaliable()      
     elif request.method == 'PUT':
         return ResourcesHandler().updateResourcesAvailable(request.form)       
     elif request.method == 'POST':
-        return ResourcesHandler().insertResourcesAvailable(request.form):
+        return ResourcesHandler().insertResourcesAvailable(request.form)
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -92,9 +100,14 @@ def getResourcesAvailableByID(rid):
 
 
 @app.route('/resources/available/<int:rid>/suppliers')
-def getResourceSupplierByResourceID(rid):
+def getResouresAvaliableBySupplierID(rid):
     """Get Suppliers who supply a Resource"""
     return ResourcesHandler().getSuppliersForAvailableResourceByRID(rid)
+
+@app.route('/resources/available/supplier/<int:id>')
+def getResourceSuppliedbySupplierID(id):
+    """Get Resources that a given supplier id supplies"""
+    return ResourcesHandler().getResourcesAvalibleOfSupplierByID(rid)
     
 @app.route('/resources/available/find')
 def getSearchResourcesAvailable():
@@ -200,9 +213,9 @@ def getAllSuppliers():
         else:
             return handler.searchAllSuppliersByParameter(request.args)
     elif request.method == 'PUT':
-        return SupplierHandler().updateSupplier(request.form)       
+        return SupplierHandler().PutSupplier(request.form)       
     elif request.method == 'POST':
-        return SupplierHandler().insertSupplier(request.form):
+        return SupplierHandler().insertSupplier(request.form)
     else:
         return jsonify(Error = "Method not allowed"), 405
     
@@ -221,9 +234,9 @@ def getRequesters():
         else:
             return handler.searchAllRequestersByParameter(request.args)  
     elif request.method == 'PUT':
-        return RequesterHandler.updateRequester(request.form)       
+        return RequesterHandler.PutRequester(request.form)       
     elif request.method == 'POST':
-        return RequesterHandler().insertRequester(request.form):
+        return RequesterHandler().insertRequester(request.form)
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -231,6 +244,24 @@ def getRequesters():
 def getRequesterByID(rid):
     handler = RequesterHandler()
     return handler.getRequesterByID(rid)
+
+
+
+@app.route('/admin',methods=['GET', 'POST', 'PUT'])
+def getAllAdministraror():
+    """ Get all admistrator"""
+    handler = AdminHandler()
+    if request.method == 'GET':
+        if not request.args:
+            return handler.getAllAdmin()       
+    elif request.method == 'PUT':
+        return AdminHandler().PutAdmin(request.form)       
+    elif request.method == 'POST':
+        return AdminHandler().insertAdmin(request.form)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+    
 #          TRANSACTIONS ROUTES
 
 @app.route('/transactions/getPaymentMethods', methods=['GET'])
@@ -252,6 +283,19 @@ def getSupplierTransaction():
 def getResourceTransaction():
     if request.method == 'GET':
         return TransactionHandler().getTransactionByResource(request.args)
+
+
+#########################################
+#### LOGIN
+####################################
+
+@app.route('/login', methods=['GET'])
+def getAccountLogin():
+    if request.method == 'GET':
+        return AccountHandler().userLogin(request.args)
+
+
+
     
 @app.after_request
 def after_request(response):

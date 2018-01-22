@@ -1,5 +1,6 @@
 from dao.supplierDAO import SupplierDAO
 from flask import jsonify
+from datetime import datetime
 import uuid
 import hashlib
 
@@ -97,12 +98,72 @@ class SupplierHandler:
         city_id = form['city_id']
         latitude = form['latitude']
         longitud = form['longitud']
-        photo = 
-        account_type = form['account_type']
+        photo = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
         password = form['password']
+        dt = datetime.now()
         #Hash password
         password = self.hash_password(password)
+        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo and account_type and password :
+            dao = SupplierDAO()
+            id = dao.addSupplier(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo , 'Supplier' , password,dt)
+            result = self.getSupplierByID(id)
+            return jsonify(Part=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
 
+
+############################################################################
+############ UPDATE
+#############################################################################
+
+
+    def PutSupplier(self, form):
+        first_name = form['first_name']
+        last_name = form['last_name']
+        email = form['email']
+        phone = form['phone']
+        address = form['address']
+        city_id = form['city_id']
+        latitude = form['latitude']
+        longitud = form['longitud']
+        photo = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
+        password = form['password']
+        dt = datetime.now()
+        id = form['id']
+        #Hash password
+        password = self.hash_password(password)
+        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo and  password and id:
+            dao = SupplierDAO()
+            tid = dao.UpdateSupplier(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo , 'Supplier' , password,dt)
+            result = self.getSupplierByID(tid)
+            return jsonify(Part=result), 201
         
+        elif email and id and (len(form)==2):
+            dao = SupplierDAO()
+            tid = dao.updateSupplierEmail(id,email)
+            result = self.getSupplierByID(tid)
+            return jsonify(Part=result), 201
+
+        elif phone and id and (len(form)==2):
+            dao = SupplierDAO()
+            tid = dao.updateSupplierPhone(id,phone)
+            result = self.getSupplierByID(tid)
+            return jsonify(Part=result), 201
+
+        elif first_name and id and (len(form)==2):
+            dao = SupplierDAO()
+            tid = dao.updateSupplierFirst_name(id,first_name)
+            result = self.getSupplierByID(tid)
+            return jsonify(Part=result), 201
+
+        elif last_name and id and (len(form)==2):
+            dao = SupplierDAO()
+            tid = dao.updateSupplierLast_name(id,last_name)
+            result = self.getSupplierByID(tid)
+            return jsonify(Part=result), 201    
         
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
+
+
        

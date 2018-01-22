@@ -509,6 +509,16 @@ class ResourceDAO:
         for row in cursor:
             result.append(row)        
         return result
+
+
+    def getResourceRequesteddbyARequesterID(self, id):
+        cursor = self.conn.cursor()
+        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester where requester_id = %s order by resource_name ;"
+        cursor.execute(query,(id,))       
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result 
     
 ###################################################################
 #RESOURCES AVALIABLE
@@ -823,12 +833,21 @@ class ResourceDAO:
     
     def getSupplierOfResourceAvaliablebyRID(self, rid):
         cursor = self.conn.cursor()
-        query = "Select account_id as supplier_id, first_name, last_name, email, phone, city_name from resources natural inner join accounts natural inner join location natural inner join city where resource_id = %s and account_type = 'Supplier';"
+        query = "Select account_id , first_name, last_name, email, phone, city_name from resources natural inner join accounts natural inner join location natural inner join city natural inner join supplier where resource_id = %s and account_type = 'Supplier';"
         cursor.execute(query,(rid,))       
         result = []
         for row in cursor:
             result.append(row)
         return result  
+
+    def getResourceAvaliablebSuppliedbyID(self, id):
+        cursor = self.conn.cursor()
+        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier where supplier_id = %s order by resource_name ;"
+        cursor.execute(query,(id,))       
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result 
 
 ################################################################################
 #############    INSERT
@@ -837,17 +856,16 @@ class ResourceDAO:
         cursor = self.conn.cursor()       
         query = "insert into resources_requested(name, resource_type_id, account_id,description, quantity, creation_date) values (%s, %s, %s, %s, %s, %s ) returning request_id;"
         cursor.execute(query, (name, resource_type, requester_id,description, qty,dt,))
-        pid = cursor.fetchone()[0]
+        cursor.fetchone()[0]
         self.conn.commit()
-        return pid
-
+        
     def insertAvailable(self, name,resource_type, supplier_id,price,description,qty,availability,dt,dt2):
         cursor = self.conn.cursor()       
         query = "insert into resources(resource_name, resource_type_id, account_id,price, description, quantity,availability, creation_date, last_update) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning resource_id;"
         cursor.execute(query, ( name,resource_type,supplier_id,price,description,qty,availability,dt,dt2,))
         pid = cursor.fetchone()[0]
         self.conn.commit()
-        return pid
+        
 
 
     ##############################################################################
@@ -867,7 +885,7 @@ class ResourceDAO:
         cursor.execute(query, (name, qty, id,))
         self.conn.commit()
 
-/
+
     def updateAvailable(self,id, name,resource_type,supplier_id,price,description,qty,availability):
         cursor = self.conn.cursor()       
         query = "update resources set resource_name = %s, resource_type_id = %s, account_id = %s ,price=%s, description=%s, quantity=%s,availability=%s where resource_id = %s;"
