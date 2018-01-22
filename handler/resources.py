@@ -421,8 +421,13 @@ def updateResourcesAvailable(self, form):
         qty = form['qty']
         availability = form['availability']
         id = form['id']
-        result_list = {}
+        result_list = {} 
+             
+                 
         if name and resource_type and supplier_id and qty and price and description and qty and availability and (len(form)==6):
+            temp = ResourceDAO().getResourceAvaliableByRID(id)
+            if (len(temp)==0):
+                return jsonify(Error="Resource with that Id was not found."), 400
             dao = ResourceDAO()
             dao.updateAvailable(id, name,resource_type,supplier_id,price,description,qty,availability)
             res = dao.getResourceAvaliableByRID(id)
@@ -431,17 +436,35 @@ def updateResourcesAvailable(self, form):
                 result_list.append(result)   
             return jsonify(Resource=result), 201
         elif id and qty and (len(form)==2):
+            temp = ResourceDAO().getResourceAvaliableByRID(id)
+            if (len(temp)==0):
+                return jsonify(Error="Resource with that Id was not found."), 400
             dao = ResourceDAO()
-            dao.updateAvailableQty(id, name,resource_type,supplier_id,price,description,qty,availability)
+            dao.updateAvailableQty(id, qty)
             res = dao.getResourceAvaliableByRID(id)
             for row in res:
                 result = self.build_resource_requested(row)
                 result_list.append(result)   
             return jsonify(Resource=result), 201
-        
-        elif id and price and (len(form)==2):
+
+        elif id and availability and (len(form)==2):
+            temp = ResourceDAO().getResourceAvaliableByRID(id)
+            if len(temp)==0:
+                return jsonify(Error="Resource with that Id was not found."), 400
             dao = ResourceDAO()
-            dao.updateAvailablePrice(id, name,resource_type,supplier_id,price,description,qty,availability)
+            dao.updateAvailableAvailability(id, qty)
+            res = dao.getResourceAvaliableByRID(id)
+            for row in res:
+                result = self.build_resource_requested(row)
+                result_list.append(result)   
+            return jsonify(Resource=result), 201
+
+        elif id and price and (len(form)==2):
+            temp = ResourceDAO().getResourceAvaliableByRID(id)
+            if (len(temp)==0):
+                return jsonify(Error="Resource with that Id was not found."), 400
+            dao = ResourceDAO()
+            dao.updateAvailablePrice(id, price)
             res = dao.getResourceAvaliableByRID(id)
             for row in res:
                 result = self.build_resource_requested(row)
