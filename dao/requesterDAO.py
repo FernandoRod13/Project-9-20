@@ -98,75 +98,77 @@ class RequesterDAO:
 ####  INSERT
 ############################################################################
 
-
-
-
-    def addRequester(self, first_name , last_name , email , phone , address , city_id , latitude , longitud , photo , account_type , password, dt):
+    def addRequester(self, first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , account_type , password, dt):
         cursor = self.conn.cursor()       
-        query = "insert into location (address, city_id, latitude,longitud) values (%s, %s, %s, %s ) returning location_id;"
+        query = "insert into location (address, city_id, latitude, longitude) values (%s, %s, %s, %s ) returning location_id;"
         cursor.execute(query, ( address,city_id,latitude, longitud,))
         location_id = cursor.fetchone()[0]
-        self.conn.commit()
-        query = "insert into resources(first_name , last_name , email , phone , location_id , photo , account_type , creation_date, password) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning account_id;"
-        cursor.execute(query, (first_name , last_name , email , phone , location_id , photo , account_type , creation_date, password,))
+        query = "insert into accounts (first_name , last_name , email , phone , location_id , photo_url , account_type , creation_date, password) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning account_id;"
+        cursor.execute(query, (first_name , last_name , email , phone , location_id , photo_url , account_type , dt, password,))
         account_id = cursor.fetchone()[0]
-        self.conn.commit()
-        query = "insert into requester (account_id) values (%s);"
+        query = "insert into requester (account_id) values (%s) returning requester_id;"
         cursor.execute(query, ( account_id,))
         requester_id = cursor.fetchone()[0]
         self.conn.commit()
-        return requester_id;
+        return requester_id;    
     
 
 #########################################################################
 ####  Update
 ############################################################################
 
-
-    def updateRequester(self, id, first_name , last_name , email , phone , address , city_id , latitude , longitud , photo , account_type , password):
+    def updateRequester(self,id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url):
         cursor = self.conn.cursor() 
         query = "Select account_id from requester where requester_id = %s;"
         cursor.execute(query, ( id,))
-        account_id = cursor.fetchone()[0]            
-        query = "update location set address = %s, city_id = = %s, latitude = %s ,longitud = %s where account_id = %s"
-        cursor.execute(query, ( address,city_id,latitude, longitud,))
-        location_id = cursor.fetchone()[0]
-        self.conn.commit()
-        query = "update resources(first_name = %s , last_name  = %s , email  = %s , phone = %s , location_id  = %s, photo  = %s, account_type  = %s, password  = %s) where account_id = %s;"
-        cursor.execute(query, (first_name , last_name , email , phone , location_id , photo , account_type , creation_date, password,))
-        account_id = cursor.fetchone()[0]
+        account_id = cursor.fetchone()[0]  
+        query = "Select location_id from accounts where account_id = %s;"
+        cursor.execute(query, ( account_id,))
+        location_id = cursor.fetchone()[0]            
+        query = "update location set address = %s, city_id = %s, latitude = %s , longitude = %s where location_id = %s"
+        cursor.execute(query, ( address,city_id,latitude, longitud,location_id,))
+        query = "update accounts set first_name = %s , last_name  = %s , email  = %s , phone = %s , photo_url  = %s where account_id = %s;"
+        cursor.execute(query, (first_name , last_name , email , phone ,  photo_url  ,account_id,))
         self.conn.commit()        
         return id;
 
-    def updateRequesterPhone(id, phone):
+    def updateRequesterPhone(self,id, phone):
         cursor = self.conn.cursor() 
+        query = "Select account_id from requester where requester_id = %s;"
+        cursor.execute(query, ( id,))
+        account_id = cursor.fetchone()[0]  
         query = "update accounts set phone  = %s where account_id = %s;"
-        cursor.execute(query, (phone,))
-        account_id = cursor.fetchone()[0]
+        cursor.execute(query, (phone,account_id,))
         self.conn.commit()        
         return id;
 
-    def updateRequesterEmail(id, email):
+    def updateRequesterEmail(self,id, email):
         cursor = self.conn.cursor() 
+        query = "Select account_id from requester where requester_id = %s;"
+        cursor.execute(query, ( id,))
+        account_id = cursor.fetchone()[0] 
         query = "update accounts set email = %s where account_id = %s;"
-        cursor.execute(query, (email,))
-        account_id = cursor.fetchone()[0]
+        cursor.execute(query, (email,account_id,))
         self.conn.commit()        
         return id;
 
 
-    def updateRequesterFirst_name(id, name):
+    def updateRequesterFirst_name(self,id, name):
         cursor = self.conn.cursor() 
+        query = "Select account_id from requester where requester_id = %s;"
+        cursor.execute(query, ( id,))
+        account_id = cursor.fetchone()[0]  
         query = "update accounts set first_name = %s where account_id = %s;"
-        cursor.execute(query, (name,))
-        account_id = cursor.fetchone()[0]
+        cursor.execute(query, (name,account_id,))
         self.conn.commit()        
         return id;
 
-    def updateRequesterLast_name(id, name):
+    def updateRequesterLast_name(self,id, name):
         cursor = self.conn.cursor() 
+        query = "Select account_id from requester where requester_id = %s;"
+        cursor.execute(query, ( id,))
+        account_id = cursor.fetchone()[0]  
         query = "update accounts set last_name = %s where account_id = %s;"
-        cursor.execute(query, (name,))
-        account_id = cursor.fetchone()[0]
+        cursor.execute(query, (name,account_id,))
         self.conn.commit()        
         return id;
