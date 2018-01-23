@@ -23,7 +23,7 @@ class RequesterHandler:
 
     def getAllRequesters(self):
         dao = RequesterDAO()
-        res = dao.getAllRequester()
+        res = dao.getAllRequesters()
         result_list = []
         
         if len(res) == 0:
