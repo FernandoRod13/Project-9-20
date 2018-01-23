@@ -66,6 +66,22 @@ class AccountHandler:
         else:
             return jsonify(Error="Unexpected attributes in Login request"), 400
 
+    def userChangePassword(self, form):
+        email = form['email']
+        password = form['password']
+        
+        if password and email and (len(form)==2):
+            dao = AccountsDAO()
+            password = hash_password(password)
+            result = dao.accountLogin(email,password)
+            if (len(result)==0):
+                return jsonify(Error = "No User Found with that email or Password ")
+            return jsonify(Admin=result), 201
+        else:
+            return jsonify(Error="Unexpected attributes in Login request"), 400
+
+    
+
             
 
 ###################################################################

@@ -293,6 +293,17 @@ def getResourceTransaction():
 def getAccountLogin():
     if request.method == 'GET':
         return AccountHandler().userLogin(request.args)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/user/changepassword', methods=['GET'])
+def getAccountLogin():
+    if request.method == 'GET':
+        return AccountHandler().userChangePassword(request.args)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+
 
 
 

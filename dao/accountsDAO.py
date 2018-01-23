@@ -28,6 +28,13 @@ class AccountsDAO:
         query = "select account_id as requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join administrator where email = %s and password = %s;"
         cursor.execute(query, (email,password))
         return cursor.fetchone()
+
+
+    def accountChangePassword(self, email,password):
+        cursor = self.conn.cursor()
+        query = "update account_id set password =%s from accounts natural inner join location natural inner join city natural inner join administrator where email = %s;"
+        cursor.execute(query, (email,password))
+        return cursor.fetchone()
        
 
 #########################################################################
