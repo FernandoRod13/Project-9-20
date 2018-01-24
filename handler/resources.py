@@ -371,7 +371,7 @@ class ResourcesHandler:
                 dao = ResourceDAO()
                 pid = dao.insertRequested(name, resource_type, requester_id,description, qty,dt, keywords)
                 res = self.getResourceRequestedByID(pid)
-                return res, 201
+                return res
 
             else:
                 return jsonify(Error="Unexpected attributes in post request"), 400
