@@ -28,8 +28,8 @@ class AccountsDAO:
 
     def accountLogin(self, email,password):
         cursor = self.conn.cursor()
-        query = "select account_id , first_name, last_name, email, phone, city_name from accounts natural inner join city natual inner join location where email = %s and password = %s;"
-        cursor.execute(query, (email,password))
+        query = "select account_id , first_name, last_name, email, phone, city_name from accounts natural inner join city natural inner join location where email = %s and password = %s;"
+        cursor.execute(query, (email,password,))
         result = []
         for row in cursor:
             result.append(row)
@@ -38,14 +38,13 @@ class AccountsDAO:
 
     def accountChangePassword(self, email,password):
         cursor = self.conn.cursor()
-        query = "update account_id set password =%s from accounts  where email = %s;"
-        cursor.execute(query, (email,password))
-        result = []
-        for row in cursor:
-            result.append(row)
-        return result
+        query = "update accounts set password =%s  where email = %s;"
+        cursor.execute(query, (password,email))
+        self.conn.commit()
+        return'Password as been change'
+        
        
-
+         
 #########################################################################
 ####  INSERT
 ############################################################################
