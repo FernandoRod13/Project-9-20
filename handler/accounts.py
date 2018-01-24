@@ -65,7 +65,7 @@ class AccountHandler:
             password = self.hash_password(password)
             res = dao.accountLogin(email,password)
             if len(res)==0:
-                return jsonify(Error = "No User Found with that email or Password " )
+                return jsonify(Error = "No User Found with that email or Password " ),404
             else:
                 result_list = []
             for row in res:
