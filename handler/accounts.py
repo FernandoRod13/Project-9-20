@@ -10,10 +10,20 @@ class AccountHandler:
     
     def __init__(self):
             pass
+
+     
+    def hash_password(self,password):
+        # uuid is used to generate a random number
+        salt =uuid.uuid3(uuid.NAMESPACE_DNS, 'proyect920.org').hex
+        return hashlib.sha1(salt.encode() + password.encode()).hexdigest() + ':' + salt
+    
+    def check_password(self, hashed_password, user_password):
+        password, salt = hashed_password.split(':')
+        return password == hashlib.sha1(salt.encode() + user_password.encode()).hexdigest()
     
     def build_admin(self,row):
         result = {}
-        result['supplier_id'] = row[0]
+        result['admin_id'] = row[0]
         result['first_name'] = row[1]
         result['last_name'] = row[2]
         result['email'] = row[3]
@@ -22,7 +32,7 @@ class AccountHandler:
         return result
 
     def getAllAdmin(self):
-        dao = AdminDAO()
+        dao = AccountsDAO()
         res = dao.getAllAdmin()
         result_list = []
         
@@ -35,61 +45,77 @@ class AccountHandler:
             return jsonify(Administrator = result_list)
 
     def getAdminByID(self,id):
-        dao = SupplierDAO()
-        row = dao.searchAdminByID(id)
-        if not row:
+        dao = AccountsDAO()
+        res = dao.searchAdminByID(id)
+        if not res:
             return jsonify(Error = "Admin Not Found"), 404
         else:
-            part = self.build_supplier(row)
-            return jsonify(Supplier = part)
+            result_list = []
+            for row in res:
+                result = self.build_admin(row)
+                result_list.append(result)            
+            return jsonify(Administrator = result_list)
 
     def userLogin(self, form):
-        email = form['email']
-        password = form['password']
+        email = form.get('email')
+        password = form.get('password')
         
-        if password and email and (len(form)==2):
-            dao = AdminDAO()
-            password = hash_password(password)
-            result = dao.accountLogin(email,password)
-            if (len(result)==0):
-                return jsonify(Error = "No User Found with that email or Password ")
-            return jsonify(Admin=result), 201
+        if password and email:
+            dao = AccountsDAO()
+            password = self.hash_password(password)
+            res = dao.accountLogin(email,password)
+            if len(res)==0:
+                return jsonify(Error = "No User Found with that email or Password " )
+            else:
+                result_list = []
+            for row in res:
+                result = self.build_admin(row)
+                result_list.append(result)            
+                return jsonify(Administrator = result_list)       
         else:
             return jsonify(Error="Unexpected attributes in Login request"), 400
+
+    def userChangePassword(self, form):
+        email = form.get('email')
+        password = form.get('password')        
+        if password and email and (len(form)==2):
+            dao = AccountsDAO()
+            password = self.hash_password(password)
+            res = dao.accountChangePassword(email,password) 
+            return jsonify(Administrator = res)        
+            
+        else:
+            return jsonify(Error="Unexpected attributes in Login request"), 400
+
+    
 
             
 
 ###################################################################
 ###########  POST
 
-    def hash_password(self,password):
-        # uuid is used to generate a random number
-        salt = uuid.uuid4().hex
-        return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
-    
-    def check_password(self, hashed_password, user_password):
-        password, salt = hashed_password.split(':')
-        return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+   
 
     def insertAdmin(self, form):
-        first_name = form['first_name']
-        last_name = form['last_name']
-        email = form['email']
-        phone = form['phone']
-        address = form['address']
-        city_id = form['city_id']
-        latitude = form['latitude']
-        longitud = form['longitud']
+        first_name = form.get('first_name')  
+        last_name = form.get('last_name')
+        email = form.get('email')
+        phone = form.get('phone')
+        address = form.get('address')
+        city_id = form.get('city_id')
+        latitude = form.get('latitude')
+        longitud = form.get('longitud')   
+        password = form.get('password')
+        dt = datetime.now()       
         photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
-        password = form['password']
-        dt = datetime.now()
+       
         #Hash password
         password = self.hash_password(password)
         if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and password :
-            dao = AdminDAO()
-            id = dao.addSupplier(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
+            dao = AccountsDAO()
+            id = dao.addAdmin(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
             result = self.getAdminByID(id)
-            return jsonify(Admin=result), 201
+            return (result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
@@ -100,49 +126,46 @@ class AccountHandler:
 
 
     def PutAdmin(self, form):
-        first_name = form['first_name']
-        last_name = form['last_name']
-        email = form['email']
-        phone = form['phone']
-        address = form['address']
-        city_id = form['city_id']
-        latitude = form['latitude']
-        longitud = form['longitud']
-        photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
-        password = form['password']
-        dt = datetime.now()
-        id = form['id']
-        #Hash password
-        password = self.hash_password(password)
-        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and password :
-            dao = AdminDAO()
-            tid = dao.updateAdmin(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
+        first_name = form.get('first_name')  
+        last_name = form.get('last_name')
+        email = form.get('email')
+        phone = form.get('phone')
+        address = form.get('address')
+        city_id = form.get('city_id')
+        latitude = form.get('latitude')
+        longitud = form.get('longitud')   
+        photo_url = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'    
+        id = form.get('id')
+
+        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url :
+            dao = AccountsDAO()
+            tid = dao.updateAdmin(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url)
             result = self.getAdminByID(tid)
-            return jsonify(Admin=result), 201
+            return (result), 201
 
         elif email and id and (len(form)==2):
-            dao = AdminDAO()
+            dao = AccountsDAO()
             tid = dao.updateAdminEmail(id,email)
             result = self.getAdminByID(tid)
-            return jsonify(Admin=result), 201
+            return  (result), 201
 
         elif phone and id and (len(form)==2):
-            dao = AdminDAO()
+            dao = AccountsDAO()
             tid = dao.updateAdminPhone(id,phone)
             result = self.getAdminByID(tid)
-            return jsonify(Admin=result), 201
+            return  (result), 201
 
         elif first_name and id and (len(form)==2):
-            dao = AdminDAO()
+            dao = AccountsDAO()
             tid = dao.updateAdminFirst_name(id,first_name)
             result = self.getAdminByID(tid)
-            return jsonify(Admin=result), 201
+            return  (result), 201
 
         elif last_name and id and (len(form)==2):
-            dao = AdminDAO()
+            dao = AccountsDAO()
             tid = dao.updateAdminLast_name(id,last_name)
             result = self.getAdminByID(tid)
-            return jsonify(Admin=result), 201    
+            return  (result), 201    
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 

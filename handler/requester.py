@@ -1,5 +1,10 @@
 from dao.requesterDAO import RequesterDAO
 from flask import jsonify
+from datetime import datetime
+import uuid
+import hashlib
+
+
 
 class RequesterHandler:
     
@@ -18,7 +23,7 @@ class RequesterHandler:
 
     def getAllRequesters(self):
         dao = RequesterDAO()
-        res = dao.getAllRequester()
+        res = dao.getAllRequesters()
         result_list = []
         
         if len(res) == 0:
@@ -79,32 +84,32 @@ class RequesterHandler:
 
     def hash_password(self,password):
         # uuid is used to generate a random number
-        salt = uuid.uuid4().hex
-        return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+        salt =uuid.uuid3(uuid.NAMESPACE_DNS, 'proyect920.org').hex
+        return hashlib.sha1(salt.encode() + password.encode()).hexdigest() + ':' + salt
     
     def check_password(self, hashed_password, user_password):
         password, salt = hashed_password.split(':')
-        return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
+        return password == hashlib.sha1(salt.encode() + user_password.encode()).hexdigest()
 
     def insertRequester(self, form):
-        first_name = form['first_name']
-        last_name = form['last_name']
-        email = form['email']
-        phone = form['phone']
-        address = form['address']
-        city_id = form['city_id']
-        latitude = form['latitude']
-        longitud = form['longitud']
+        first_name = form.get('first_name')  
+        last_name = form.get('last_name')
+        email = form.get('email')
+        phone = form.get('phone')
+        address = form.get('address')
+        city_id = form.get('city_id')
+        latitude = form.get('latitude')
+        longitud = form.get('longitud')   
+        password = form.get('password')
+        dt = datetime.now()   
         photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
-        password = form['password']
-        dt = datetime.now()
         #Hash password
         password = self.hash_password(password)
         if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url  and password :
             dao = RequesterDAO()
             pid = dao.addRequester(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Requester' , password,dt)
             result = self.getRequesterByID(pid)
-            return jsonify(Part=result), 201
+            return (result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
@@ -116,49 +121,45 @@ class RequesterHandler:
 
 
     def PutRequester(self, form):
-        first_name = form['first_name']
-        last_name = form['last_name']
-        email = form['email']
-        phone = form['phone']
-        address = form['address']
-        city_id = form['city_id']
-        latitude = form['latitude']
-        longitud = form['longitud']
-        photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
-        account_type = form['account_type']
-        password = form['password']
-        dt = datetime.now()
-        id = form['id']
-        #Hash password
-        password = self.hash_password(password)
-        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and  password :
+        first_name = form.get('first_name')  
+        last_name = form.get('last_name')
+        email = form.get('email')
+        phone = form.get('phone')
+        address = form.get('address')
+        city_id = form.get('city_id')
+        latitude = form.get('latitude')
+        longitud = form.get('longitud')   
+        photo = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'    
+        id = form.get('id')
+        
+        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo and id:
             dao = RequesterDAO()
-            tid = dao.updateRequester(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Requester' , password,dt)
+            tid = dao.updateRequester(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo)
             result = self.getRequesterByID(tid)
-            return jsonify(Part=result), 201
+            return (result), 201
 
         elif email and id and (len(form)==2):
             dao = RequesterDAO()
             tid = dao.updateRequesterEmail(id,email)
             result = self.getRequesterByID(tid)
-            return jsonify(Part=result), 201
+            return (result), 201
 
         elif phone and id and (len(form)==2):
             dao = RequesterDAO()
             tid = dao.updateRequesterPhone(id,phone)
             result = self.getRequesterByID(tid)
-            return jsonify(Part=result), 201
+            return (result), 201
 
         elif first_name and id and (len(form)==2):
             dao = RequesterDAO()
             tid = dao.updateRequesterFirst_name(id,first_name)
             result = self.getRequesterByID(tid)
-            return jsonify(Part=result), 201
+            return (result), 201
 
         elif last_name and id and (len(form)==2):
             dao = RequesterDAO()
             tid = dao.updateRequesterLast_name(id,last_name)
             result = self.getRequesterByID(tid)
-            return jsonify(Part=result), 201    
+            return (result), 201    
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400

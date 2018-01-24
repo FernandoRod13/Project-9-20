@@ -8,6 +8,6 @@
         "**/.pyc": true
     },
 
-    "python.pythonPath": "/usr/local/bin/python3-32",
-    "python.linting.pylintEnabled": false
+    "python.pythonPath": "/usr/bin/python",
+    "python.linting.pylintEnabled": true
 }

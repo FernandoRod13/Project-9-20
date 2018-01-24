@@ -211,9 +211,9 @@ def getAllSuppliers():
         if not request.args:
             return handler.getAllSuppliers()
         else:
-            return handler.searchAllSuppliersByParameter(request.args)
+            return handler.searchAllSuppliersByParameter(request.form)
     elif request.method == 'PUT':
-        return SupplierHandler().PutSupplier(request.form)       
+        return SupplierHandler().PutSupplier(request.form)
     elif request.method == 'POST':
         return SupplierHandler().insertSupplier(request.form)
     else:
@@ -232,9 +232,9 @@ def getRequesters():
         if not request.args:
             return handler.getAllRequesters()
         else:
-            return handler.searchAllRequestersByParameter(request.args)  
+            return handler.searchAllRequestersByParameter(request.args)
     elif request.method == 'PUT':
-        return RequesterHandler.PutRequester(request.form)       
+        return RequesterHandler().PutRequester(request.form)
     elif request.method == 'POST':
         return RequesterHandler().insertRequester(request.form)
     else:
@@ -250,14 +250,14 @@ def getRequesterByID(rid):
 @app.route('/admin',methods=['GET', 'POST', 'PUT'])
 def getAllAdministraror():
     """ Get all admistrator"""
-    handler = AdminHandler()
+    handler = AccountHandler()
     if request.method == 'GET':
         if not request.args:
             return handler.getAllAdmin()       
     elif request.method == 'PUT':
-        return AdminHandler().PutAdmin(request.form)       
+        return AccountHandler().PutAdmin(request.form)       
     elif request.method == 'POST':
-        return AdminHandler().insertAdmin(request.form)
+        return AccountHandler().insertAdmin(request.form)
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -293,6 +293,17 @@ def getResourceTransaction():
 def getAccountLogin():
     if request.method == 'GET':
         return AccountHandler().userLogin(request.args)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/user/changepassword', methods=['GET'])
+def getChangeAccountPassword():
+    if request.method == 'GET':
+        return AccountHandler().userChangePassword(request.args)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+
 
 
 
