@@ -168,7 +168,7 @@ class AccountHandler:
             result = self.getAdminByID(id)
             return (result), 201
         else:
-            return jsonify(Error= ), 400
+            return jsonify(Error= parsed_json), 400
             
             #return jsonify(Error="Unexpected attributes in post request"), 400
 
