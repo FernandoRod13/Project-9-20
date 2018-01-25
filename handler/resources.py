@@ -364,7 +364,7 @@ class ResourcesHandler:
             # parsed_json = json.loads(test)
             name = parsed_json['name']  
             resource_type = parsed_json['resource_type']
-            supplier_id = parsed_json['supplier_id']
+            requester_id = parsed_json['requester_id']
             description = parsed_json['description']
             keywords = parsed_json['keywords']
             qty = parsed_json['qty']
@@ -395,7 +395,7 @@ class ResourcesHandler:
         
 
     def insertResourcesAvailable(self, form, parsed_json):
-        
+                
         if len(form)==0:
             # parsed_json = json.loads(test)
             name = parsed_json['name']  
