@@ -130,13 +130,13 @@ class AccountHandler:
 
    
 
-    def insertAdmin(self, form, test):
+    def insertAdmin(self, form, parsed_json):
         
         dt = datetime.now()       
         photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
        
         if len(form)==0:
-            parsed_json = json.loads(test)
+            # parsed_json = json.loads(test)
             first_name = parsed_json['first_name']  
             last_name = parsed_json['last_name']
             email = parsed_json['email']
@@ -146,6 +146,8 @@ class AccountHandler:
             latitude = parsed_json['latitude']
             longitud = parsed_json['longitud']   
             password = parsed_json['password']
+
+            
         else:
             first_name = form.get('first_name')  
             last_name = form.get('last_name')
