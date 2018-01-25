@@ -3,6 +3,7 @@ from flask import jsonify
 from datetime import datetime
 import uuid
 import hashlib
+import json
 
 
 
@@ -129,31 +130,45 @@ class AccountHandler:
 
    
 
-    def insertAdmin(self, form):
-        first_name = form.get('first_name')  
-        last_name = form.get('last_name')
-        email = form.get('email')
-        phone = form.get('phone')
-        address = form.get('address')
-        city_id = form.get('city_id')
-        latitude = form.get('latitude')
-        longitud = form.get('longitud')   
-        password = form.get('password')
+    def insertAdmin(self, form, test):
+        
         dt = datetime.now()       
         photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
        
-        
-        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and password :
-            #Hash password
-            password = self.hash_password(password)
-            dao = AccountsDAO()
-            id = dao.addAdmin(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
-            result = self.getAdminByID(id)
-            return (result), 201
+        if len(form)==0:
+            parsed_json = json.loads(test)
+            first_name = parsed_json['first_name']  
+            last_name = parsed_json['last_name']
+            email = parsed_json['email']
+            phone = parsed_json['phone']
+            address = parsed_json['address']
+            city_id = parsed_json['city_id']
+            latitude = parsed_json['latitude']
+            longitud = parsed_json['longitud']   
+            password = parsed_json['password']
         else:
-            return jsonify(form)
+            first_name = form.get('first_name')  
+            last_name = form.get('last_name')
+            email = form.get('email')
+            phone = form.get('phone')
+            address = form.get('address')
+            city_id = form.get('city_id')
+            latitude = form.get('latitude')
+            longitud = form.get('longitud')   
+            password = form.get('password')
+
             
-            #return jsonify(Error="Unexpected attributes in post request"), 400
+            if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and password :
+                #Hash password
+                password = self.hash_password(password)
+                dao = AccountsDAO()
+                id = dao.addAdmin(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
+                result = self.getAdminByID(id)
+                return (result), 201
+            else:
+                return jsonify(Error= test), 400
+                
+                #return jsonify(Error="Unexpected attributes in post request"), 400
 
 
 ############################################################################
@@ -161,7 +176,7 @@ class AccountHandler:
 #############################################################################
 
 
-    def PutAdmin(self, form):
+    def PutAdmin(self, form, test):
         first_name = form.get('first_name')  
         last_name = form.get('last_name')
         email = form.get('email')
@@ -172,6 +187,8 @@ class AccountHandler:
         longitud = form.get('longitud')   
         photo_url = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'    
         id = form.get('id')
+
+        first_name =  tes
 
         if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url :
             dao = AccountsDAO()
