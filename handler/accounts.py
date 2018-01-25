@@ -136,16 +136,26 @@ class AccountHandler:
         photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
        
         if len(form)==0:
-            parsed_json = json.loads(test)
-            first_name = parsed_json['first_name']  
-            last_name = parsed_json['last_name']
-            email = parsed_json['email']
-            phone = parsed_json['phone']
-            address = parsed_json['address']
-            city_id = parsed_json['city_id']
-            latitude = parsed_json['latitude']
-            longitud = parsed_json['longitud']   
-            password = parsed_json['password']
+            # parsed_json = json.loads(test)
+            # first_name = parsed_json['first_name']  
+            # last_name = parsed_json['last_name']
+            # email = parsed_json['email']
+            # phone = parsed_json['phone']
+            # address = parsed_json['address']
+            # city_id = parsed_json['city_id']
+            # latitude = parsed_json['latitude']
+            # longitud = parsed_json['longitud']   
+            # password = parsed_json['password']
+
+            first_name = test.get('first_name')  
+            last_name = test.get('last_name')
+            email = test.get('email')
+            phone = test.get('phone')
+            address = test.get('address')
+            city_id = test.get('city_id')
+            latitude = test.get('latitude')
+            longitud = test.get('longitud')   
+            password = test.get('password')
         else:
             first_name = form.get('first_name')  
             last_name = form.get('last_name')
