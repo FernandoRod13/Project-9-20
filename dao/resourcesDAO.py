@@ -866,6 +866,19 @@ class ResourceDAO:
         print(id)
         return id
         
+    def insertAvailable(self, name, resource_type, requester_id, description, qty, dt,keywords):
+        cursor = self.conn.cursor()       
+        query = "insert into resources_requested(requested_name, resource_type_id, account_id,description, quantity, creation_date, class,requester_id) values (%s, %s, '15', %s, %s, %s, 'requested', '14') returning request_id;"
+        cursor.execute(query, (name, resource_type, description, qty,dt,))
+        
+        id = cursor.fetchone()[0]
+        query = "insert into resources_requested_keywords (keyword, request_id) values (%s, %s);"
+        words = keywords.split()
+        for key in words:  
+            cursor.execute(query, (key, id,))
+        self.conn.commit()
+        print(id)
+        return id
     def insertAvailable(self, name,resource_type, supplier_id,price,description,qty,availability,dt,dt2):
         cursor = self.conn.cursor()       
         query = "insert into resources(resource_name, resource_type_id, account_id,price, description, quantity,availability, creation_date, last_update) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning resource_id;"
