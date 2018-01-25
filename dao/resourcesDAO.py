@@ -10,13 +10,13 @@ class ResourceDAO:
     def getAllResources(self):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City order by resource_name;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join supplier  order by resource_name;"
         cursor.execute(query)
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester  order by requested_name ;"
 
         cursor.execute(query)
         for row in cursor:
@@ -26,13 +26,13 @@ class ResourceDAO:
     def getAllResourcesbyAid(self, aid):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where account_id = %s order  by resource_name;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join supplier   where account_id = %s order  by resource_name;"
         cursor.execute(query,(aid,))
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where account_id = %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester  where account_id = %s order by requested_name ;"
         cursor.execute(query,(aid,))
         for row in cursor:
             result.append(row)        
@@ -41,14 +41,14 @@ class ResourceDAO:
     def getResourcesbyDescription(self,description):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where lower(description) LIKE '%%' || %s || '%%' order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join supplier   where lower(description) LIKE '%%' || %s || '%%' order by resource_name ;"
 
         cursor.execute(query,(description,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester  where lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
 
         cursor.execute(query,(description,) )
         for row in cursor:
@@ -58,14 +58,14 @@ class ResourceDAO:
     def getResourcesbyName(self,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where lower(resource_name) = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join supplier   where lower(resource_name) = %s order by resource_name ;"
 
         cursor.execute(query,(name,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where lower(requested_name)= %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity ,city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester  where lower(requested_name)= %s order by requested_name ;"
 
         cursor.execute(query,(name,) )
         for row in cursor:
@@ -75,14 +75,14 @@ class ResourceDAO:
     def getResourcesbyName_Description(self,name,description):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where lower(description) LIKE '%%' || %s || '%%' and lower(resource_name)= %s order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join supplier   where lower(description) LIKE '%%' || %s || '%%' and lower(resource_name)= %s order by resource_name  ;"
 
         cursor.execute(query,(description,name) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity, city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where lower(description) LIKE '%%' || %s || '%%' and lower(requested_name)= %s order by requested_name  ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity, city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join requester where lower(description) LIKE '%%' || %s || '%%' and lower(requested_name)= %s order by requested_name  ;"
         cursor.execute(query,(description,name) )
         for row in cursor:
             result.append(row)        
@@ -91,13 +91,13 @@ class ResourceDAO:
     def getResourcesbyRegion(self, Region):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s order by resource_name   ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where region_name = %s order by resource_name   ;"
         cursor.execute(query,(Region,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where region_name = %s order by requested_name ;"
         cursor.execute(query,(Region,) )
         for row in cursor:
             result.append(row)        
@@ -106,13 +106,13 @@ class ResourceDAO:
     def getResourcesbyCity(self, City):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where city_name = %s  order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join supplier  where city_name = %s  order by resource_name ;"
         cursor.execute(query,(City,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity, city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  where city_name = %s  order by requested_name;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity, city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join requester  where city_name = %s  order by requested_name;"
         cursor.execute(query,(City,) )
         for row in cursor:
             result.append(row)        
@@ -122,13 +122,13 @@ class ResourceDAO:
     def getResourcesbyRegion_Name(self, Region,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(resource_name)= %s order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where region_name = %s and lower(resource_name)= %s order by resource_name  ;"
         cursor.execute(query,(Region,name,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity, city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(requested_name)= %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity, city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where region_name = %s and lower(requested_name)= %s order by requested_name ;"
         cursor.execute(query,(Region,name,) )
         for row in cursor:
             result.append(row)        
@@ -137,13 +137,13 @@ class ResourceDAO:
     def getResourcesbyRegion_Description(self, Region,description):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by resource_name  ;"
         cursor.execute(query,(Region,description,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity, city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity, city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join requester where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
         cursor.execute(query,(Region,description,) )
         for row in cursor:
             result.append(row)        
@@ -152,13 +152,13 @@ class ResourceDAO:
     def getResourcesbyCity_Name(self, City,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join region where city_name = %s and lower(resource_name)= %s order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability, city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join region natural inner join supplier   where city_name = %s and lower(resource_name)= %s order by resource_name  ;"
         cursor.execute(query,(City,name,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity, city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join region  where city_name = %s and lower(requested_name)= %s  order by requested_name;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity, city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join region natural inner join requester   where city_name = %s and lower(requested_name)= %s  order by requested_name;"
         cursor.execute(query,(City,name,) )
         for row in cursor:
             result.append(row)        
@@ -168,13 +168,13 @@ class ResourceDAO:
     def getResourcesbyCity_Description(self, City,description):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability , city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by resource_name  ;"
         cursor.execute(query,(City,description,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity, city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(description) LIKE '%%' || %s || '%%'order by requested_name  ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity, city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where region_name = %s and lower(description) LIKE '%%' || %s || '%%'order by requested_name  ;"
         cursor.execute(query,(City,description,) )
         for row in cursor:
             result.append(row)        
@@ -182,13 +182,13 @@ class ResourceDAO:
     def getResourcesbyKeywords(self, keywords):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity ,city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resource_keyword where lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability ,city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resource_keyword  natural inner join supplier   where lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"
         cursor.execute(query, (keywords,))
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join resources_requested_keywords where lower(keyword) LIKE '%%' || %s || '%%'  order by requested_name;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join resources_requested_keywords  natural inner join requester where lower(keyword) LIKE '%%' || %s || '%%'  order by requested_name;"
         cursor.execute(query, (keywords,))
         for row in cursor:
             result.append(row)        
@@ -197,13 +197,13 @@ class ResourceDAO:
     def getAllResourcesbyKeywords_City(self, keywords, city):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity,city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resource_keyword where city_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability,city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resource_keyword natural inner join supplier   where city_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"
         cursor.execute(query,(city,keywords,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join resources_requested_keywords where city_name = %s and lower(keyword) LIKE '%%' || %s || '%%'  order by requested_name;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join resources_requested_keywords natural inner join requester  where city_name = %s and lower(keyword) LIKE '%%' || %s || '%%'  order by requested_name;"
         cursor.execute(query,(city,keywords,) )
         for row in cursor:
             result.append(row)        
@@ -212,13 +212,13 @@ class ResourceDAO:
     def getAllResourcesbyKeywords_Region(self, keywords, region):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity,city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join resource_keyword where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability,city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier natural inner join resource_keyword where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"
         cursor.execute(query,(region,keywords,) )
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region   natural inner join resources_requested_keywords where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region   natural inner join resources_requested_keywords natural inner join requester  where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by requested_name ;"
         cursor.execute(query,(region,keywords,) )
         for row in cursor:
             result.append(row)          
@@ -227,14 +227,14 @@ class ResourceDAO:
     def getAllResourcesbyQty(self, qty):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity= %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join supplier   where availability= %s order by resource_name ;"
         cursor.execute(query,(qty,))
         result = []        
         for row in cursor:
             result.append(row)
     
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity= %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester where quantity= %s order by requested_name ;"
         cursor.execute(query,(qty,))
         for row in cursor:
             result.append(row)        
@@ -244,14 +244,14 @@ class ResourceDAO:
     def getAllResourcesbyQty_City(self,qty,city):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity,city_name from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and city_name = %s   order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability,city_name from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier where availability = %s and city_name = %s   order by resource_name  ;"
         cursor.execute(query,(qty,city,))
 
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and city_name = %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester where quantity = %s and city_name = %s order by requested_name ;"
         cursor.execute(query,(qty,city,))
 
         for row in cursor:
@@ -262,14 +262,14 @@ class ResourceDAO:
     def getAllResourcesbyQty_Region(self,qty,region):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity ,city_name from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and region_name = %s   order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability ,city_name from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier   where availability = %s and region_name = %s   order by resource_name  ;"
         cursor.execute(query,(qty,region,))
 
         result = []
         for row in cursor:
             result.append(row)
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and region_name = %s order by requested_name  ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester where quantity = %s and region_name = %s order by requested_name  ;"
         cursor.execute(query,(qty,region,))
 
         for row in cursor:
@@ -280,7 +280,7 @@ class ResourceDAO:
     def getAllResourcesbyQty_Keywords(self,qty,keywords):       
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity,city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join resource_keyword where quantity = %s and lower(keyword) LIKE '%%' || %s || '%%'  order by resource_name ;"      
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability,city_name from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join resource_keyword  natural inner join supplier   where availability = %s and lower(keyword) LIKE '%%' || %s || '%%'  order by resource_name ;"      
         cursor.execute(query,(qty,keywords,))
 
         result = []
@@ -288,7 +288,7 @@ class ResourceDAO:
             result.append(row)
         #Get Resources requested
 
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resources_requested_keywords where quantity = %s and  lower(keyword) LIKE '%%' || %s || '%%'  order by requested_name;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resources_requested_keywords natural inner join requester where quantity = %s and  lower(keyword) LIKE '%%' || %s || '%%'  order by requested_name;"
         cursor.execute(query,(qty,keywords,))
         for row in cursor:
             result.append(row)        
@@ -297,7 +297,8 @@ class ResourceDAO:
     def getAllResourcesbyQty_Name(self,qty,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, description, class , quantity,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  where quantity = %s and lower(resource_name) = %s order by resource_name ;"
+        
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, description, class , availability,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join supplier    where availability = %s and lower(resource_name) = %s order by resource_name ;"
         cursor.execute(query,(qty,name,) )
 
         result = []
@@ -305,7 +306,7 @@ class ResourceDAO:
             result.append(row)
         #Get Resources requested
 
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity = %s and lower(requested_name)= %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, class , quantity,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester where quantity = %s and lower(requested_name)= %s order by requested_name ;"
         cursor.execute(query,(qty,name,) )
         for row in cursor:
             result.append(row)        
@@ -319,7 +320,7 @@ class ResourceDAO:
      
     def getAllResourcesRequested(self):
         cursor = self.conn.cursor()
-        query = " Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join location natural inner join City natural inner join Region order by requested_name;"
+        query = " Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join location natural inner join City natural inner join Region  natural inner join requester order by requested_name;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -329,7 +330,7 @@ class ResourceDAO:
 
     def getResourcesRequestedbyDescription(self,description):
         cursor = self.conn.cursor()
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
         cursor.execute(query,(description,) )
         result = []
         for row in cursor:
@@ -339,7 +340,7 @@ class ResourceDAO:
 
     def getResourcesRequestedbyName(self,name):
         cursor = self.conn.cursor()
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where lower(requested_name)= %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join requester where lower(requested_name)= %s order by requested_name ;"
 
         cursor.execute(query,(name,) )
         result = []        
@@ -350,7 +351,7 @@ class ResourceDAO:
     def getResourcesRequestedbyName_Description(self,name,description):
         cursor = self.conn.cursor()
         result = []
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where lower(description) LIKE '%%' || %s || '%%' and lower(requested_name)= %s order by requested_name  ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where lower(description) LIKE '%%' || %s || '%%' and lower(requested_name)= %s order by requested_name  ;"
 
         cursor.execute(query,(description,name) )
         for row in cursor:
@@ -360,7 +361,7 @@ class ResourceDAO:
     def getResourcesRequestedbyRegion(self, Region):
         cursor = self.conn.cursor()        
         result = [] 
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where region_name = %s order by requested_name ;"
 
         cursor.execute(query,(Region,) )
         for row in cursor:
@@ -372,7 +373,7 @@ class ResourceDAO:
         result = []
         
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  where city_name = %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join requester  where city_name = %s order by requested_name ;"
 
         cursor.execute(query,(City,) )
         for row in cursor:
@@ -383,7 +384,7 @@ class ResourceDAO:
     def getResourcesRequestedbyRegion_Name(self, Region,name):
         cursor = self.conn.cursor()       
         result = []
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(requested_name)= %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where region_name = %s and lower(requested_name)= %s order by requested_name ;"
         cursor.execute(query,(Region,name,) )
         for row in cursor:
             result.append(row)        
@@ -392,7 +393,7 @@ class ResourceDAO:
     def getResourcesRequestedbyRegion_Description(self, Region,description):
         cursor = self.conn.cursor()        
         result = []        
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
         cursor.execute(query,(Region,description,) )
         for row in cursor:
             result.append(row)        
@@ -401,7 +402,7 @@ class ResourceDAO:
     def getResourcesRequestedbyCity_Name(self, City,name):
         cursor = self.conn.cursor()       
         result = []        
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  where city_name = %s and lower(requested_name)= %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester   where city_name = %s and lower(requested_name)= %s order by requested_name ;"
         cursor.execute(query,(City,name,) )
         for row in cursor:
             result.append(row)        
@@ -411,7 +412,7 @@ class ResourceDAO:
     def getResourcesRequestedbyCity_Description(self, City,description):
         cursor = self.conn.cursor()        
         result = []        
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join requester where region_name = %s and lower(description) LIKE '%%' || %s || '%%' order by requested_name ;"
         cursor.execute(query,(City,description,) )
         for row in cursor:
             result.append(row)        
@@ -421,7 +422,7 @@ class ResourceDAO:
     def getResourceRequestedByRID(self, rid):
         cursor = self.conn.cursor()        
         result = []        
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where request_id = %s order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where request_id = %s order by requested_name ;"
         cursor.execute(query,(rid,) )
         for row in cursor:
             result.append(row)        
@@ -431,7 +432,7 @@ class ResourceDAO:
         cursor = self.conn.cursor()        
         result = []        
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description,  quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join resources_requested_keywords where lower(keyword) LIKE '%%' || %s || '%%' order by requested_name  ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description,  quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join resources_requested_keywords  natural inner join requester where lower(keyword) LIKE '%%' || %s || '%%' order by requested_name  ;"
         cursor.execute(query, (keywords,))
         for row in cursor:
             result.append(row)        
@@ -440,7 +441,7 @@ class ResourceDAO:
     def getAllResourcesRequestedbyKeywords_City(self, keywords, city):
         cursor = self.conn.cursor()       
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date ,city_name   from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join resources_requested_keywords where city_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date ,city_name   from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join resources_requested_keywords natural inner join requester  where city_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by requested_name ;"
         cursor.execute(query,(city,keywords,) )
         result = []
         for row in cursor:
@@ -450,7 +451,7 @@ class ResourceDAO:
     def getAllResourcesRequestedbyKeywords_Region(self, keywords, region):
         cursor = self.conn.cursor()        
         #Get Resources requested
-        query = "Select request_id,  requested_name  , type_name as category, account_id, description,  quantity, creation_date  ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join Region natural inner join resources_requested_keywords where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query = "Select request_id,  requested_name  , type_name as category, requester_id, description,  quantity, creation_date  ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join Region natural inner join resources_requested_keywords  natural inner join requester where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by requested_name ;"
         cursor.execute(query,(region,keywords) )
         result = []
         for row in cursor:
@@ -460,7 +461,7 @@ class ResourceDAO:
     def getAllResourcesRequestedbyQty(self, qty):
         cursor = self.conn.cursor()
         #Get Resources requested
-        query =  "Select request_id,  requested_name  , type_name as category, account_id, description,  quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity = %s order by requested_name ;"
+        query =  "Select request_id,  requested_name  , type_name as category, requester_id, description,  quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester  where quantity = %s order by requested_name ;"
         cursor.execute(query,(qty,))
         result = []
         for row in cursor:
@@ -472,7 +473,7 @@ class ResourceDAO:
         cursor = self.conn.cursor()
         result = []
         #Get Resources requested
-        query =  "Select request_id,  requested_name  , type_name as category, account_id, description,  quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and city_name = %s order by requested_name  ;"
+        query =  "Select request_id,  requested_name  , type_name as category, requester_id, description,  quantity, creation_date ,city_name  from resources_requested natural inner join Resource_Type Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where quantity = %s and city_name = %s order by requested_name  ;"
         cursor.execute(query,(qty,city,))
         for row in cursor:
             result.append(row)        
@@ -482,7 +483,7 @@ class ResourceDAO:
         cursor = self.conn.cursor()
         result = []
         #Get Resources requested
-        query =  "Select request_id,  requested_name  , type_name as category, account_id, description,  quantity, creation_date  ,city_name from resources_requested natural inner join Resource_Type Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and region_name = %s  order by requested_name;"
+        query =  "Select request_id,  requested_name  , type_name as category, requester_id, description,  quantity, creation_date  ,city_name from resources_requested natural inner join Resource_Type Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester  where quantity = %s and region_name = %s  order by requested_name;"
         cursor.execute(query,(qty,region,))
 
         for row in cursor:
@@ -494,7 +495,7 @@ class ResourceDAO:
         cursor = self.conn.cursor()
         result = []
         #Get Resources requested
-        query =  "Select request_id,  requested_name  , type_name as category, account_id, description , quantity, creation_date  ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resources_requested_keywords where quantity = %s and  lower(keyword) LIKE '%%' || %s || '%%' order by requested_name ;"
+        query =  "Select request_id,  requested_name  , type_name as category, requester_id, description , quantity, creation_date  ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resources_requested_keywords natural inner join requester  where quantity = %s and  lower(keyword) LIKE '%%' || %s || '%%' order by requested_name ;"
         cursor.execute(query,(qty,keywords,))
         for row in cursor:
             result.append(row)        
@@ -504,7 +505,7 @@ class ResourceDAO:
         cursor = self.conn.cursor()
         result = []
         #Get Resources requested
-        query =  "Select request_id,  requested_name  , type_name as category, account_id, description, quantity, creation_date  ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where quantity = %s and lower(requested_name)= %s order by requested_name  ;"
+        query =  "Select request_id,  requested_name  , type_name as category, requester_id, description, quantity, creation_date  ,city_name from resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join requester where quantity = %s and lower(requested_name)= %s order by requested_name  ;"
         cursor.execute(query,(qty,name,) )
         for row in cursor:
             result.append(row)        
@@ -513,7 +514,7 @@ class ResourceDAO:
 
     def getResourceRequesteddbyARequesterID(self, id):
         cursor = self.conn.cursor()
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester where requester_id = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier natural inner join requester where requester_id = %s order by resource_name ;"
         cursor.execute(query,(id,))       
         result = []
         for row in cursor:
@@ -526,7 +527,7 @@ class ResourceDAO:
 
     def getAllResourcesAvaliable(self):
         cursor = self.conn.cursor()
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update  ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  order by resource_name;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update  ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  order by resource_name;"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -535,7 +536,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyDescription(self,description):
         cursor = self.conn.cursor()
         result = []
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update  ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where lower(description) LIKE '%%' || %s || '%%'  order by resource_name;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update  ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where lower(description) LIKE '%%' || %s || '%%'  order by resource_name;"
         cursor.execute(query,(description,) )
         result = []
         for row in cursor:
@@ -546,7 +547,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyName(self,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update  ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where lower(resource_name) = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update  ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where lower(resource_name) = %s order by resource_name ;"
         cursor.execute(query,(name,) )
         result = []
         for row in cursor:
@@ -557,7 +558,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyName_Description(self,name,description):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update  ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where lower(description) LIKE '%%' || %s || '%%' and lower(resource_name)= %s  order by resource_name;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update  ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where lower(description) LIKE '%%' || %s || '%%' and lower(resource_name)= %s  order by resource_name;"
         cursor.execute(query,(description,name) )
         result = []
         for row in cursor:
@@ -567,7 +568,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyRegion(self, Region):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where region_name = %s order by resource_name ;"
         cursor.execute(query,(Region,) )
         result = []
         for row in cursor:
@@ -578,7 +579,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyCity(self,City):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where city_name = %s order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where city_name = %s order by resource_name  ;"
         cursor.execute(query,(City,) )
         result = []
         for row in cursor:
@@ -588,7 +589,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyRegion_Name(self, Region,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(resource_name) = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where region_name = %s and lower(resource_name) = %s order by resource_name ;"
 
         cursor.execute(query,(Region,name,) )
         result = []
@@ -599,7 +600,7 @@ class ResourceDAO:
     def getResourcesAvaliabledbyRegion_Description(self, Region,description):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(description) LIKE '%%' || %s || '%%'  order by resource_name;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update ,city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where region_name = %s and lower(description) LIKE '%%' || %s || '%%'  order by resource_name;"
         cursor.execute(query,(Region,description,) )
         result = []
         for row in cursor:
@@ -609,7 +610,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyCity_Name(self, City,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update, city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City where city_name = %s and lower(resource_name)= %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update, city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City  natural inner join supplier where city_name = %s and lower(resource_name)= %s order by resource_name ;"
         cursor.execute(query,(City,name,) )
         result = []
         for row in cursor:
@@ -620,7 +621,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyCity_Description(self, City,description):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where region_name = %s and lower(description) LIKE '%%' || %s || '%%'  order by resource_name;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where region_name = %s and lower(description) LIKE '%%' || %s || '%%'  order by resource_name;"
         cursor.execute(query,(City,description,) )
         result = []
         for row in cursor:
@@ -630,7 +631,7 @@ class ResourceDAO:
     def getResourceAvaliableByRID(self, rid):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where resource_id = %s order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where resource_id = %s order by resource_name  ;"
         cursor.execute(query,(rid,) )
         result = []
         for row in cursor:
@@ -640,7 +641,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyKeywords(self, keywords):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join resource_keyword where lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  natural inner join resource_keyword where lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"
         cursor.execute(query, (keywords,))
         result = []
         for row in cursor:
@@ -650,7 +651,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyKeywords_City(self, keywords, city):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resource_keyword natural inner join Region where city_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join resource_keyword natural inner join Region natural inner join supplier  where city_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"
 
         cursor.execute(query,(city,keywords,) )
         result = []
@@ -661,7 +662,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyKeywords_Region(self, keywords, region):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join resource_keyword where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  natural inner join resource_keyword where region_name = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"
         cursor.execute(query,(region,keywords,) )
         result = []
         for row in cursor:
@@ -672,7 +673,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty(self, qty):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where quantity = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where quantity = %s order by resource_name ;"
         cursor.execute(query,(qty,))
         result = []
         for row in cursor:
@@ -684,7 +685,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty_City(self,ty,city):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and city_name = %s  order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier where quantity = %s and city_name = %s  order by resource_name ;"
         cursor.execute(query,(qty,city,))
         result = []
         for row in cursor:
@@ -694,7 +695,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty_Region(self,qty,region):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and region_name = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join supplier where quantity = %s and region_name = %s order by resource_name ;"
         cursor.execute(query,(qty,region,))
         result = []
         for row in cursor:
@@ -705,7 +706,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty_Keywords(self,qty,keywords):       
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join resource_keyword where quantity = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"      
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  natural inner join resource_keyword where quantity = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"      
         cursor.execute(query,(qty,keywords,))
         result = []
         for row in cursor:
@@ -717,7 +718,7 @@ class ResourceDAO:
     def getResourcesAvaliablebyQty_Name(self,qty,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where quantity = %s and lower(resource_name) = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where quantity = %s and lower(resource_name) = %s order by resource_name ;"
         cursor.execute(query,(qty,name,) )
         result = []
         for row in cursor:
@@ -727,7 +728,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty(self, qty):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where quantity = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where quantity = %s order by resource_name ;"
         cursor.execute(query,(qty,))
         result = []
         for row in cursor:
@@ -739,7 +740,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty_City(self,qty,city):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and city_name = %s  order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier where quantity = %s and city_name = %s  order by resource_name  ;"
         cursor.execute(query,(qty,city,))
         result = []
         for row in cursor:
@@ -749,7 +750,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty_Region(self,qty,region):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where quantity = %s and region_name = %s  order by resource_name  ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier where availability = %s and region_name = %s  order by resource_name  ;"
         cursor.execute(query,(qty,region,))
         result = []
         for row in cursor:
@@ -760,7 +761,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty_Keywords(self, qty,keywords):       
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join resource_keyword where quantity = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"      
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  natural inner join resource_keyword where availability = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name ;"      
         cursor.execute(query,(qty,keywords,))
         result = []
         for row in cursor:
@@ -771,7 +772,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyQty_Name(self,qty,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where quantity = %s and lower(resource_name) = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where quantity = %s and lower(resource_name) = %s order by resource_name ;"
         cursor.execute(query,(qty,name,) )
         result = []
         for row in cursor:
@@ -781,7 +782,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyPrice(self, price):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where price = %s  order by resource_name;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where price = %s  order by resource_name;"
         cursor.execute(query,(price,))
         result = []
         for row in cursor:
@@ -792,7 +793,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyPrice_City(self,price,city):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where price = %s and city_name = %s order by resource_name   ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier where price = %s and city_name = %s order by resource_name   ;"
         cursor.execute(query,(price,city,))
         result = []
         for row in cursor:
@@ -802,7 +803,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyPrice_Region(self,price,region):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region where price = %s and region_name = %s order by resource_name   ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type  natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier where price = %s and region_name = %s order by resource_name   ;"
         cursor.execute(query,(price,region,))
         result = []
         for row in cursor:
@@ -813,7 +814,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyPrice_Keywords(self,price,keywords):       
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  natural inner join resource_keyword where price = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"      
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  natural inner join resource_keyword where price = %s and lower(keyword) LIKE '%%' || %s || '%%' order by resource_name  ;"      
         cursor.execute(query,(price,keywords,))
         result = []
         for row in cursor:
@@ -824,7 +825,7 @@ class ResourceDAO:
     def getAllResourcesAvaliablebyPrice_Name(self,price,name):
         cursor = self.conn.cursor()
         #Get Resources avaliable
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region  where price = %s and lower(resource_name) = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where price = %s and lower(resource_name) = %s order by resource_name ;"
         cursor.execute(query,(price,name,) )
         result = []
         for row in cursor:
@@ -833,7 +834,7 @@ class ResourceDAO:
     
     def getSupplierOfResourceAvaliablebyRID(self, rid):
         cursor = self.conn.cursor()
-        query = "Select account_id , first_name, last_name, email, phone, city_name from resources natural inner join accounts natural inner join location natural inner join city natural inner join supplier where resource_id = %s and account_type = 'Supplier';"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier  where resource_id = %s by resource_name ;"
         cursor.execute(query,(rid,))       
         result = []
         for row in cursor:
@@ -842,7 +843,7 @@ class ResourceDAO:
 
     def getResourceAvaliablebSuppliedbyID(self, id):
         cursor = self.conn.cursor()
-        query = "Select resource_id,  resource_name , type_name as category, account_id, price, description, availability, quantity, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join supplier where supplier_id = %s order by resource_name ;"
+        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier where supplier_id = %s order by resource_name ;"
         cursor.execute(query,(id,))       
         result = []
         for row in cursor:
@@ -854,8 +855,8 @@ class ResourceDAO:
 ################################################################################
     def insertRequested(self, name, resource_type, requester_id, description, qty, dt,keywords):
         cursor = self.conn.cursor()       
-        query = "insert into resources_requested(requested_name, resource_type_id, account_id,description, quantity, creation_date, class,requester_id) values (%s, %s, '15', %s, %s, %s, 'requested', '14') returning request_id;"
-        cursor.execute(query, (name, resource_type, description, qty,dt,))
+        query = "insert into resources_requested(requested_name, resource_type_id, description, quantity, creation_date, class,requester_id) values (%s, %s, %s, %s, %s, 'requested', %s) returning request_id;"
+        cursor.execute(query, (name, resource_type, description, qty,dt,requester_id))
         
         id = cursor.fetchone()[0]
         query = "insert into resources_requested_keywords (keyword, request_id) values (%s, %s);"
@@ -864,27 +865,20 @@ class ResourceDAO:
             cursor.execute(query, (key, id,))
         self.conn.commit()
         print(id)
-        return id
-        
-    def insertAvailable(self, name, resource_type, requester_id, description, qty, dt,keywords):
+        return id        
+
+    def insertAvailable(self, name,resource_type, supplier_id,price,description,availability,dt,dt2,keywords):
         cursor = self.conn.cursor()       
-        query = "insert into resources_requested(requested_name, resource_type_id, account_id,description, quantity, creation_date, class,requester_id) values (%s, %s, '15', %s, %s, %s, 'requested', '14') returning request_id;"
-        cursor.execute(query, (name, resource_type, description, qty,dt,))
-        
+        query = "insert into resources(resource_name, resource_type_id, price, description, availability, creation_date, last_update, supplier_id, class) values (%s, %s, %s, %s, %s, %s, %s, %s ,'available') returning resource_id;"
+        cursor.execute(query, ( name,resource_type,price,description,availability,dt,dt2,supplier_id,))
         id = cursor.fetchone()[0]
-        query = "insert into resources_requested_keywords (keyword, request_id) values (%s, %s);"
+        query = "insert into resource_keyword (keyword, resource_id) values (%s, %s);"
         words = keywords.split()
         for key in words:  
             cursor.execute(query, (key, id,))
         self.conn.commit()
         print(id)
         return id
-    def insertAvailable(self, name,resource_type, supplier_id,price,description,qty,availability,dt,dt2):
-        cursor = self.conn.cursor()       
-        query = "insert into resources(resource_name, resource_type_id, account_id,price, description, quantity,availability, creation_date, last_update) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning resource_id;"
-        cursor.execute(query, ( name,resource_type,supplier_id,price,description,qty,availability,dt,dt2,))
-        pid = cursor.fetchone()[0]
-        self.conn.commit()
         
 
 
@@ -908,8 +902,8 @@ class ResourceDAO:
 
     def updateAvailable(self,id, name,resource_type,supplier_id,price,description,qty,availability):
         cursor = self.conn.cursor()       
-        query = "update resources set resource_name = %s, resource_type_id = %s, account_id = %s ,price=%s, description=%s, quantity=%s,availability=%s where resource_id = %s;"
-        cursor.execute(query, (name,resource_type,supplier_id,price,description,qty,availability,id,))
+        query = "update resources set resource_name = %s, resource_type_id = %s, account_id = %s ,price=%s, description=%s, availability=%s where resource_id = %s;"
+        cursor.execute(query, (name,resource_type,supplier_id,price,description,availability,id,))
         self.conn.commit()
 
     def updateAvailableQty(self,id, qty):

@@ -19,7 +19,16 @@ class AccountsDAO:
 
     def cityList(self):
         cursor = self.conn.cursor()
-        query = "Select * from city;"
+        query = "Select * from city order by city_name;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
+    def resource_typeList(self):
+        cursor = self.conn.cursor()
+        query = "select * from resource_type order by type_name;"
         cursor.execute(query)
         result = []
         for row in cursor:
