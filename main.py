@@ -55,7 +55,7 @@ def getAllResourcesRequested():
     if  request.method == 'GET':   
         return ResourcesHandler().getAllresources_requested()
     elif request.method == 'PUT':
-        return ResourcesHandler().updateResourcesRequested(request.form)       
+        return ResourcesHandler().updateResourcesRequested(request.form, request.get_json())       
     elif request.method == 'POST':
         return ResourcesHandler().insertResourcesRequested(request.form)
     else:
@@ -89,7 +89,7 @@ def getResourcesAvailable():
     elif request.method == 'PUT':
         return ResourcesHandler().updateResourcesAvailable(request.form)       
     elif request.method == 'POST':
-        return ResourcesHandler().insertResourcesAvailable(request.form)
+        return ResourcesHandler().insertResourcesAvailable(request.form, request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -215,7 +215,7 @@ def getAllSuppliers():
     elif request.method == 'PUT':
         return SupplierHandler().PutSupplier(request.form)
     elif request.method == 'POST':
-        return SupplierHandler().insertSupplier(request.form)
+        return SupplierHandler().insertSupplier(request.form), request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
     
@@ -236,7 +236,7 @@ def getRequesters():
     elif request.method == 'PUT':
         return RequesterHandler().PutRequester(request.form)
     elif request.method == 'POST':
-        return RequesterHandler().insertRequester(request.form)
+        return RequesterHandler().insertRequester(request.form, request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
 

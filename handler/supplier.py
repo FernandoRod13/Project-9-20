@@ -93,7 +93,7 @@ class SupplierHandler:
         password, salt = hashed_password.split(':')
         return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
-    def insertSupplier(self, form):
+    def insertSupplier(self, form), parsed_json:
         first_name = form.get('first_name')  
         last_name = form.get('last_name')
         email = form.get('email')
@@ -103,7 +103,26 @@ class SupplierHandler:
         latitude = form.get('latitude')
         longitud = form.get('longitud')   
         password = form.get('password')
-        dt = datetime.now()       
+        dt = datetime.now()  
+        photo_url = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
+
+        if len(form)==0:
+            # parsed_json = json.loads(test)
+            first_name = parsed_json['first_name']  
+            last_name = parsed_json['last_name']
+            email = parsed_json['email']
+            phone = parsed_json['phone']
+            address = parsed_json['address']
+            city_id = parsed_json['city_id']
+            latitude = parsed_json['latitude']
+            longitud = parsed_json['longitud']   
+            password = parsed_json['password']
+            #Hash password
+            password = self.hash_password(password)
+            dao = SupplierDAO()
+            id = dao.addSupplier(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Supplier' , password,dt)
+            result = self.getSupplierByID(id)
+            return (result), 201     
                 
         if first_name and last_name and email and phone and address and city_id and latitude and longitud and password :
             dao = SupplierDAO()

@@ -357,7 +357,23 @@ class ResourcesHandler:
 ####  PUT
 #########################################################
 
-    def insertResourcesRequested(self, form):
+    def insertResourcesRequested(self, form, parsed_json):
+        
+
+        if len(form)==0:
+            # parsed_json = json.loads(test)
+            name = parsed_json['name']  
+            resource_type = parsed_json['resource_type']
+            supplier_id = parsed_json['supplier_id']
+            description = parsed_json['description']
+            keywords = parsed_json['keywords']
+            qty = parsed_json['qty']
+            dt = datetime.now()
+            dao = ResourceDAO()
+            pid = dao.insertRequested(name, resource_type, requester_id,description, qty,dt, keywords)
+            res = self.getResourceRequestedByID(pid)
+            return res 
+
         if len(form) != 6:
             return jsonify(Error = "Malformed post request"), 400
         else:
@@ -378,8 +394,24 @@ class ResourcesHandler:
                 return jsonify(Error="Unexpected attributes in post request"), 400
         
 
-    def insertResourcesAvailable(self, form):
-        if len(form) != 7:
+    def insertResourcesAvailable(self, form, parsed_json):
+        
+        if len(form)==0:
+            # parsed_json = json.loads(test)
+            name = parsed_json['name']  
+            resource_type = parsed_json['resource_type']
+            supplier_id = parsed_json['supplier_id']
+            price = parsed_json['price']
+            description = parsed_json['description']
+            keywords = parsed_json['keywords']
+            availability = parsed_json['qty']
+            dt = datetime.now()
+            dao = ResourceDAO()
+            pid = dao.insertAvailable(name,resource_type,supplier_id,price,description,availability,dt,dt,keywords)
+            res = self.getResourceAvaliableByRID(pid)
+            return res      
+
+        elif len(form) != 7:
             return jsonify(Error = "Malformed post request"), 400
         else:
             name = form.get('name')
