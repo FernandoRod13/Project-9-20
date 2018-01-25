@@ -146,6 +146,13 @@ class AccountHandler:
             latitude = parsed_json['latitude']
             longitud = parsed_json['longitud']   
             password = parsed_json['password']
+            #Hash password
+            password = self.hash_password(password)
+            dao = AccountsDAO()
+            id = dao.addAdmin(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
+            result = self.getAdminByID(id)
+            return (result), 201
+           
 
             
         else:
@@ -158,17 +165,16 @@ class AccountHandler:
             latitude = form.get('latitude')
             longitud = form.get('longitud')   
             password = form.get('password')
-
-        
-        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and password :
-            #Hash password
-            password = self.hash_password(password)
-            dao = AccountsDAO()
-            id = dao.addAdmin(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
-            result = self.getAdminByID(id)
-            return (result), 201
-        else:
-            return jsonify(Error= parsed_json), 400
+            
+            if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and password :
+                #Hash password
+                password = self.hash_password(password)
+                dao = AccountsDAO()
+                id = dao.addAdmin(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
+                result = self.getAdminByID(id)
+                return (result), 201
+            else:
+                return jsonify(Error= parsed_json), 400
             
             #return jsonify(Error="Unexpected attributes in post request"), 400
 
