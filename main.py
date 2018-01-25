@@ -257,7 +257,7 @@ def getAllAdministraror():
     elif request.method == 'PUT':
         return AccountHandler().PutAdmin(request.form)       
     elif request.method == 'POST':
-        return AccountHandler().insertAdmin(request.form)
+        return AccountHandler().insertAdmin(request.form, request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
 
