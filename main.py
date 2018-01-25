@@ -215,7 +215,7 @@ def getAllSuppliers():
     elif request.method == 'PUT':
         return SupplierHandler().PutSupplier(request.form)
     elif request.method == 'POST':
-        return SupplierHandler().insertSupplier(request.form), request.get_json())
+        return SupplierHandler().insertSupplier(request.form, request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
     

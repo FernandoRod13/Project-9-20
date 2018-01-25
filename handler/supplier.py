@@ -93,7 +93,7 @@ class SupplierHandler:
         password, salt = hashed_password.split(':')
         return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
-    def insertSupplier(self, form), parsed_json:
+    def insertSupplier(self, form, parsed_json):
         first_name = form.get('first_name')  
         last_name = form.get('last_name')
         email = form.get('email')
