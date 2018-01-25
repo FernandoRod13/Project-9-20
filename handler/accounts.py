@@ -60,7 +60,7 @@ class AccountHandler:
         for row in res:
             result = self.build_resource_type(row)
             result_list.append(result)                 
-        return jsonify(Cities = result_list)
+        return jsonify(Resource_Type = result_list)
 
         
 
@@ -151,7 +151,9 @@ class AccountHandler:
             result = self.getAdminByID(id)
             return (result), 201
         else:
-            return jsonify(Error="Unexpected attributes in post request"), 400
+            return jsonify(form)
+            
+            #return jsonify(Error="Unexpected attributes in post request"), 400
 
 
 ############################################################################

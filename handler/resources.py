@@ -449,7 +449,7 @@ class ResourcesHandler:
                     return jsonify(Error="Resource with that Id was not found."), 400
                 dao = ResourceDAO()
                 dao.updateAvailable(id, name,resource_type,supplier_id,price,description,availability)
-                res = dao.getResourceAvaliableByRID(id)
+                res = self.getResourceAvaliableByRID(id)
                 return res, 201
             
 
@@ -459,7 +459,7 @@ class ResourcesHandler:
                     return jsonify(Error="Resource with that Id was not found."), 400
                 dao = ResourceDAO()
                 dao.updateAvailableAvailability(id, qty)
-                res = dao.getResourceAvaliableByRID(id)
+                res = self.getResourceAvaliableByRID(id)
                 return res, 201
 
             elif id and price and (len(form)==2):
@@ -468,7 +468,7 @@ class ResourcesHandler:
                     return jsonify(Error="Resource with that Id was not found."), 400
                 dao = ResourceDAO()
                 dao.updateAvailablePrice(id, price)
-                res = dao.getResourceAvaliableByRID(id)
+                res = self.getResourceAvaliableByRID(id)
                 return res, 201
                 
             else:
