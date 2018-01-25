@@ -864,7 +864,6 @@ class ResourceDAO:
         for key in words:  
             cursor.execute(query, (key, id,))
         self.conn.commit()
-        print(id)
         return id        
 
     def insertAvailable(self, name,resource_type, supplier_id,price,description,availability,dt,dt2,keywords):
@@ -877,6 +876,7 @@ class ResourceDAO:
         for key in words:  
             cursor.execute(query, (key, id,))
         self.conn.commit()
+        query = "insert into notifications (resource_type_id, message, title, notification_date_added) values (%s, 'A new item of category);"
         print(id)
         return id
         
@@ -900,19 +900,14 @@ class ResourceDAO:
         self.conn.commit()
 
 
-    def updateAvailable(self,id, name,resource_type,supplier_id,price,description,qty,availability):
+    def updateAvailable(self,id, name,resource_type,supplier_id,price,description,availability):
         cursor = self.conn.cursor()       
-        query = "update resources set resource_name = %s, resource_type_id = %s, account_id = %s ,price=%s, description=%s, availability=%s where resource_id = %s;"
+        query = "update resources set resource_name = %s, resource_type_id = %s, supplier_id = %s ,price=%s, description=%s, availability=%s where resource_id = %s;"
         cursor.execute(query, (name,resource_type,supplier_id,price,description,availability,id,))
         self.conn.commit()
 
-    def updateAvailableQty(self,id, qty):
-        cursor = self.conn.cursor()       
-        query = "update resources set quantity=%s where resource_id = %s;"
-        cursor.execute(query, (qty,id,))
-        self.conn.commit()
 
-    def updateAvailableQty(self,id, price):
+    def updateAvailablePrice(self,id, price):
         cursor = self.conn.cursor()       
         query = "update resources set price=%s where resource_id = %s;"
         cursor.execute(query, (price,id,))

@@ -28,7 +28,7 @@ class AccountsDAO:
 
     def resource_typeList(self):
         cursor = self.conn.cursor()
-        query = "select * from resource_type order by type_name;"
+        query = "select * from resource_type where type_name != 'fuel' order by type_name;"
         cursor.execute(query)
         result = []
         for row in cursor:
