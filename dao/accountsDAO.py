@@ -16,6 +16,16 @@ class AccountsDAO:
             result.append(row)
         return result
 
+
+    def cityList(self):
+        cursor = self.conn.cursor()
+        query = "Select * from city;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def searchAdminByID(self,id):
         cursor = self.conn.cursor()
         query = "select admin_id , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join administrator where admin_id = %s;"
@@ -57,7 +67,7 @@ class AccountsDAO:
         query = "insert into location (address, city_id, latitude, longitude) values (%s, %s, %s, %s ) returning location_id;"
         cursor.execute(query, ( address,city_id,latitude, longitud,))
         location_id = cursor.fetchone()[0]
-        query = "insert into accounts (first_name , last_name , email , phone , location_id , photo_url , account_type , creation_date, password) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning account_id;"
+        query = "insert into accounts (first_name , last_name , email , phone , location_id , photo_url , account_type , account_creation_date, password) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning account_id;"
         cursor.execute(query, (first_name , last_name , email , phone , location_id , photo_url , account_type , dt, password,))
         account_id = cursor.fetchone()[0]
         query = "insert into administrator (account_id) values (%s) returning admin_id;"

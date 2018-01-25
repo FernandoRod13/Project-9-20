@@ -31,6 +31,24 @@ class AccountHandler:
         result['city'] = row[5]
         return result
 
+    def build_city(self,row):
+        result = {}
+        result['city_id'] = row[0]
+        result['city_name'] = row[1]    
+        return result
+
+
+    def getCities(self):
+        dao = AccountsDAO()
+        res = dao.cityList()
+        result_list = []
+        for row in res:
+            result = self.build_city(row)
+            result_list.append(result)            
+        return jsonify(Cities = result_list)
+
+        
+
     def getAllAdmin(self):
         dao = AccountsDAO()
         res = dao.getAllAdmin()
@@ -65,7 +83,7 @@ class AccountHandler:
             password = self.hash_password(password)
             res = dao.accountLogin(email,password)
             if len(res)==0:
-                return jsonify(Error = "No User Found with that email or Password " )
+                return jsonify(Error = "No User Found with that email or Password " ),404
             else:
                 result_list = []
             for row in res:

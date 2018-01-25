@@ -303,6 +303,13 @@ def getChangeAccountPassword():
     else:
         return jsonify(Error = "Method not allowed"), 405
 
+@app.route('/cities', methods=['GET'])
+def getCityList():
+    if request.method == 'GET':
+        return AccountHandler().getCities()
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
 
 
 
