@@ -55,7 +55,7 @@ class RequesterHandler:
         elif len(args) == 1 and keyword:
             res = dao.searchRequestersByResourceKeyword(keyword)
         elif len(args) == 2 and resource_name and city:
-            res = dao.searchRequestersRequestingResourcesInCity(resource_name, city)
+            res = dao.searchRequestersRequestingResourceInCity(resource_name, city)
         else:
             return jsonify(Error = "Malformed query string"), 400
 
@@ -103,9 +103,10 @@ class RequesterHandler:
         password = form.get('password')
         dt = datetime.now()   
         photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
-        #Hash password
-        password = self.hash_password(password)
+
         if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url  and password :
+            #Hash password
+            password = self.hash_password(password)
             dao = RequesterDAO()
             pid = dao.addRequester(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Requester' , password,dt)
             result = self.getRequesterByID(pid)

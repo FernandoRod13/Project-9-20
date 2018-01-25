@@ -37,6 +37,12 @@ class AccountHandler:
         result['city_name'] = row[1]    
         return result
 
+    def build_resource_type(self,row):
+        result = {}
+        result['resource_type_id'] = row[0]
+        result['type_name'] = row[1]    
+        return result
+
 
     def getCities(self):
         dao = AccountsDAO()
@@ -44,7 +50,16 @@ class AccountHandler:
         result_list = []
         for row in res:
             result = self.build_city(row)
-            result_list.append(result)            
+            result_list.append(result)                 
+        return jsonify(Cities = result_list)
+
+    def getResourceType(self):
+        dao = AccountsDAO()
+        res = dao.resource_typeList()
+        result_list = []
+        for row in res:
+            result = self.build_resource_type(row)
+            result_list.append(result)                 
         return jsonify(Cities = result_list)
 
         
@@ -127,9 +142,10 @@ class AccountHandler:
         dt = datetime.now()       
         photo_url =  'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
        
-        #Hash password
-        password = self.hash_password(password)
+        
         if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo_url and password :
+            #Hash password
+            password = self.hash_password(password)
             dao = AccountsDAO()
             id = dao.addAdmin(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Administrator' , password,dt)
             result = self.getAdminByID(id)

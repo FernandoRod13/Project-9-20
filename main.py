@@ -310,6 +310,13 @@ def getCityList():
     else:
         return jsonify(Error = "Method not allowed"), 405
 
+@app.route('/resource_type', methods=['GET'])
+def getResourceTypeList():
+    if request.method == 'GET':
+        return AccountHandler().getResourceType()
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
 
 
 
