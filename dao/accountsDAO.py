@@ -17,6 +17,15 @@ class AccountsDAO:
         return result
 
 
+    def notificationsList(self):
+        cursor = self.conn.cursor()
+        query = "Select resource_id , resource_name, type_name , title, message, notification_date_added from resources natural inner join notifications natural inner join resource_type order by resource_name;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     def cityList(self):
         cursor = self.conn.cursor()
         query = "Select * from city order by city_name;"

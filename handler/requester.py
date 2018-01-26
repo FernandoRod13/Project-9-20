@@ -143,7 +143,7 @@ class RequesterHandler:
 #############################################################################
 
 
-    def PutRequester(self, form):
+    def PutRequester(self, form, parsed_json):
         
         
         
@@ -157,8 +157,23 @@ class RequesterHandler:
         longitud = form.get('longitud')   
         photo = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'    
         id = form.get('id')
+
+
+        if len(form)==0:
+            id = parsed_json['id']
+            first_name = parsed_json['first_name']  
+            last_name = parsed_json['last_name']
+            email = parsed_json['email']
+            phone = parsed_json['phone']
+            address = parsed_json['address']
+            city_id = parsed_json['city_id']
+            latitude = parsed_json['latitude']
+            longitud = parsed_json['longitud']
+            id = dao.updateRequester(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo)
+            result = self.getRequesterByID(id)
+            return (result), 201
         
-        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo and id:
+        elif first_name and last_name and email and phone and address and city_id and latitude and longitud and photo and id:
             dao = RequesterDAO()
             tid = dao.updateRequester(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo)
             result = self.getRequesterByID(tid)

@@ -36,7 +36,7 @@ class RequesterDAO:
 
     def searchRequesterByID(self,id):
         cursor = self.conn.cursor()
-        query = "select account_id as requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join requester where account_type = 'Requester' and requester_id = %s;"
+        query = "select requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join requester where account_type = 'Requester' and requester_id = %s;"
         cursor.execute(query, (id,))
         return cursor.fetchone()
 

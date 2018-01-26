@@ -876,8 +876,9 @@ class ResourceDAO:
         for key in words:  
             cursor.execute(query, (key, id,))
         self.conn.commit()
-        query = "insert into notifications (resource_type_id, message, title, notification_date_added) values (%s, 'A new item of category);"
-        print(id)
+        query = "insert into notifications (resource_type_id, message, title, notification_date_added, resource_id, notification_date_added) values (%s, 'A resource from a requested resource has been added','New Resource Available', %s, %s);"
+        cursor.execute(query, ( resource_type, id, dt))
+        id = cursor.fetchone()[0]
         return id
         
 
@@ -887,10 +888,10 @@ class ResourceDAO:
     ##############################################################################
 
 
-    def updateRequested(self,id,name, resource_type, requester_id,description, qty ):
+    def updateRequested(self,id,name, resource_type, description, qty ):
         cursor = self.conn.cursor()       
-        query = "update resources_requested set requested_name = %s, resource_type = %s, requester_id = %s, description = %s, quantity = %s where request_id = %s;"
-        cursor.execute(query, (name, resource_type, requester_id,description, qty,id,))
+        query = "update resources_requested set requested_name = %s, resource_type = %s, description = %s, quantity = %s where request_id = %s;"
+        cursor.execute(query, (name, resource_type, description, qty,id,))
         self.conn.commit()
 
     def updateRequestedQty(self,id,qty ):
@@ -900,10 +901,10 @@ class ResourceDAO:
         self.conn.commit()
 
 
-    def updateAvailable(self,id, name,resource_type,supplier_id,price,description,availability):
+    def updateAvailable(self,id, name,resource_type,price,description,availability,dt):
         cursor = self.conn.cursor()       
-        query = "update resources set resource_name = %s, resource_type_id = %s, supplier_id = %s ,price=%s, description=%s, availability=%s where resource_id = %s;"
-        cursor.execute(query, (name,resource_type,supplier_id,price,description,availability,id,))
+        query = "update resources set resource_name = %s, resource_type_id = %s, price=%s, description=%s, availability=%s , last_update = %s where resource_id = %s;"
+        cursor.execute(query, (name,resource_type,price,description,availability,dt, id,))
         self.conn.commit()
 
 
