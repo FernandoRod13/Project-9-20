@@ -143,7 +143,7 @@ class RequesterHandler:
 #############################################################################
 
 
-    def PutRequester(self, form):
+    def PutRequester(self, form, parsed_json):
         
         
         
