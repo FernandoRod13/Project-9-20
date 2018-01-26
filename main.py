@@ -55,7 +55,7 @@ def getAllResourcesRequested():
     if  request.method == 'GET':   
         return ResourcesHandler().getAllresources_requested()
     elif request.method == 'PUT':
-        return ResourcesHandler().updateResourcesRequested(request.form)       
+        return ResourcesHandler().updateResourcesRequested(request.form, request.get_json())       
     elif request.method == 'POST':
         return ResourcesHandler().insertResourcesRequested(request.form,  request.get_json())
     else:
@@ -87,7 +87,7 @@ def getResourcesAvailable():
    ## """ Show  Resources available."""
         return ResourcesHandler().getAllresources_avaliable()      
     elif request.method == 'PUT':
-        return ResourcesHandler().updateResourcesAvailable(request.form)       
+        return ResourcesHandler().updateResourcesAvailable(request.form, request.get_json())       
     elif request.method == 'POST':
         return ResourcesHandler().insertResourcesAvailable(request.form, request.get_json())
     else:
@@ -213,7 +213,7 @@ def getAllSuppliers():
         else:
             return handler.searchAllSuppliersByParameter(request.form)
     elif request.method == 'PUT':
-        return SupplierHandler().PutSupplier(request.form)
+        return SupplierHandler().PutSupplier(request.form,request.get_json())
     elif request.method == 'POST':
         return SupplierHandler().insertSupplier(request.form, request.get_json())
     else:
@@ -234,7 +234,7 @@ def getRequesters():
         else:
             return handler.searchAllRequestersByParameter(request.args)
     elif request.method == 'PUT':
-        return RequesterHandler().PutRequester(request.form)
+        return RequesterHandler().PutRequester(request.form, request.get_json())
     elif request.method == 'POST':
         return RequesterHandler().insertRequester(request.form, request.get_json())
     else:
@@ -255,7 +255,7 @@ def getAllAdministraror():
         if not request.args:
             return handler.getAllAdmin()       
     elif request.method == 'PUT':
-        return AccountHandler().PutAdmin(request.form)       
+        return AccountHandler().PutAdmin(request.form, request.get_json())       
     elif request.method == 'POST':
         return AccountHandler().insertAdmin(request.form, request.get_json())
     else:
@@ -303,6 +303,9 @@ def getChangeAccountPassword():
     else:
         return jsonify(Error = "Method not allowed"), 405
 
+####################################################
+### Micellaneos
+
 @app.route('/cities', methods=['GET'])
 def getCityList():
     if request.method == 'GET':
@@ -314,6 +317,13 @@ def getCityList():
 def getResourceTypeList():
     if request.method == 'GET':
         return AccountHandler().getResourceType()
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/notifications', methods=['GET'])
+def getNotificationsList():
+    if request.method == 'GET':
+        return AccountHandler().getNotifications()
     else:
         return jsonify(Error = "Method not allowed"), 405
 

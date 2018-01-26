@@ -63,7 +63,7 @@ class ResourcesHandler:
         result['request_id'] = request_id
         result['name'] = name
         result['category_number'] = resource_type
-        result['accountID'] = requester_id
+        result['requester_id'] = requester_id
         result['description'] = description        
         result['qty'] = qty
         result['Requested_Date'] =dt
@@ -397,7 +397,7 @@ class ResourcesHandler:
     def insertResourcesAvailable(self, form, parsed_json):
                 
         if len(form)==0:
-            # parsed_json = json.loads(test)
+           
             name = parsed_json['name']  
             resource_type = parsed_json['resource_type']
             supplier_id = parsed_json['supplier_id']
@@ -435,18 +435,30 @@ class ResourcesHandler:
     ####  UPDATE
     #########################################################
 
-    def updateResourcesRequested(self, form):
+    def updateResourcesRequested(self, form, parsed_json):
+        
+        
         id = form.get('id')
         name = form.get('name')
-        resource_type = form.get('resource_type')
-        requester_id = form.get('requester_id')
+        resource_type = form.get('resource_type')        
         qty = form.get('qty')
         description = form.get('description')
         dt = datetime.now()  
-        result_list= {} 
-        if name and resource_type and requester_id and qty and description and (len(form)==5):
+        result_list= {}        
+        
+        if len(form)==0: 
+            id = parsed_json['id']
+            name = parsed_json['name']
+            resource_type = parsed_json['resource_type']
+            qty = parsed_json['qty']
+            description = parsed_json['description'] 
+            dao.updateRequested(id,name, resource_type, description, qty,dt)
+            res = self.getResourceRequestedByID(id)
+            return res, 201       
+
+        elif name and resource_type and qty and description and (len(form)==4):
             dao = ResourceDAO()
-            dao.updateRequested(id,name, resource_type, requester_id,description, qty,dt)
+            dao.updateRequested(id,name, resource_type, description, qty,dt)
             res = self.getResourceRequestedByID(id)
             return res, 201
 
@@ -454,7 +466,7 @@ class ResourcesHandler:
             id = form.get('id')
             qty = form.get('qty')
             dao = ResourceDAO()
-            dao.updateRequestedQty(id,name, resource_type, requester_id,description, qty,dt)
+            dao.updateRequestedQty(id,name, resource_type, description, qty,dt)
             res = self.getResourceRequestedByID(id)
             return res, 201
 
@@ -463,46 +475,56 @@ class ResourcesHandler:
         else:
             return jsonify(Error = "Malformed post request"), 400
 
-    def updateResourcesAvailable(self, form):
+    def updateResourcesAvailable(self, form,):
         
-            name = form.get('name')
-            resource_type = form.get('resource_type')
-            supplier_id = form.get('supplier_id')
-            price = form.get('price')
-            description = form.get('description')            
-            availability = form.get('qty')
-            id = form.get('id')
-            result_list = {} 
+        name = form.get('name')
+        resource_type = form.get('resource_type')        
+        price = form.get('price')
+        description = form.get('description')            
+        availability = form.get('qty')
+        id = form.get('id')
+        dt = datetime.now()
+        result_list = {} 
+
+        if len(form)==0: 
+            id = parsed_json['id']
+            name = parsed_json['name']
+            resource_type = parsed_json['resource_type']            
+            qty = parsed_json['qty']
+            description = parsed_json['description'] 
+            price = parsed_json['price'] 
+            dao.updateAvailable(id, name,resource_type,price,description,availability)
+            res = self.getResourceRequestedByID(id)
+            return res, 201                  
                 
-                    
-            if name and resource_type and supplier_id and price and description and availability and id and   (len(form)==7):
-                temp = ResourceDAO().getResourceAvaliableByRID(id)
-                if (len(temp)==0):
-                    return jsonify(Error="Resource with that Id was not found."), 400
-                dao = ResourceDAO()
-                dao.updateAvailable(id, name,resource_type,supplier_id,price,description,availability)
-                res = self.getResourceAvaliableByRID(id)
-                return res, 201
+        elif name and resource_type and  price and description and availability and id and  dt and  (len(form)==6):
+            temp = ResourceDAO().getResourceAvaliableByRID(id)
+            if (len(temp)==0):
+                return jsonify(Error="Resource with that Id was not found."), 400
+            dao = ResourceDAO()
+            dao.updateAvailable(id, name,resource_type,price,description,availability, dt)
+            res = self.getResourceAvaliableByRID(id)
+            return res, 201
+        
+
+        elif id and availability and (len(form)==2):
+            temp = ResourceDAO().getResourceAvaliableByRID(id)
+            if len(temp)==0:
+                return jsonify(Error="Resource with that Id was not found."), 400
+            dao = ResourceDAO()
+            dao.updateAvailableAvailability(id, qty)
+            res = self.getResourceAvaliableByRID(id)
+            return res, 201
+
+        elif id and price and (len(form)==2):
+            temp = ResourceDAO().getResourceAvaliableByRID(id)
+            if (len(temp)==0):
+                return jsonify(Error="Resource with that Id was not found."), 400
+            dao = ResourceDAO()
+            dao.updateAvailablePrice(id, price)
+            res = self.getResourceAvaliableByRID(id)
+            return res, 201
             
-
-            elif id and availability and (len(form)==2):
-                temp = ResourceDAO().getResourceAvaliableByRID(id)
-                if len(temp)==0:
-                    return jsonify(Error="Resource with that Id was not found."), 400
-                dao = ResourceDAO()
-                dao.updateAvailableAvailability(id, qty)
-                res = self.getResourceAvaliableByRID(id)
-                return res, 201
-
-            elif id and price and (len(form)==2):
-                temp = ResourceDAO().getResourceAvaliableByRID(id)
-                if (len(temp)==0):
-                    return jsonify(Error="Resource with that Id was not found."), 400
-                dao = ResourceDAO()
-                dao.updateAvailablePrice(id, price)
-                res = self.getResourceAvaliableByRID(id)
-                return res, 201
-                
-            else:
-                return jsonify(Error="Unexpected attributes in post request"), 400
+        else:
+            return jsonify(Error="Unexpected attributes in post request"), 400
 
