@@ -264,10 +264,20 @@ def getAllAdministraror():
     
 #          TRANSACTIONS ROUTES
 
+@app.route('/transactions/addPaymentMethod', methods=['POST'])
+def addPaymentMethods():
+    if request.method == 'POST':
+        return TransactionHandler().addPaymentMethod(request.args)
+
 @app.route('/transactions/getPaymentMethods', methods=['GET'])
 def getPaymentMethods():
     if request.method == 'GET':
         return TransactionHandler().getPaymentMethods(request.args)
+
+@app.route('/transactions/updatePaymentMethod', methods=['POST'])
+def updatePaymentMethods():
+    if request.method == 'POST':
+        return TransactionHandler().updatePaymentMethod(request.args)
 
 @app.route('/transactions/getBuyerTransaction', methods=['GET'])
 def getBuyerTransaction():
@@ -284,6 +294,10 @@ def getResourceTransaction():
     if request.method == 'GET':
         return TransactionHandler().getTransactionByResource(request.args)
 
+@app.route('/transactions/buyResource', methods=['POST'])
+def buyResource():
+    if request.method == 'POST':
+        return TransactionHandler().buyResource(request.args)
 
 #########################################
 #### LOGIN

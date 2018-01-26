@@ -36,6 +36,62 @@ class TransactionHandler:
 
     # METHODS
 
+    # For updating a current payment method for a particular account id.
+    def updatePaymentMethod(self, args):
+        if len(args) == 6 and args:
+            cardHolder = args.get("card_holder")
+            cardNumber = args.get("card_number")
+            expDate = args.get("expiration_date")
+            zipCode = args.get("zip_code")
+            accountId = args.get("account_id")
+            pmid = args.get("payment_method_id")
+            if cardHolder and cardNumber and expDate and zipCode and accountId and pmid:
+                dao = TransactionDAO()
+                res = dao.addPaymentMethod(cardHolder, cardNumber, expDate, zipCode, accountId)
+                if isinstance(res, int):
+                    result = {}
+                    result['payment_method_id'] = pmid
+                    result['card_holder'] = cardHolder
+                    result['card_number'] = cardNumber
+                    result['expiration_date'] = expDate
+                    result['zip_code'] = zipCode
+                    print(PaymentMethod=result)
+                else:
+                    return jsonify(Error=res)
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
+    # Add payment method for a particular account id.
+    def addPaymentMethod(self, args):
+        if len(args) == 5 and args:
+            cardHolder = args.get("card_holder")
+            cardNumber = args.get("card_number")
+            expDate = args.get("expiration_date")
+            zipCode = args.get("zip_code")
+            accountId = args.get("account_id")
+            if cardHolder and cardNumber and expDate and zipCode and accountId:
+                dao = TransactionDAO()
+                pmid = dao.addPaymentMethod(cardHolder, cardNumber, expDate, zipCode, accountId)
+                if isinstance(pmid, int):
+                    result = {}
+                    result['payment_method_id'] = pmid
+                    result['card_holder'] = cardHolder
+                    result['card_number'] = cardNumber
+                    result['expiration_date'] = expDate
+                    result['zip_code'] = zipCode
+                    print(PaymentMethod=result)
+                else:
+                    return jsonify(Error=pmid)
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
+
+
+
     # Get all payment method for a particular account id.
     def getPaymentMethods(self, args):
         accountId = args.get("accountid")
@@ -55,18 +111,18 @@ class TransactionHandler:
 
     # Get transaction history of certain buyer by the id.
     def getTransactionByBuyer(self, args):
-        accountId = args.get("accountid")
+        requesterId = args.get("requesterid")
         region = args.get("region")
         city = args.get("city")
         dao = TransactionDAO()
 
         transactionsList = []
-        if(len(args) == 2 and accountId and region):
-            transactionsList = dao.getTransactionByBuyerIdAndRegion(accountId, region)
-        elif(len(args) == 2 and accountId and city):
-            transactionsList = dao.getTransactionByBuyerIdAndCity(accountId, city)
-        elif(len(args) == 1 and accountId):
-            transactionsList = dao.getTransactionByBuyerId(accountId)
+        if(len(args) == 2 and requesterId and region):
+            transactionsList = dao.getTransactionByBuyerIdAndRegion(requesterId, region)
+        elif(len(args) == 2 and requesterId and city):
+            transactionsList = dao.getTransactionByBuyerIdAndCity(requesterId, city)
+        elif(len(args) == 1 and requesterId):
+            transactionsList = dao.getTransactionByBuyerId(requesterId)
         else:
             return jsonify(Error = "Malfored query string"), 400
 
@@ -78,18 +134,18 @@ class TransactionHandler:
 
     # Get transaction history of certain supplier by the id.
     def getTransactionBySupplier(self, args):
-        accountId = args.get("accountid")
+        supplierId = args.get("supplierid")
         region = args.get("region")
         city = args.get("city")
         dao = TransactionDAO()
 
         transactionsList = []
-        if (len(args) == 2 and accountId and region):
-            transactionsList = dao.getTransactionBySupplierIdAndRegion(accountId, region)
-        elif (len(args) == 2 and accountId and city):
-            transactionsList = dao.getTransactionBySupplierIdAndCity(accountId, city)
-        elif (len(args) == 1 and accountId):
-            transactionsList = dao.getTransactionBySupplierId(accountId)
+        if (len(args) == 2 and supplierId and region):
+            transactionsList = dao.getTransactionBySupplierIdAndRegion(supplierId, region)
+        elif (len(args) == 2 and supplierId and city):
+            transactionsList = dao.getTransactionBySupplierIdAndCity(supplierId, city)
+        elif (len(args) == 1 and supplierId):
+            transactionsList = dao.getTransactionBySupplierId(supplierId)
         else:
             return jsonify(Error="Malfored query string"), 400
 
@@ -119,3 +175,33 @@ class TransactionHandler:
             result = self.build_transaction_dict(row)
             result_list.append(result)
         return jsonify(Transactions=result_list)
+
+    # Buy resource transaction.
+    def buyResource(self, args):
+        if args and len(args) == 3:
+            resourceId = args['resource_id']
+            requesterId = args['requester_id']
+            purchaseQty = args['purchase_qty']
+            if resourceId and requesterId and purchaseQty:
+                dao = TransactionDAO()
+                pid = dao.buyResource(purchaseQty, resourceId, requesterId)
+                if isinstance(pid, int):
+                    result = {}
+                    result["purchase_id"] = pid
+                    result["resource_id"] = resourceId
+                    result["requester_id"] = requesterId
+                    result["purchase_qty"] = purchaseQty
+                    return jsonify(Transaction=result)
+                else:
+                    return jsonify(Error=pid)
+            else:
+                return jsonify(Error="Malformed post request")
+        else:
+            return jsonify(Error="Malformed post request")
+
+
+
+
+
+
+
