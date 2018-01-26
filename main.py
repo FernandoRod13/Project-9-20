@@ -184,24 +184,24 @@ def getAllTrendingResBetween():
     handler = StatiscHandler()
     return handler.getAllTrendingRes_Between()
 
-# TRENDING STATICTICS (8 SENATES)
-@app.route('/statistics/trending/resources/requested/region/<string:region_id>')
-def getAllTrendingResInNeedBySenate(region_id):
-    """ Show Trending Statistics for Resources Requested by Senatorial Region"""  
+# TRENDING STATICTICS (30 Dats)
+@app.route('/statistics/month/resources/requested')
+def getAllTrendingResInNeedBySenate():
+    """ Show Trending Statistics for 30 Days"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_InNeedBySenate(region_id)
+    return handler.getAllDailyRes_InNeedBySenate()
 
-@app.route('/statistics/trending/resources/available/region/<string:region_id>')
-def getAllTrendingResAvailableBySenate(region_id):
-    """ Show Trending Statistics for Resources Avaliable by Senatorial Region"""  
+@app.route('/statistics/month/resources/available')
+def getAllTrendingResAvailableBySenate():
+    """ Show Trending Statistics for Resources Avaliable for 30 Day"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_AvailableBySenate(region_id)
+    return handler.getAllDailyRes_AvailableBySenate()
 
-@app.route('/statistics/trending/resources/between_requested_available/region/<string:region_id>')
-def getAllTrendingResBetweenByregion_id(region_id):
-    """ Show Trending Statistics for Resources Requested vs Avaliable by Senatorial Region"""  
+@app.route('/statistics/month/resources/between_requested_available')
+def getAllTrendingResBetweenByregion_id():
+    """ Show Trending Statistics for Resources Requested vs Avaliable by Senatorial Region for 30 Day"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_BetweenBySenate(region_id)
+    return handler.getAllDailyRes_BetweenBySenate()
 
 @app.route('/suppliers',methods=['GET', 'POST', 'PUT'])
 def getAllSuppliers():
