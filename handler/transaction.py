@@ -55,7 +55,8 @@ class TransactionHandler:
                     result['card_number'] = cardNumber
                     result['expiration_date'] = expDate
                     result['zip_code'] = zipCode
-                    print(PaymentMethod=result)
+                    return (PaymentMethod=result)
+                 
                 else:
                     return jsonify(Error=res)
             else:
@@ -81,7 +82,7 @@ class TransactionHandler:
                     result['card_number'] = cardNumber
                     result['expiration_date'] = expDate
                     result['zip_code'] = zipCode
-                    print(PaymentMethod=result)
+                    return (PaymentMethod=result)
                 else:
                     return jsonify(Error=pmid)
             else:

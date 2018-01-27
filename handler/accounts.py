@@ -32,6 +32,17 @@ class AccountHandler:
         result['city'] = row[5]
         return result
 
+    def build_login(self,row):
+        result = {}
+        result['admin_id'] = row[0]
+        result['first_name'] = row[1]
+        result['last_name'] = row[2]
+        result['email'] = row[3]
+        result['phone'] = row[4]
+        result['city'] = row[5]
+        result['type'] = row[6]
+        return result
+
     def build_city(self,row):
         result = {}
         result['city_id'] = row[0]
@@ -113,7 +124,7 @@ class AccountHandler:
             else:
                 result_list = []
             for row in res:
-                result = self.build_admin(row)
+                result = self.build_login(row)
                 result_list.append(result)            
                 return jsonify(Administrator = result_list)       
         else:
