@@ -874,11 +874,10 @@ class ResourceDAO:
         query = "insert into resource_keyword (keyword, resource_id) values (%s, %s);"
         words = keywords.split()
         for key in words:  
-            cursor.execute(query, (key, id,))
+            cursor.execute(query, (key, id,))        
+        query = "insert into notifications (resource_type_id, message, title, notification_date_added, resource_id) values (%s, 'A resource from a requested resource has been added','New Resource Available', %s, %s);"
+        cursor.execute(query, ( resource_type, dt,id,))
         self.conn.commit()
-        query = "insert into notifications (resource_type_id, message, title, notification_date_added, resource_id, notification_date_added) values (%s, 'A resource from a requested resource has been added','New Resource Available', %s, %s);"
-        cursor.execute(query, ( resource_type, id, dt))
-        id = cursor.fetchone()[0]
         return id
         
 
