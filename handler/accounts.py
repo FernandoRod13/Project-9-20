@@ -82,7 +82,7 @@ class AccountHandler:
         for row in res:
             result = self.build_city(row)
             result_list.append(result)                 
-        return jsonify(Notifications = result_list)
+        return jsonify(Cities = result_list)
 
     def getResourceType(self):
         dao = AccountsDAO()

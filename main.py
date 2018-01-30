@@ -79,7 +79,7 @@ def getSearchResourcesRequested():
 @app.route('/resources/available/requester/<int:id>')
 def getResourceSupplierByResourceID(id):
     """Get Resources that a given requester id supplies"""
-    return ResourcesHandler().getResourcesRequestedOfRequesterByID(rid)
+    return ResourcesHandler().getResourcesRequestedOfRequesterByID(id)
 
 @app.route('/resources/available',methods=['GET', 'POST', 'PUT'])
 def getResourcesAvailable():

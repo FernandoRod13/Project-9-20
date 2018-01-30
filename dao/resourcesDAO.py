@@ -889,7 +889,7 @@ class ResourceDAO:
 
     def updateRequested(self,id,name, resource_type, description, qty ):
         cursor = self.conn.cursor()       
-        query = "update resources_requested set requested_name = %s, resource_type = %s, description = %s, quantity = %s where request_id = %s;"
+        query = "update resources_requested set requested_name = %s, resource_type_id = %s, description = %s, quantity = %s where request_id = %s;"
         cursor.execute(query, (name, resource_type, description, qty,id,))
         self.conn.commit()
 

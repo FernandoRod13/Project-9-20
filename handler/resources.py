@@ -452,13 +452,13 @@ class ResourcesHandler:
             resource_type = parsed_json['resource_type']
             qty = parsed_json['qty']
             description = parsed_json['description'] 
-            dao.updateRequested(id,name, resource_type, description, qty,dt)
+            dao.updateRequested(id,name, resource_type, description, qty)
             res = self.getResourceRequestedByID(id)
             return res, 201       
 
-        elif name and resource_type and qty and description and (len(form)==4):
+        elif name and resource_type and qty and description and id and  (len(form)==5):
             dao = ResourceDAO()
-            dao.updateRequested(id,name, resource_type, description, qty,dt)
+            dao.updateRequested(id,name, resource_type, description, qty)
             res = self.getResourceRequestedByID(id)
             return res, 201
 
@@ -471,11 +471,11 @@ class ResourcesHandler:
             return res, 201
 
         elif len(form) != 6:
-            return jsonify(Error="Unexpected attributes in post request"), 400     
+            return jsonify(Error="Unexpected attributes in put request"), 400     
         else:
-            return jsonify(Error = "Malformed post request"), 400
+            return jsonify(Error = "Malformed put request"), 400
 
-    def updateResourcesAvailable(self, form,):
+    def updateResourcesAvailable(self, form,parsed_json):
         
         name = form.get('name')
         resource_type = form.get('resource_type')        
