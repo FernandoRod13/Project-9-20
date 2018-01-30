@@ -84,6 +84,18 @@ class AccountHandler:
             result_list.append(result)                 
         return jsonify(Cities = result_list)
 
+    
+
+    def RequesterId(self,id):
+        dao = AccountsDAO()
+        res = dao.getResquesterId(id)                        
+        return jsonify(id = res)
+
+    def SupplierId(self,id):
+        dao = AccountsDAO()
+        res = dao.getSupplierId(id)                       
+        return jsonify(id = res)
+
     def getResourceType(self):
         dao = AccountsDAO()
         res = dao.resource_typeList()

@@ -334,10 +334,17 @@ def getResourceTypeList():
     else:
         return jsonify(Error = "Method not allowed"), 405
 
-@app.route('/notifications', methods=['GET'])
-def getNotificationsList():
+@app.route('/getRequesterId/<int:id>', methods=['GET'])
+def getRequesterId(id):
     if request.method == 'GET':
-        return AccountHandler().getNotifications()
+        return AccountHandler().RequesterId(id)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/getSupplierId/<int:id>', methods=['GET'])
+def getSupplierId(id):
+    if request.method == 'GET':
+        return AccountHandler().SupplierId(id)
     else:
         return jsonify(Error = "Method not allowed"), 405
 

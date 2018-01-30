@@ -26,6 +26,20 @@ class AccountsDAO:
             result.append(row)
         return result
 
+    def getResquesterId(self,id):
+        cursor = self.conn.cursor()
+        query = "select requester_id from requester where account_id = %s;"
+        cursor.execute(query, (id,))
+        id = cursor.fetchone()[0]
+        return id
+
+    def getSupplierId(self,id):
+        cursor = self.conn.cursor()
+        query = "select supplier_id from supplier where account_id = %s;"
+        cursor.execute(query, (id,))
+        id = cursor.fetchone()[0]
+        return id
+
     def cityList(self):
         cursor = self.conn.cursor()
         query = "Select * from city order by city_name;"
