@@ -107,7 +107,7 @@ def getResouresAvaliableBySupplierID(rid):
 @app.route('/resources/available/supplier/<int:id>')
 def getResourceSuppliedbySupplierID(id):
     """Get Resources that a given supplier id supplies"""
-    return ResourcesHandler().getResourcesAvalibleOfSupplierByID(rid)
+    return ResourcesHandler().getResourcesAvalibleOfSupplierByID(id)
     
 @app.route('/resources/available/find')
 def getSearchResourcesAvailable():
