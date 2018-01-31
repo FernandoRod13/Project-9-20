@@ -70,7 +70,7 @@ class AccountsDAO:
 
     def accountLogin(self, email,password):
         cursor = self.conn.cursor()
-        query = "select account_id , first_name, last_name, email, phone, city_name, account_type from accounts natural inner join city natural inner join location where email = %s and password = %s;"
+        query = "select account_id , first_name, last_name, email, phone, city_name, account_type, latitude, longitude from accounts natural inner join city natural inner join location where email = %s and password = %s;"
         cursor.execute(query, (email,password,))
         result = []
         for row in cursor:
