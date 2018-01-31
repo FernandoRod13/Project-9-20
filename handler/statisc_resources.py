@@ -19,10 +19,10 @@ class StatiscHandler:
             if row[2] == None: #Nore available
                 result['Amount'] = 0;
             else:
-                result['Amount'] = (-1)* row[2] #negative available
+                result['Amount'] = row[2] #negative available
         else:
             if row[2] == None:
-                result['Amount'] = row[1]  
+                result['Amount'] = (-1) * row[1]  
             else:               
                 result['Amount'] = row[3]    
         return result
