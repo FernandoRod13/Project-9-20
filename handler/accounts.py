@@ -39,10 +39,10 @@ class AccountHandler:
         result['last_name'] = row[2]
         result['email'] = row[3]
         result['phone'] = row[4]
-        result['city'] = row[5]
-        result['latitude'] = row[6]
-        result['longitude'] = row[7]
-        result['type'] = row[8]
+        result['city'] = row[5]        
+        result['type'] = row[6]
+        result['latitude'] = row[7]
+        result['longitude'] = row[8]
         return result
 
     def build_city(self,row):
