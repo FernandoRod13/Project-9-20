@@ -217,7 +217,7 @@ class TransactionDAO:
                 "from resources natural inner join accounts " \
                 "natural inner join supplier) as S " \
                 "where B.resource_id = S.resource_id and supplier_id = %s order by purchase_id;"
-        cursor.execute(query, (accountId,))
+        cursor.execute(query, (supplierId,))
         result = []
         for row in cursor:
             result.append(row)

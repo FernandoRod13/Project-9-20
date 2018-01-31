@@ -224,7 +224,14 @@ class AccountHandler:
 ############################################################################
 ############ UPDATE
 #############################################################################
-
+    def getCities(self):
+        dao = AccountsDAO()
+        res = dao.cityList()
+        result_list = []
+        for row in res:
+            result = self.build_city(row)
+            result_list.append(result)                 
+        return jsonify(Cities = result_list)
 
     def PutAdmin(self, form, test):
         first_name = form.get('first_name')  
@@ -283,6 +290,8 @@ class AccountHandler:
             return  (result), 201    
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
+        
+
 
         
        
