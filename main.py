@@ -310,7 +310,7 @@ def getAccountLogin():
     else:
         return jsonify(Error = "Method not allowed"), 405
 
-@app.route('/changepassword', methods=['GET'])
+@app.route('/user/changepassword', methods=['GET'])
 def getChangeAccountPassword():
     if request.method == 'GET':
         return AccountHandler().userChangePassword(request.args)
