@@ -40,7 +40,9 @@ class AccountHandler:
         result['email'] = row[3]
         result['phone'] = row[4]
         result['city'] = row[5]
-        result['type'] = row[6]
+        result['latitude'] = row[6]
+        result['longitude'] = row[7]
+        result['type'] = row[8]
         return result
 
     def build_city(self,row):
@@ -224,7 +226,14 @@ class AccountHandler:
 ############################################################################
 ############ UPDATE
 #############################################################################
-
+    def getCities(self):
+        dao = AccountsDAO()
+        res = dao.cityList()
+        result_list = []
+        for row in res:
+            result = self.build_city(row)
+            result_list.append(result)                 
+        return jsonify(Cities = result_list)
 
     def PutAdmin(self, form, test):
         first_name = form.get('first_name')  
@@ -283,6 +292,8 @@ class AccountHandler:
             return  (result), 201    
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
+        
+
 
         
        
