@@ -207,12 +207,29 @@ class TransactionHandler:
             resourceId = parsed_json['resourceid']
             requesterId = parsed_json['requesterid']
             purchaseQty = parsed_json['purchaseqty']
+            try:
+                pmid = parsed_json['payment_method_id']
+            except:
+                pmid = None
         else:
             resourceId = args.get("resourceid")
             requesterId = args.get("requesterid")
             purchaseQty = args.get("purchaseqty")
+            pmid = args.get("payment_method_id")
 
-        if resourceId and requesterId and purchaseQty:
+        if resourceId and requesterId and purchaseQty and pmid:
+            dao = TransactionDAO()
+            pid = dao.buyResourceP(purchaseQty, resourceId, requesterId, pmid)
+            if isinstance(pid, int):
+                result = {}
+                result["purchase_id"] = pid
+                result["resource_id"] = resourceId
+                result["requester_id"] = requesterId
+                result["purchase_qty"] = purchaseQty
+                return jsonify(Transaction=result), 200
+            else:
+                return jsonify(Error=pid), 404
+        elif resourceId and requesterId and purchaseQty:
             dao = TransactionDAO()
             pid = dao.buyResource(purchaseQty, resourceId, requesterId)
             if isinstance(pid, int):
@@ -221,9 +238,9 @@ class TransactionHandler:
                 result["resource_id"] = resourceId
                 result["requester_id"] = requesterId
                 result["purchase_qty"] = purchaseQty
-                return jsonify(Transaction=result)
+                return jsonify(Transaction=result), 200
             else:
-                return jsonify(Error=pid)
+                return jsonify(Error=pid), 404
         else:
             return jsonify(Error="Malformed post request")
 

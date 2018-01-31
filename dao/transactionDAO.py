@@ -141,6 +141,77 @@ class TransactionDAO:
             print(errorLog)
             return errorLog
 
+    # For Buyers when they going to buy a resource from a supplier.
+    def buyResourceP(self, purchaseQty, resourceId, requesterId, pmid):
+
+        # Check if the resource is available.
+        cursor = self.conn.cursor()
+        query1 = "select resource_name, availability, price" \
+                 " from resources where resource_id = %s;"
+        cursor.execute(query1, (resourceId,))
+        result1 = []
+        for row in cursor:
+            result1.append(row)
+        resourceName = result1[0][0]
+        rAvailable = result1[0][1]
+        purchasePrice = result1[0][2]
+        print(resourceName, " ---> available: ", rAvailable
+              , " Requesting: ", purchaseQty)
+
+        if int(purchaseQty) <= int(rAvailable):
+            # Check that the requester id exist
+            query0 = "select * from requester" \
+                     " where requester_id = %s;"
+            cursor.execute(query0, (requesterId,))
+            result0 = []
+            for row in cursor:
+                result0.append(row)
+            if len(result0) != 0:
+                # Look for the latest payment method of the requester
+                query2 = "select *" \
+                        " from payment_method" \
+                        " where payment_method_id = %s"
+                cursor.execute(query2, (pmid,))
+                result2 = []
+                for row in cursor:
+                   result2.append(row)
+
+                if len(result2) != 0:
+                    print("requester id: ", requesterId, " payment method id:", pmid)
+
+                    # If there is sufficient resources to buy, update the resource table.
+                    difQuantity = int(rAvailable) - int(purchaseQty)
+                    print("Remaining resources after buy: ", difQuantity)
+                    query3 = "update resources" \
+                          " set availability = %s" \
+                           " where resource_id = %s;"
+                    cursor.execute(query3, (difQuantity, resourceId))
+                    self.conn.commit()
+
+                    # Set purchases values.
+                    purchaseDate = datetime.date.today()
+                    print("Purchase date: ", purchaseDate, " purchase price: ", purchasePrice)
+                    query4 = "insert into purchases(resource_id, requester_id, " \
+                         "purchase_quantity, payment_method_id, purchase_date, " \
+                       "purchase_price)" \
+                      "values(%s, %s, %s, %s, %s, %s) returning purchase_id;"
+                    cursor.execute(query4, (resourceId, requesterId, purchaseQty, pmid, purchaseDate, purchasePrice))
+                    pid = cursor.fetchone()[0]
+                    print("Generated Purchase id: ", pid)
+                    self.conn.commit()
+                    return pid
+                else:
+                    errorLog = "The requester do not have a payment method set."
+                    print(errorLog)
+                    return errorLog
+            else:
+                errorLog = "The requester id do not exist."
+                print(errorLog)
+                return errorLog
+        else:
+            errorLog = "There is no sufficient resources to buy."
+            print(errorLog)
+            return errorLog
     # Get all transactions
     def getAllTransactions(self):
         cursor = self.conn.cursor()
