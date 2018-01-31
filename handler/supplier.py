@@ -20,6 +20,7 @@ class SupplierHandler:
         result['phone'] = row[4]
         result['city'] = row[5]
         return result
+   
 
     def getAllSuppliers(self):
         dao = SupplierDAO()
@@ -70,44 +71,65 @@ class SupplierHandler:
 
     def getSupplierByID(self,id):
         dao = SupplierDAO()
-        row = dao.searchSuppliersByID(id)
-        if not row:
+        res = dao.searchSuppliersByID(id)
+        if not res:
             return jsonify(Error = "Supplier Not Found"), 404
         else:
-            part = self.build_supplier(row)
-            return jsonify(Supplier = part)
+            result_list = []
+            for row in res:
+                result = self.build_supplier(row)
+                result_list.append(result)          
+        return jsonify(Supplier = result_list)
 
 ###################################################################
 ###########  POST
 
     def hash_password(self,password):
         # uuid is used to generate a random number
-        salt = uuid.uuid4().hex
-        return hashlib.sha256(salt.encode() + password.encode()).hexdigest() + ':' + salt
+        salt =uuid.uuid3(uuid.NAMESPACE_DNS, 'proyect920.org').hex
+        return hashlib.sha1(salt.encode() + password.encode()).hexdigest() + ':' + salt
     
     def check_password(self, hashed_password, user_password):
         password, salt = hashed_password.split(':')
         return password == hashlib.sha256(salt.encode() + user_password.encode()).hexdigest()
 
-    def insertSupplier(self, form):
-        first_name = form['first_name']
-        last_name = form['last_name']
-        email = form['email']
-        phone = form['phone']
-        address = form['address']
-        city_id = form['city_id']
-        latitude = form['latitude']
-        longitud = form['longitud']
-        photo = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
-        password = form['password']
-        dt = datetime.now()
-        #Hash password
-        password = self.hash_password(password)
-        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo and account_type and password :
+    def insertSupplier(self, form, parsed_json):
+        first_name = form.get('first_name')  
+        last_name = form.get('last_name')
+        email = form.get('email')
+        phone = form.get('phone')
+        address = form.get('address')
+        city_id = form.get('city_id')
+        latitude = form.get('latitude')
+        longitud = form.get('longitud')   
+        password = form.get('password')
+        dt = datetime.now()  
+        photo_url = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
+
+        if len(form)==0:
+            # parsed_json = json.loads(test)
+            first_name = parsed_json['first_name']  
+            last_name = parsed_json['last_name']
+            email = parsed_json['email']
+            phone = parsed_json['phone']
+            address = parsed_json['address']
+            city_id = parsed_json['city_id']
+            latitude = parsed_json['latitude']
+            longitud = parsed_json['longitud']   
+            password = parsed_json['password']
+            #Hash password
+            password = self.hash_password(password)
             dao = SupplierDAO()
-            id = dao.addSupplier(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo , 'Supplier' , password,dt)
+            id = dao.addSupplier(first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , 'Supplier' , password,dt)
             result = self.getSupplierByID(id)
-            return jsonify(Part=result), 201
+            return (result), 201     
+                
+        if first_name and last_name and email and phone and address and city_id and latitude and longitud and password :
+            dao = SupplierDAO()
+            password = self.hash_password(password)
+            id = dao.addSupplier(first_name , last_name , email , phone , address , city_id , latitude , longitud , 'https://robohash.org/quiautdolores.png?size=50x50&set=set1' , 'Supplier' , password,dt)
+            result = self.getSupplierByID(id)
+            return (result), 201
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
 
@@ -117,50 +139,61 @@ class SupplierHandler:
 #############################################################################
 
 
-    def PutSupplier(self, form):
-        first_name = form['first_name']
-        last_name = form['last_name']
-        email = form['email']
-        phone = form['phone']
-        address = form['address']
-        city_id = form['city_id']
-        latitude = form['latitude']
-        longitud = form['longitud']
-        photo = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'
-        password = form['password']
-        dt = datetime.now()
-        id = form['id']
-        #Hash password
-        password = self.hash_password(password)
-        if first_name and last_name and email and phone and address and city_id and latitude and longitud and photo and  password and id:
+    def PutSupplier(self, form, parsed_json):
+        first_name = form.get('first_name')  
+        last_name = form.get('last_name')
+        email = form.get('email')
+        phone = form.get('phone')
+        address = form.get('address')
+        city_id = form.get('city_id')
+        latitude = form.get('latitude')
+        longitud = form.get('longitud')   
+        photo = 'https://robohash.org/quiautdolores.png?size=50x50&set=set1'    
+        id = form.get('id')
+
+        if len(form)==0:
+            id = parsed_json['id']
+            first_name = parsed_json['first_name']  
+            last_name = parsed_json['last_name']
+            email = parsed_json['email']
+            phone = parsed_json['phone']
+            address = parsed_json['address']
+            city_id = parsed_json['city_id']
+            latitude = parsed_json['latitude']
+            longitud = parsed_json['longitud']
+            id = dao.UpdateSupplier(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo)
+            result = self.getSupplierByID(id)
+            return (result), 201   
+        
+        elif first_name and last_name and email and phone and address and city_id and latitude and longitud and photo and id:
             dao = SupplierDAO()
-            tid = dao.UpdateSupplier(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo , 'Supplier' , password,dt)
-            result = self.getSupplierByID(tid)
-            return jsonify(Part=result), 201
+            id = dao.UpdateSupplier(id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo)
+            result = self.getSupplierByID(id)
+            return (result), 201
         
         elif email and id and (len(form)==2):
             dao = SupplierDAO()
             tid = dao.updateSupplierEmail(id,email)
-            result = self.getSupplierByID(tid)
-            return jsonify(Part=result), 201
+            result = self.getSupplierByID(id)
+            return (result), 201
 
         elif phone and id and (len(form)==2):
             dao = SupplierDAO()
             tid = dao.updateSupplierPhone(id,phone)
-            result = self.getSupplierByID(tid)
-            return jsonify(Part=result), 201
+            result = self.getSupplierByID(id)
+            return (result), 201
 
         elif first_name and id and (len(form)==2):
             dao = SupplierDAO()
             tid = dao.updateSupplierFirst_name(id,first_name)
-            result = self.getSupplierByID(tid)
-            return jsonify(Part=result), 201
+            result = self.getSupplierByID(id)
+            return (result), 201
 
         elif last_name and id and (len(form)==2):
             dao = SupplierDAO()
             tid = dao.updateSupplierLast_name(id,last_name)
-            result = self.getSupplierByID(tid)
-            return jsonify(Part=result), 201    
+            result = self.getSupplierByID(id)
+            return (result), 201    
         
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400

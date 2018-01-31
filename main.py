@@ -55,9 +55,9 @@ def getAllResourcesRequested():
     if  request.method == 'GET':   
         return ResourcesHandler().getAllresources_requested()
     elif request.method == 'PUT':
-        return ResourcesHandler().updateResourcesRequested(request.form)       
+        return ResourcesHandler().updateResourcesRequested(request.form, request.get_json())       
     elif request.method == 'POST':
-        return ResourcesHandler().insertResourcesRequested(request.form)
+        return ResourcesHandler().insertResourcesRequested(request.form,  request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -79,7 +79,7 @@ def getSearchResourcesRequested():
 @app.route('/resources/available/requester/<int:id>')
 def getResourceSupplierByResourceID(id):
     """Get Resources that a given requester id supplies"""
-    return ResourcesHandler().getResourcesRequestedOfRequesterByID(rid)
+    return ResourcesHandler().getResourcesRequestedOfRequesterByID(id)
 
 @app.route('/resources/available',methods=['GET', 'POST', 'PUT'])
 def getResourcesAvailable():
@@ -87,9 +87,9 @@ def getResourcesAvailable():
    ## """ Show  Resources available."""
         return ResourcesHandler().getAllresources_avaliable()      
     elif request.method == 'PUT':
-        return ResourcesHandler().updateResourcesAvailable(request.form)       
+        return ResourcesHandler().updateResourcesAvailable(request.form, request.get_json())       
     elif request.method == 'POST':
-        return ResourcesHandler().insertResourcesAvailable(request.form)
+        return ResourcesHandler().insertResourcesAvailable(request.form, request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -107,7 +107,7 @@ def getResouresAvaliableBySupplierID(rid):
 @app.route('/resources/available/supplier/<int:id>')
 def getResourceSuppliedbySupplierID(id):
     """Get Resources that a given supplier id supplies"""
-    return ResourcesHandler().getResourcesAvalibleOfSupplierByID(rid)
+    return ResourcesHandler().getResourcesAvalibleOfSupplierByID(id)
     
 @app.route('/resources/available/find')
 def getSearchResourcesAvailable():
@@ -184,24 +184,24 @@ def getAllTrendingResBetween():
     handler = StatiscHandler()
     return handler.getAllTrendingRes_Between()
 
-# TRENDING STATICTICS (8 SENATES)
-@app.route('/statistics/trending/resources/requested/region/<string:region_id>')
-def getAllTrendingResInNeedBySenate(region_id):
-    """ Show Trending Statistics for Resources Requested by Senatorial Region"""  
+# TRENDING STATICTICS (30 Dats)
+@app.route('/statistics/month/resources/requested')
+def getAllTrendingResInNeedBySenate():
+    """ Show Trending Statistics for 30 Days"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_InNeedBySenate(region_id)
+    return handler.getAllDailyRes_InNeedBySenate()
 
-@app.route('/statistics/trending/resources/available/region/<string:region_id>')
-def getAllTrendingResAvailableBySenate(region_id):
-    """ Show Trending Statistics for Resources Avaliable by Senatorial Region"""  
+@app.route('/statistics/month/resources/available')
+def getAllTrendingResAvailableBySenate():
+    """ Show Trending Statistics for Resources Avaliable for 30 Day"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_AvailableBySenate(region_id)
+    return handler.getAllDailyRes_AvailableBySenate()
 
-@app.route('/statistics/trending/resources/between_requested_available/region/<string:region_id>')
-def getAllTrendingResBetweenByregion_id(region_id):
-    """ Show Trending Statistics for Resources Requested vs Avaliable by Senatorial Region"""  
+@app.route('/statistics/month/resources/between_requested_available')
+def getAllTrendingResBetweenByregion_id():
+    """ Show Trending Statistics for Resources Requested vs Avaliable by Senatorial Region for 30 Day"""  
     handler = StatiscHandler()
-    return handler.getAllDailyRes_BetweenBySenate(region_id)
+    return handler.getAllDailyRes_BetweenBySenate()
 
 @app.route('/suppliers',methods=['GET', 'POST', 'PUT'])
 def getAllSuppliers():
@@ -211,11 +211,11 @@ def getAllSuppliers():
         if not request.args:
             return handler.getAllSuppliers()
         else:
-            return handler.searchAllSuppliersByParameter(request.args)
+            return handler.searchAllSuppliersByParameter(request.form)
     elif request.method == 'PUT':
-        return SupplierHandler().PutSupplier(request.form)       
+        return SupplierHandler().PutSupplier(request.form,request.get_json())
     elif request.method == 'POST':
-        return SupplierHandler().insertSupplier(request.form)
+        return SupplierHandler().insertSupplier(request.form, request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
     
@@ -232,11 +232,11 @@ def getRequesters():
         if not request.args:
             return handler.getAllRequesters()
         else:
-            return handler.searchAllRequestersByParameter(request.args)  
+            return handler.searchAllRequestersByParameter(request.args)
     elif request.method == 'PUT':
-        return RequesterHandler.PutRequester(request.form)       
+        return RequesterHandler().PutRequester(request.form, request.get_json())
     elif request.method == 'POST':
-        return RequesterHandler().insertRequester(request.form)
+        return RequesterHandler().insertRequester(request.form, request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -250,14 +250,14 @@ def getRequesterByID(rid):
 @app.route('/admin',methods=['GET', 'POST', 'PUT'])
 def getAllAdministraror():
     """ Get all admistrator"""
-    handler = AdminHandler()
+    handler = AccountHandler()
     if request.method == 'GET':
         if not request.args:
             return handler.getAllAdmin()       
     elif request.method == 'PUT':
-        return AdminHandler().PutAdmin(request.form)       
+        return AccountHandler().PutAdmin(request.form, request.get_json())       
     elif request.method == 'POST':
-        return AdminHandler().insertAdmin(request.form)
+        return AccountHandler().insertAdmin(request.form, request.get_json())
     else:
         return jsonify(Error = "Method not allowed"), 405
 
@@ -307,6 +307,55 @@ def buyResource():
 def getAccountLogin():
     if request.method == 'GET':
         return AccountHandler().userLogin(request.args)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/user/changepassword', methods=['GET'])
+def getChangeAccountPassword():
+    if request.method == 'GET':
+        return AccountHandler().userChangePassword(request.args)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+####################################################
+### Micellaneos
+
+@app.route('/cities', methods=['GET'])
+def getCityList():
+    if request.method == 'GET':
+        return AccountHandler().getCities()
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/resource_type', methods=['GET'])
+def getResourceTypeList():
+    if request.method == 'GET':
+        return AccountHandler().getResourceType()
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/getRequesterId/<int:id>', methods=['GET'])
+def getRequesterId(id):
+    if request.method == 'GET':
+        return AccountHandler().RequesterId(id)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/getSupplierId/<int:id>', methods=['GET'])
+def getSupplierId(id):
+    if request.method == 'GET':
+        return AccountHandler().SupplierId(id)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/notifications', methods=['GET'])
+def Notifications():
+    if request.method == 'GET':
+        return AccountHandler().getNotifications()
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+
 
 
 

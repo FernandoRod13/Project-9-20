@@ -6,39 +6,41 @@ class CategoryHandler:
 
     def build_resource(self,row):
         result = {}
-        result['name'] = row[0]
-        result['category'] = row[1]
-        result['accountID'] = row[2]
-        result['description'] = row[3]
-        result['class'] = row[4]
-        result['qty'] = row[5]
-        result['city'] = row[6]
+        result['resource_id'] = row[0]
+        result['name'] = row[1]
+        result['category'] = row[2]
+        result['accountID'] = row[3]
+        result['description'] = row[4]
+        result['class'] = row[5]
+        result['qty'] = row[6]
+        result['city'] = row[7]
         return result
 
     def build_resource_requested(self,row):
         result = {}
-        result['name'] = row[0]
-        result['category'] = row[1]
-        result['accountID'] = row[2]
-        result['description'] = row[3]        
-        result['qty'] = row[4]
-        result['Requested_Date'] = row[5]
-        result['city'] = row[6]
+        result['resource_id'] = row[0]
+        result['name'] = row[1]
+        result['category'] = row[2]
+        result['accountID'] = row[3]
+        result['description'] = row[4]        
+        result['qty'] = row[5]
+        result['requested_date'] = row[6]
+        result['city'] = row[7]
         return result
 
     def build_resource_avaliable(self,row):
         result = {}
-        result['name'] = row[0]
-        result['category'] = row[1]
-        result['accountID'] = row[2]
-        result['price'] = row[3]
-        result['description'] = row[4]
-        result['avaliability'] = row[5]
-        result['qty'] = row[6]
+        result['resource_id'] = row[0]
+        result['name'] = row[1]
+        result['category'] = row[2]
+        result['supplier_id'] = row[3]
+        result['price'] = row[4]
+        result['description'] = row[5]
+        result['availability'] = row[6]
         result['dateAdded'] = row[7]
         result['lastUpdate'] = row[8]  
         result['city'] = row[9] 
-        return result   
+        return result  
 
     def __init__(self):
         pass    
@@ -50,7 +52,6 @@ class CategoryHandler:
         for row in res:
             result = self.build_resource(row)
             result_list.append(result)  
-        sorted(result_list, key=lambda k: k['category'])
         return jsonify(Resources = result_list)
         
 

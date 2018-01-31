@@ -36,9 +36,12 @@ class SupplierDAO:
 
     def searchSuppliersByID(self,id):
         cursor = self.conn.cursor()
-        query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier where account_type = 'Supplier' and supplier_id = %s;"
+        query = "select supplier_id , first_name, last_name, email, phone, city_name  from accounts natural inner join location natural inner join city natural inner join supplier  where account_type = 'Supplier' and supplier_id = %s;"
         cursor.execute(query, (id,))
-        return cursor.fetchone()
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
 
     def searchSuppliersSupplyingResource(self,resource_name):
         cursor = self.conn.cursor()
@@ -99,15 +102,13 @@ class SupplierDAO:
 
     def addSupplier(self, first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , account_type , password, dt):
         cursor = self.conn.cursor()       
-        query = "insert into location (address, city_id, latitude,longitud) values (%s, %s, %s, %s ) returning location_id;"
+        query = "insert into location (address, city_id, latitude, longitude) values (%s, %s, %s, %s ) returning location_id;"
         cursor.execute(query, ( address,city_id,latitude, longitud,))
         location_id = cursor.fetchone()[0]
-        self.conn.commit()
-        query = "insert into resources(first_name , last_name , email , phone , location_id , photo_url , account_type , creation_date, password) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning account_id;"
-        cursor.execute(query, (first_name , last_name , email , phone , location_id , photo_url , account_type , creation_date, password,))
+        query = "insert into accounts (first_name , last_name , email , phone , location_id , photo_url , account_type , account_creation_date, password) values (%s, %s, %s, %s, %s, %s, %s, %s, %s ) returning account_id;"
+        cursor.execute(query, (first_name , last_name , email , phone , location_id , photo_url , account_type , dt, password,))
         account_id = cursor.fetchone()[0]
-        self.conn.commit()
-        query = "insert into supplier (account_id) values (%s);"
+        query = "insert into supplier (account_id) values (%s) returning supplier_id;"
         cursor.execute(query, ( account_id,))
         supplier_id = cursor.fetchone()[0]
         self.conn.commit()
@@ -120,51 +121,59 @@ class SupplierDAO:
 ############################################################################
 
 
-    def UpdateSupplier(self, id, first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url , account_type , password):
+    def UpdateSupplier(self,id,first_name , last_name , email , phone , address , city_id , latitude , longitud , photo_url):
         cursor = self.conn.cursor() 
         query = "Select account_id from supplier where supplier_id = %s;"
         cursor.execute(query, ( id,))
-        account_id = cursor.fetchone()[0]            
-        query = "update location set address = %s, city_id = = %s, latitude = %s ,longitud = %s where account_id = %s"
-        cursor.execute(query, ( address,city_id,latitude, longitud,))
-        location_id = cursor.fetchone()[0]
-        self.conn.commit()
-        query = "update accounts set first_name = %s , last_name  = %s , email  = %s , phone = %s , location_id  = %s, photo_url  = %s, account_type  = %s, password  = %s where account_id = %s;"
-        cursor.execute(query, (first_name , last_name , email , phone , location_id , photo_url , account_type ,  password,))
-        account_id = cursor.fetchone()[0]
+        account_id = cursor.fetchone()[0]  
+        query = "Select location_id from accounts where account_id = %s;"
+        cursor.execute(query, ( account_id,))
+        location_id = cursor.fetchone()[0]            
+        query = "update location set address = %s, city_id = %s, latitude = %s , longitude = %s where location_id = %s"
+        cursor.execute(query, ( address,city_id,latitude, longitud,location_id,))
+        query = "update accounts set first_name = %s , last_name  = %s , email  = %s , phone = %s , photo_url  = %s where account_id = %s;"
+        cursor.execute(query, (first_name , last_name , email , phone ,  photo_url  ,account_id,))
         self.conn.commit()        
         return id;
 
     
-    def updateSupplierPhone(id, phone):
+    def updateSupplierPhone(self,id, phone):
         cursor = self.conn.cursor() 
+        query = "Select account_id from supplier where supplier_id = %s;"
+        cursor.execute(query, ( id,))
+        account_id = cursor.fetchone()[0]  
         query = "update accounts set phone  = %s where account_id = %s;"
-        cursor.execute(query, (phone,))
-        account_id = cursor.fetchone()[0]
+        cursor.execute(query, (phone,account_id,))
         self.conn.commit()        
         return id;
 
-    def updateSupplierEmail(id, email):
+    def updateSupplierEmail(self,id, email):
         cursor = self.conn.cursor() 
+        query = "Select account_id from supplier where supplier_id = %s;"
+        cursor.execute(query, ( id,))
+        account_id = cursor.fetchone()[0]  
         query = "update accounts set email = %s where account_id = %s;"
-        cursor.execute(query, (email,))
-        account_id = cursor.fetchone()[0]
+        cursor.execute(query, (email,account_id,))
         self.conn.commit()        
         return id;
 
 
-    def updateSupplierFirst_name(id, name):
+    def updateSupplierFirst_name(self,id, name):
         cursor = self.conn.cursor() 
+        query = "Select account_id from supplier where supplier_id = %s;"
+        cursor.execute(query, ( id,))
+        account_id = cursor.fetchone()[0]  
         query = "update accounts set first_name = %s where account_id = %s;"
-        cursor.execute(query, (name,))
-        account_id = cursor.fetchone()[0]
+        cursor.execute(query, (name,account_id,))
         self.conn.commit()        
         return id;
 
-    def updateSupplierLast_name(id, name):
+    def updateSupplierLast_name(self,id, name):
         cursor = self.conn.cursor() 
+        query = "Select account_id from supplier where supplier_id = %s;"
+        cursor.execute(query, ( id,))
+        account_id = cursor.fetchone()[0] 
         query = "update accounts set last_name = %s where account_id = %s;"
-        cursor.execute(query, (name,))
-        account_id = cursor.fetchone()[0]
+        cursor.execute(query, (name,account_id,))
         self.conn.commit()        
         return id;

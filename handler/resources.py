@@ -37,15 +37,16 @@ class ResourcesHandler:
         result['resource_id'] = row[0]
         result['name'] = row[1]
         result['category'] = row[2]
-        result['accountID'] = row[3]
+        result['supplier_id'] = row[3]
         result['price'] = row[4]
         result['description'] = row[5]
-        result['avaliability'] = row[6]
-        result['qty'] = row[7]
-        result['dateAdded'] = row[8]
-        result['lastUpdate'] = row[9]  
-        result['city'] = row[10] 
+        result['availability'] = row[6]
+        result['dateAdded'] = row[7]
+        result['lastUpdate'] = row[8]  
+        result['city'] = row[9] 
         return result
+
+
 
     def build_supplier(self,row):
         result = {}
@@ -62,7 +63,7 @@ class ResourcesHandler:
         result['request_id'] = request_id
         result['name'] = name
         result['category_number'] = resource_type
-        result['accountID'] = requester_id
+        result['requester_id'] = requester_id
         result['description'] = description        
         result['qty'] = qty
         result['Requested_Date'] =dt
@@ -356,122 +357,155 @@ class ResourcesHandler:
 ####  PUT
 #########################################################
 
-def insertResourcesRequested(self, form):
-    if len(form) != 5:
-        return jsonify(Error = "Malformed post request"), 400
-    else:
-        name = form['name']
-        resource_type = form['resource_type']
-        requester_id = form['requester_id']
-        qty = form['qty']
-        description = form['description']
-        dt = datetime.now()
-        if name and resource_type and requester_id and qty and description:
+    def insertResourcesRequested(self, form, parsed_json):
+        
+
+        if len(form)==0:
+            # parsed_json = json.loads(test)
+            name = parsed_json['name']  
+            resource_type = parsed_json['resource_type']
+            requester_id = parsed_json['requester_id']
+            description = parsed_json['description']
+            keywords = parsed_json['keywords']
+            qty = parsed_json['qty']
+            dt = datetime.now()
             dao = ResourceDAO()
-            pid = dao.insertRequested(name, resource_type, requester_id,description, qty,dt)
+            pid = dao.insertRequested(name, resource_type, requester_id,description, qty,dt, keywords)
             res = self.getResourceRequestedByID(pid)
-            for row in res:
-                result = self.build_resource_requested(row)
-                result_list.append(result)   
-            return jsonify(Resource=result), 201
+            return res 
+
+        if len(form) != 6:
+            return jsonify(Error = "Malformed post request"), 400
         else:
-            return jsonify(Error="Unexpected attributes in post request"), 400
-    
+            name = form.get('name')
+            resource_type = form.get('resource_type')
+            requester_id = form.get('requester_id')
+            qty = form.get('qty')
+            description = form.get('description')
+            keywords =  form.get('keywords')
+            dt = datetime.now()
+            if name and resource_type and requester_id and qty and description and keywords:
+                dao = ResourceDAO()
+                pid = dao.insertRequested(name, resource_type, requester_id,description, qty,dt, keywords)
+                res = self.getResourceRequestedByID(pid)
+                return res
 
-def insertResourcesAvailable(self, form):
-    if len(form) != 6:
-        return jsonify(Error = "Malformed post request"), 400
-    else:
-        name = form['name']
-        resource_type = form['resource_type']
-        supplier_id = form['supplier_id']
-        price = form['price']
-        description = form['description']
-        qty = form['qty']
-        availability = form['qty']
-        dt = datetime.now()
-        if name and resource_type and supplier_id and qty and price and description and qty and availability:
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+        
+
+    def insertResourcesAvailable(self, form, parsed_json):
+                
+        if len(form)==0:
+           
+            name = parsed_json['name']  
+            resource_type = parsed_json['resource_type']
+            supplier_id = parsed_json['supplier_id']
+            price = parsed_json['price']
+            description = parsed_json['description']
+            keywords = parsed_json['keywords']
+            availability = parsed_json['qty']
+            dt = datetime.now()
             dao = ResourceDAO()
-            pid = dao.insertAvailable(name,resource_type,supplier_id,price,description,qty,availability,dt,dt)
-            result = self.build_resoucesRequested_attributes(pid,name,resource_type,supplier_id,price,description,qty,availability,dt,dt)
-            return jsonify(Part=result), 201
+            pid = dao.insertAvailable(name,resource_type,supplier_id,price,description,availability,dt,dt,keywords)
+            res = self.getResourceAvaliableByRID(pid)
+            return res      
+
+        elif len(form) != 7:
+            return jsonify(Error = "Malformed post request"), 400
         else:
-            return jsonify(Error="Unexpected attributes in post request"), 400
-    
+            name = form.get('name')
+            resource_type = form.get('resource_type')
+            supplier_id = form.get('supplier_id')
+            price = form.get('price')
+            description = form.get('description')
+            keywords =  form.get('keywords')
+            availability = form.get('qty')
+            dt = datetime.now()
+            if name and resource_type and supplier_id and price and description and availability and keywords:
+                dao = ResourceDAO()
+                pid = dao.insertAvailable(name,resource_type,supplier_id,price,description,availability,dt,dt,keywords)
+                res = self.getResourceAvaliableByRID(pid)
+                return res
+            else:
+                return jsonify(Error="Unexpected attributes in post request"), 400
+        
 
-#########################################################
-####  UPDATE
-#########################################################
+    #########################################################
+    ####  UPDATE
+    #########################################################
 
-def updateResourcesRequested(self, form):
-    id = form['id']
-    name = form['name']
-    resource_type = form['resource_type']
-    requester_id = form['requester_id']
-    qty = form['qty']
-    description = form['description']
-    dt = datetime.now()  
-    result_list= {} 
-    if name and resource_type and requester_id and qty and description and (len(form)==5):
-        dao = ResourceDAO()
-        dao.updateRequested(id,name, resource_type, requester_id,description, qty,dt)
-        res = self.getResourceRequestedByID(id)
-        for row in res:
-            result = self.build_resource_requested(row)
-            result_list.append(result)   
-        return jsonify(Resource=result), 201
+    def updateResourcesRequested(self, form, parsed_json):
+        
+        
+        id = form.get('id')
+        name = form.get('name')
+        resource_type = form.get('resource_type')        
+        qty = form.get('qty')
+        description = form.get('description')
+        dt = datetime.now()  
+        result_list= {}        
+        
+        if len(form)==0: 
+            id = parsed_json['id']
+            name = parsed_json['name']
+            resource_type = parsed_json['resource_type']
+            qty = parsed_json['qty']
+            description = parsed_json['description'] 
+            dao.updateRequested(id,name, resource_type, description, qty)
+            res = self.getResourceRequestedByID(id)
+            return res, 201       
 
-    elif id and qty and (len(form)==2):
-        id = form['id']
-        qty = form['qty']
-        dao = ResourceDAO()
-        dao.updateRequestedQty(id,name, resource_type, requester_id,description, qty,dt)
-        res = self.getResourceRequestedByID(id)
-        for row in res:
-            result = self.build_resource_requested(row)
-            result_list.append(result)   
-        return jsonify(Resource=result), 201
-
-    elif len(form) != 6:
-        return jsonify(Error="Unexpected attributes in post request"), 400     
-    else:
-        return jsonify(Error = "Malformed post request"), 400
-
-def updateResourcesAvailable(self, form):
-    
-        name = form['name']
-        resource_type = form['resource_type']
-        supplier_id = form['supplier_id']
-        price = form['price']
-        description = form['description']
-        qty = form['qty']
-        availability = form['availability']
-        id = form['id']
-        result_list = {} 
-             
-                 
-        if name and resource_type and supplier_id and qty and price and description and qty and availability and (len(form)==6):
-            temp = ResourceDAO().getResourceAvaliableByRID(id)
-            if (len(temp)==0):
-                return jsonify(Error="Resource with that Id was not found."), 400
+        elif name and resource_type and qty and description and id and  (len(form)==5):
             dao = ResourceDAO()
-            dao.updateAvailable(id, name,resource_type,supplier_id,price,description,qty,availability)
-            res = dao.getResourceAvaliableByRID(id)
-            for row in res:
-                result = self.build_resource_requested(row)
-                result_list.append(result)   
-            return jsonify(Resource=result), 201
+            dao.updateRequested(id,name, resource_type, description, qty)
+            res = self.getResourceRequestedByID(id)
+            return res, 201
+
         elif id and qty and (len(form)==2):
+            id = form.get('id')
+            qty = form.get('qty')
+            dao = ResourceDAO()
+            dao.updateRequestedQty(id,name, resource_type, description, qty,dt)
+            res = self.getResourceRequestedByID(id)
+            return res, 201
+
+        elif len(form) != 6:
+            return jsonify(Error="Unexpected attributes in put request"), 400     
+        else:
+            return jsonify(Error = "Malformed put request"), 400
+
+    def updateResourcesAvailable(self, form,parsed_json):
+        
+        name = form.get('name')
+        resource_type = form.get('resource_type')        
+        price = form.get('price')
+        description = form.get('description')            
+        availability = form.get('qty')
+        id = form.get('id')
+        dt = datetime.now()
+        result_list = {} 
+
+        if len(form)==0: 
+            id = parsed_json['id']
+            name = parsed_json['name']
+            resource_type = parsed_json['resource_type']            
+            qty = parsed_json['qty']
+            description = parsed_json['description'] 
+            price = parsed_json['price'] 
+            dao.updateAvailable(id, name,resource_type,price,description,availability)
+            res = self.getResourceRequestedByID(id)
+            return res, 201                  
+                
+        elif name and resource_type and  price and description and availability and id and  dt and  (len(form)==6):
             temp = ResourceDAO().getResourceAvaliableByRID(id)
             if (len(temp)==0):
                 return jsonify(Error="Resource with that Id was not found."), 400
             dao = ResourceDAO()
-            dao.updateAvailableQty(id, qty)
-            res = dao.getResourceAvaliableByRID(id)
-            for row in res:
-                result = self.build_resource_requested(row)
-                result_list.append(result)   
-            return jsonify(Resource=result), 201
+            dao.updateAvailable(id, name,resource_type,price,description,availability, dt)
+            res = self.getResourceAvaliableByRID(id)
+            return res, 201
+        
 
         elif id and availability and (len(form)==2):
             temp = ResourceDAO().getResourceAvaliableByRID(id)
@@ -479,11 +513,8 @@ def updateResourcesAvailable(self, form):
                 return jsonify(Error="Resource with that Id was not found."), 400
             dao = ResourceDAO()
             dao.updateAvailableAvailability(id, qty)
-            res = dao.getResourceAvaliableByRID(id)
-            for row in res:
-                result = self.build_resource_requested(row)
-                result_list.append(result)   
-            return jsonify(Resource=result), 201
+            res = self.getResourceAvaliableByRID(id)
+            return res, 201
 
         elif id and price and (len(form)==2):
             temp = ResourceDAO().getResourceAvaliableByRID(id)
@@ -491,11 +522,8 @@ def updateResourcesAvailable(self, form):
                 return jsonify(Error="Resource with that Id was not found."), 400
             dao = ResourceDAO()
             dao.updateAvailablePrice(id, price)
-            res = dao.getResourceAvaliableByRID(id)
-            for row in res:
-                result = self.build_resource_requested(row)
-                result_list.append(result)   
-            return jsonify(Resource=result), 201
+            res = self.getResourceAvaliableByRID(id)
+            return res, 201
             
         else:
             return jsonify(Error="Unexpected attributes in post request"), 400
