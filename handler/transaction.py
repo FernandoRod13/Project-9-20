@@ -37,56 +37,67 @@ class TransactionHandler:
     # METHODS
 
     # For updating a current payment method for a particular account id.
-    def updatePaymentMethod(self, args):
-        if len(args) == 6 and args:
+    def updatePaymentMethod(self, args, parsed_json):
+        if len(args) == 0:
+            cardHolder = parsed_json['card_holder']
+            cardNumber = parsed_json['card_number']
+            expDate = parsed_json['expiration_date']
+            zipCode = parsed_json['zip_code']
+            accountId = parsed_json['accountid']
+            pmid = parsed_json['payment_method_id']
+        else:
             cardHolder = args.get("card_holder")
             cardNumber = args.get("card_number")
             expDate = args.get("expiration_date")
             zipCode = args.get("zip_code")
-            accountId = args.get("account_id")
+            accountId = args.get("accountid")
             pmid = args.get("payment_method_id")
-            if cardHolder and cardNumber and expDate and zipCode and accountId and pmid:
-                dao = TransactionDAO()
-                res = dao.addPaymentMethod(cardHolder, cardNumber, expDate, zipCode, accountId)
-                if isinstance(res, int):
-                    result = {}
-                    result['payment_method_id'] = pmid
-                    result['card_holder'] = cardHolder
-                    result['card_number'] = cardNumber
-                    result['expiration_date'] = expDate
-                    result['zip_code'] = zipCode
-                    return jsonify(PaymentMethod = result)
+
+        if cardHolder and cardNumber and expDate and zipCode and accountId and pmid:
+            dao = TransactionDAO()
+            res = dao.addPaymentMethod(cardHolder, cardNumber, expDate, zipCode, accountId)
+            if isinstance(res, int):
+                result = {}
+                result['payment_method_id'] = pmid
+                result['card_holder'] = cardHolder
+                result['card_number'] = cardNumber
+                result['expiration_date'] = expDate
+                result['zip_code'] = zipCode
+                return jsonify(PaymentMethod = result)
                  
-                else:
-                    return jsonify(Error=res)
             else:
-                return jsonify(Error="Malformed post request")
+                return jsonify(Error=res)
         else:
             return jsonify(Error="Malformed post request")
 
     # Add payment method for a particular account id.
-    def addPaymentMethod(self, args):
-        if len(args) == 5 and args:
+    def addPaymentMethod(self, args, parsed_json):
+        if len(args) == 0:
+            cardHolder = parsed_json['card_holder']
+            cardNumber = parsed_json['card_number']
+            expDate = parsed_json['expiration_date']
+            zipCode = parsed_json['zip_code']
+            accountId = parsed_json['accountid']
+        else:
             cardHolder = args.get("card_holder")
             cardNumber = args.get("card_number")
             expDate = args.get("expiration_date")
             zipCode = args.get("zip_code")
-            accountId = args.get("account_id")
-            if cardHolder and cardNumber and expDate and zipCode and accountId:
-                dao = TransactionDAO()
-                pmid = dao.addPaymentMethod(cardHolder, cardNumber, expDate, zipCode, accountId)
-                if isinstance(pmid, int):
-                    result = {}
-                    result['payment_method_id'] = pmid
-                    result['card_holder'] = cardHolder
-                    result['card_number'] = cardNumber
-                    result['expiration_date'] = expDate
-                    result['zip_code'] = zipCode
-                    return jsonify(PaymentMethod = result)
-                else:
-                    return jsonify(Error=pmid)
+            accountId = args.get("accountid")
+
+        if cardHolder and cardNumber and expDate and zipCode and accountId:
+            dao = TransactionDAO()
+            pmid = dao.addPaymentMethod(cardHolder, cardNumber, expDate, zipCode, accountId)
+            if isinstance(pmid, int):
+                result = {}
+                result['payment_method_id'] = pmid
+                result['card_holder'] = cardHolder
+                result['card_number'] = cardNumber
+                result['expiration_date'] = expDate
+                result['zip_code'] = zipCode
+                return jsonify(PaymentMethod = result)
             else:
-                return jsonify(Error="Malformed post request")
+                return jsonify(Error=pmid)
         else:
             return jsonify(Error="Malformed post request")
 
@@ -178,25 +189,28 @@ class TransactionHandler:
         return jsonify(Transactions=result_list)
 
     # Buy resource transaction.
-    def buyResource(self, args):
-        if args and len(args) == 3:
-            resourceId = args['resource_id']
-            requesterId = args['requester_id']
-            purchaseQty = args['purchase_qty']
-            if resourceId and requesterId and purchaseQty:
-                dao = TransactionDAO()
-                pid = dao.buyResource(purchaseQty, resourceId, requesterId)
-                if isinstance(pid, int):
-                    result = {}
-                    result["purchase_id"] = pid
-                    result["resource_id"] = resourceId
-                    result["requester_id"] = requesterId
-                    result["purchase_qty"] = purchaseQty
-                    return jsonify(Transaction=result)
-                else:
-                    return jsonify(Error=pid)
+    def buyResource(self, args, parsed_json):
+        if len(args) == 0:
+            resourceId = parsed_json['resourceid']
+            requesterId = parsed_json['requesterid']
+            purchaseQty = parsed_json['purchaseqty']
+        else:
+            resourceId = args.get("resourceid")
+            requesterId = args.get("requesterid")
+            purchaseQty = args.get("purchaseqty")
+
+        if resourceId and requesterId and purchaseQty:
+            dao = TransactionDAO()
+            pid = dao.buyResource(purchaseQty, resourceId, requesterId)
+            if isinstance(pid, int):
+                result = {}
+                result["purchase_id"] = pid
+                result["resource_id"] = resourceId
+                result["requester_id"] = requesterId
+                result["purchase_qty"] = purchaseQty
+                return jsonify(Transaction=result)
             else:
-                return jsonify(Error="Malformed post request")
+                return jsonify(Error=pid)
         else:
             return jsonify(Error="Malformed post request")
 
