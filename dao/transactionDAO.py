@@ -141,6 +141,26 @@ class TransactionDAO:
             print(errorLog)
             return errorLog
 
+    # Get all transactions
+    def getAllTransactions(self):
+        cursor = self.conn.cursor()
+        query = "select B.purchase_id, B.resource_id, B.resource_name, B.description, B.purchase_quantity, " \
+                "B.purchase_price, B.purchase_date, B.requester_id, " \
+                "B.first_name, B.last_name, B.supplier_id, S.sfn, S.sln, city_name, region_name " \
+                "from (select * from " \
+                "purchases natural inner join resources natural inner join accounts " \
+                "natural inner join requester natural inner join location " \
+                "natural inner join city natural inner join region) as B, " \
+                "(select resource_id, first_name as sfn, last_name as sln " \
+                "from resources natural inner join accounts " \
+                "natural inner join supplier) as S " \
+                "where B.resource_id = S.resource_id order by purchase_id;"
+        cursor.execute(query)
+        result = []
+        for row in cursor:
+            result.append(row)
+        return result
+
     # Get transaction history of certain buyer by the id.
     def getTransactionByBuyerId(self, requesterId):
         cursor = self.conn.cursor()

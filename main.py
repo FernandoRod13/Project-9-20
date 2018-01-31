@@ -284,6 +284,11 @@ def getBuyerTransaction():
     if request.method == 'GET':
         return TransactionHandler().getTransactionByBuyer(request.args)
 
+@app.route('/transactions/getAll', methods=['GET'])
+def getAllTransaction():
+    if request.method == 'GET':
+        return TransactionHandler().getAllTransactions()
+
 @app.route('/transactions/getSupplierTransaction', methods=['GET'])
 def getSupplierTransaction():
     if request.method == 'GET':

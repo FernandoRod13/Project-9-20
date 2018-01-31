@@ -121,6 +121,19 @@ class TransactionHandler:
             result_list.append(result)
         return jsonify(PaymentMethods=result_list)
 
+    # Get all transaction history of all buyers.
+    def getAllTransactions(self):
+        dao = TransactionDAO()
+
+        transactionsList = []
+        transactionsList = dao.getAllTransactions()
+
+        result_list = []
+        for row in transactionsList:
+            result = self.build_transaction_dict(row)
+            result_list.append(result)
+        return jsonify(Transactions=result_list)
+
     # Get transaction history of certain buyer by the id.
     def getTransactionByBuyer(self, args):
         requesterId = args.get("requesterid")
