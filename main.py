@@ -310,7 +310,7 @@ def getAccountLogin():
     else:
         return jsonify(Error = "Method not allowed"), 405
 
-@app.route('/user/changepassword', methods=['GET'])
+@app.route('/changepassword', methods=['GET'])
 def getChangeAccountPassword():
     if request.method == 'GET':
         return AccountHandler().userChangePassword(request.args)
@@ -345,6 +345,13 @@ def getRequesterId(id):
 def getSupplierId(id):
     if request.method == 'GET':
         return AccountHandler().SupplierId(id)
+    else:
+        return jsonify(Error = "Method not allowed"), 405
+
+@app.route('/notifications', methods=['GET'])
+def Notifications():
+    if request.method == 'GET':
+        return AccountHandler().getNotifications()
     else:
         return jsonify(Error = "Method not allowed"), 405
 

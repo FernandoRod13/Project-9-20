@@ -81,7 +81,7 @@ class AccountsDAO:
     def accountChangePassword(self, email,password):
         cursor = self.conn.cursor()
         query = "update accounts set password =%s  where email = %s;"
-        cursor.execute(query, (password,email))
+        cursor.execute(query, (password,email,))
         self.conn.commit()
         return'Password as been change'
         
