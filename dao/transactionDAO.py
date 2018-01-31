@@ -59,7 +59,7 @@ class TransactionDAO:
         if len(result) != 0:
             query = "insert into payment_method(card_holder, card_number," \
                     " expiration_date, zip_code, account_id)" \
-                   " values('%s', '%s', '%s', '%s', %s) returning payment_method_id;"
+                   " values(%s, %s, %s, %s, %s) returning payment_method_id;"
             cursor.execute(query, (cardHolder, cardNumber, expirationDate, zipCode, accountId))
             pmid = cursor.fetchone()[0]
             self.conn.commit()
@@ -217,7 +217,7 @@ class TransactionDAO:
                 "from resources natural inner join accounts " \
                 "natural inner join supplier) as S " \
                 "where B.resource_id = S.resource_id and supplier_id = %s order by purchase_id;"
-        cursor.execute(query, (accountId,))
+        cursor.execute(query, (supplierId,))
         result = []
         for row in cursor:
             result.append(row)
