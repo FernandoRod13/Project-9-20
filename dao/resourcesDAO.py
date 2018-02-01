@@ -514,7 +514,7 @@ class ResourceDAO:
 
     def getResourceRequesteddbyARequesterID(self, id):
         cursor = self.conn.cursor()
-        query = "Select resource_id,  resource_name , type_name as category, supplier_id, price, description, availability, creation_date,last_update,  city_name  from Resources natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join  supplier natural inner join requester where requester_id = %s order by resource_name ;"
+        query = "Select request_id,  requested_name , type_name as category, requester_id, description, quantity, creation_date, city_name  from Resources_requested natural inner join Resource_Type natural inner join Accounts natural inner join Location natural inner join City natural inner join Region natural inner join requester where requester_id = %s order by requested_name ;"
         cursor.execute(query,(id,))       
         result = []
         for row in cursor:

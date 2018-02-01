@@ -76,7 +76,7 @@ def getSearchResourcesRequested():
         return ResourcesHandler().getresources_requested(request.args)
 
 
-@app.route('/resources/available/requester/<int:id>')
+@app.route('/resources/requester/<int:id>/resources')
 def getResourceSupplierByResourceID(id):
     """Get Resources that a given requester id supplies"""
     return ResourcesHandler().getResourcesRequestedOfRequesterByID(id)

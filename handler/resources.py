@@ -238,13 +238,13 @@ class ResourcesHandler:
 
     def getResourcesRequestedOfRequesterByID(self, id):
         dao = ResourceDAO()
-        res = dao.getResourceAvaliablebSuppliedbyID(id)
+        res = dao.getResourceRequesteddbyARequesterID(id)
         
         if (len(res)==0):
             return jsonify(Error = "Requester does not wish any resources at the moment."), 404 
         result_list = []  
         for row in res:
-            result = self.build_resource_avaliable(row)
+            result = self.build_resource_requested(row)
             result_list.append(result)          
         return jsonify(Resources = result_list)
        
