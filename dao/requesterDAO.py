@@ -9,7 +9,7 @@ class RequesterDAO:
 
     def getAllRequesters(self):
         cursor = self.conn.cursor()
-        query = "select   requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city where account_type = 'Requester';"
+        query = "select   requester_id, first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join requester where account_type = 'Requester';"
         cursor.execute(query)
         result = []
         for row in cursor:

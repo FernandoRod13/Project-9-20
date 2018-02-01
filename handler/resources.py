@@ -470,7 +470,7 @@ class ResourcesHandler:
             res = self.getResourceRequestedByID(id)
             return res, 201
 
-        elif len(form) != 6:
+        elif len(form) != 5:
             return jsonify(Error="Unexpected attributes in put request"), 400     
         else:
             return jsonify(Error = "Malformed put request"), 400
@@ -493,11 +493,12 @@ class ResourcesHandler:
             qty = parsed_json['qty']
             description = parsed_json['description'] 
             price = parsed_json['price'] 
+            availability = parsed_json['qty']
             dao.updateAvailable(id, name,resource_type,price,description,availability)
             res = self.getResourceRequestedByID(id)
             return res, 201                  
                 
-        elif name and resource_type and  price and description and availability and id and  dt and  (len(form)==6):
+        elif name and resource_type and  price and description and availability and id and  dt and (len(form)==6):
             temp = ResourceDAO().getResourceAvaliableByRID(id)
             if (len(temp)==0):
                 return jsonify(Error="Resource with that Id was not found."), 400
