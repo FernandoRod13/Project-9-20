@@ -9,7 +9,7 @@ class SupplierDAO:
 
     def getAllSuppliers(self):
         cursor = self.conn.cursor()
-        query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier where account_type = 'Supplier';"
+        query = "select supplier_id , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier where account_type = 'Supplier';"
         cursor.execute(query)
         result = []
         for row in cursor:
@@ -18,7 +18,7 @@ class SupplierDAO:
 
     def searchSuppliersByCity(self,city):
         cursor = self.conn.cursor()
-        query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier  where account_type = 'Supplier' and city_name = %s;"
+        query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier  where account_type = 'Supplier' and city_name = %s;"
         cursor.execute(query, (city,))
         result = []
         for row in cursor:
@@ -27,7 +27,7 @@ class SupplierDAO:
 
     def searchSuppliersByRegion(self,region):
         cursor = self.conn.cursor()
-        query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join region where account_type = 'Supplier' and region_name = %s;"
+        query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join region where account_type = 'Supplier' and region_name = %s;"
         cursor.execute(query, (region,))
         result = []
         for row in cursor:
@@ -45,7 +45,7 @@ class SupplierDAO:
 
     def searchSuppliersSupplyingResource(self,resource_name):
         cursor = self.conn.cursor()
-        query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources where account_type = 'Supplier' and resource_name = %s;"
+        query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources where account_type = 'Supplier' and resource_name = %s;"
         cursor.execute(query, (resource_name,))
         result = []
         for row in cursor:
@@ -55,13 +55,13 @@ class SupplierDAO:
     def searchSuppliersSupplyingResourceByCategory(self, type_name):
         cursor = self.conn.cursor()
         if (type_name == 'fuel'):
-            query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources natural inner join resource_type  where account_type = 'Supplier' and (type_name = 'gasoline' OR type_name = 'propane' OR type_name = 'diesel') ;"
+            query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources natural inner join resource_type  where account_type = 'Supplier' and (type_name = 'gasoline' OR type_name = 'propane' OR type_name = 'diesel') ;"
             cursor.execute(query)
         elif (type_name == 'water'):
-            query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources natural inner join resource_type  where account_type = 'Supplier' and (type_name = 'gallonbottles' OR type_name = 'smallbottles' ) ;"
+            query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources natural inner join resource_type  where account_type = 'Supplier' and (type_name = 'gallonbottles' OR type_name = 'smallbottles' ) ;"
             cursor.execute(query)
         else:
-            query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources natural inner join resource_type  where account_type = 'Supplier' and type_name = %s;"
+            query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources natural inner join resource_type  where account_type = 'Supplier' and type_name = %s;"
             cursor.execute(query, (type_name,))
         result = []
         for row in cursor:
@@ -70,7 +70,7 @@ class SupplierDAO:
 
     def searchSuppliersSupplyingResourceInCity(self, resource_name, city):
         cursor = self.conn.cursor()
-        query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources where account_type = 'Supplier' and resource_name = %s and city_name = %s;"
+        query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources where account_type = 'Supplier' and resource_name = %s and city_name = %s;"
         cursor.execute(query, (resource_name, city,))
         result = []
         for row in cursor:
@@ -79,7 +79,7 @@ class SupplierDAO:
 
     def searchSuppliersByName(self, name): 
         cursor = self.conn.cursor()
-        query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier where account_type = 'Supplier' and  (first_name = %s or last_name =%s);"
+        query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier where account_type = 'Supplier' and  (first_name = %s or last_name =%s);"
         cursor.execute(query, (name, name,))
         result = []
         for row in cursor:
@@ -88,7 +88,7 @@ class SupplierDAO:
 
     def searchSuppliersByResourceKeyword(self,keyword):
         cursor = self.conn.cursor()
-        query = "select account_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources natural inner join resource_keyword where account_type = 'Supplier' and  keyword LIKE '%%' || %s || '%%';"
+        query = "select supplier_id  , first_name, last_name, email, phone, city_name from accounts natural inner join location natural inner join city natural inner join supplier natural inner join resources natural inner join resource_keyword where account_type = 'Supplier' and  keyword LIKE '%%' || %s || '%%';"
         cursor.execute(query, (keyword,))
         result = []
         for row in cursor:
